@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+    </script>
+</head>
+
+<body>
+    <header>
+        <img class="logo" src="../assets/logo.jpg" />
+        <menu>
+            <div
+                style="width: auto; height: 100%; padding-left: 20px; padding-right: 20px; background: #F23B88; justify-content: center; align-items: center;display: flex">
+                <a [routerLink]="['/inicio']" style="color: #ffffff; font-weight: 550;">Inicio</a>
+            </div>
+            <a [routerLink]="['/vuelos']">Vuelos</a>
+            <a href="#">Promociones</a>
+            <a href="#">Sign out</a>
+            <a href="#">?</a>
+        </menu>
+        <div class="search">
+            <form>
+                <input type="text" value="Buscar">
+                <input type="button" value="O" src="https://via.placeholder.com/35x35">
+            </form>
+        </div>
+    </header>
+    <img class="fondo" src="../assets/fondo.jpg" />
+    <div class="ruta">
+        <div class="item">
+            <img class="icon" src="https://via.placeholder.com/22x19" alt="Icono Salida">
+            <div class="text">Origen</div>
+        </div>
+        <div class="item">
+            <img class="icon" src="https://via.placeholder.com/21x19" alt="Icono Llegada">
+            <div class="text">Destino</div>
+        </div>
+        <div class="item">
+            <div class="color-box"></div>
+            <div class="text">Fecha de salida</div>
+            <input type="date" class="fecha-salida" name="fecha-regreso">
+        </div>
+        <div class="item">
+            <div class="color-box"></div>
+            <div class="text">Fecha de llegada</div>
+            <input type="date" class="fecha-llegada" name="fecha-regreso">
+        </div>
+    </div>
+</body>

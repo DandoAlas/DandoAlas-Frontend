@@ -1,0 +1,23 @@
+footer {
+    width: 100%;
+    background-color: #09031f;
+    overflow: hidden;
+    display: block;
+    margin: 0px auto;
+    margin-top: 80px;
+    height: auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    font-family: "TrebuchetMS";
+    color: #25D366;
+    font-size: 15px;
+    display: inline-flex;
+}
+
+footer a:hover {
+    color: #FFDE7D;
+    text-decoration: none;
+}

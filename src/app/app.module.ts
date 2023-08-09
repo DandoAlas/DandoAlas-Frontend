@@ -3,14 +3,22 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { EscogerRutaComponent } from './components/escoger-ruta/escoger-ruta.component';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { CrearVueloComponent } from './components/crear-vuelo/crear-vuelo.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    EscogerRutaComponent,
+    CrearVueloComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

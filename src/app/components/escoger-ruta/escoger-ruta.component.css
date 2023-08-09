@@ -1,0 +1,81 @@
+.fondo {
+    padding-top: 100px;
+    padding-bottom: 20px;
+    width: 900px;
+    height: auto;
+}
+
+.ruta {
+    width: auto;
+    height: auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    justify-content: center;
+    align-items: center;
+    display: inline-flex;
+}
+
+.item {
+    width: 200px;
+    height: 40px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background: white;
+    border: 0.50px #8CB4F1 solid;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    display: flex;
+}
+
+.icon {
+    width: 21.68px;
+    height: 18.53px;
+}
+
+.text {
+    color: #7C8DB0;
+    font-size: 18px;
+    font-family: Nunito Sans;
+    font-weight: 400;
+    word-wrap: break-word;
+}
+
+/* Estilos específicos */
+.color-box {
+    width: 18px;
+    height: 21px;
+    background: #6E7491;
+}
+
+.color-box-group {
+    height: 18px;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    display: inline-flex;
+}
+
+.small-box {
+    width: 8px;
+    height: 8px;
+    background: #6E7491;
+    border-radius: 9999px;
+}
+
+.medium-box {
+    width: 16px;
+    height: 8px;
+    background: #6E7491;
+}
+
+.fecha-llegada,
+.fecha-salida {
+    width: 20px;
+    border: none;
+    font-size: 16px;
+    outline: none;
+}
