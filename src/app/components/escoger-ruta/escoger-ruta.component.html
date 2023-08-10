@@ -29,25 +29,53 @@
             </form>
         </div>
     </header>
-    <img class="fondo" src="../assets/fondo.jpg" />
+    <div></div>
     <div class="ruta">
-        <div class="item">
-            <img class="icon" src="https://via.placeholder.com/22x19" alt="Icono Salida">
-            <div class="text">Origen</div>
-        </div>
-        <div class="item">
-            <img class="icon" src="https://via.placeholder.com/21x19" alt="Icono Llegada">
-            <div class="text">Destino</div>
-        </div>
-        <div class="item">
-            <div class="color-box"></div>
-            <div class="text">Fecha de salida</div>
-            <input type="date" class="fecha-salida" name="fecha-regreso">
-        </div>
-        <div class="item">
-            <div class="color-box"></div>
-            <div class="text">Fecha de llegada</div>
-            <input type="date" class="fecha-llegada" name="fecha-regreso">
+        <div class="titulo">Busca tu vuelo:</div>
+        <div class="escogerRuta">
+            <div class="tipoRuta">
+                <label class="checkbox-item">
+                  <input type="checkbox" class="checkbox-input" id="ida" name="item">
+                  <span class="informacion">Ida</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" class="checkbox-input" id="vuelta" name="item">
+                  <span class="informacion">Ida y vuelta</span>
+                </label>
+            </div>
+            <div class="informacionRuta">
+                <div class="item">
+                    <div class="informacion">Origen:</div>
+                </div>
+                <div class="item">
+                    <div class="informacion">Destino:</div>
+                </div>
+                <div class="item">
+                    <div class="informacion">Fecha de salida:</div>
+                </div>
+                <div class="item">
+                    <div class="informacion">Fecha de regreso:</div>
+                </div>
+            </div>
+            <div class="datosRuta">
+                <div class="item">
+                    <img class="icon" src="https://via.placeholder.com/22x19" alt="Icono Salida">
+                    <div class="text">Origen</div>
+                </div>
+                <div class="item">
+                    <img class="icon" src="https://via.placeholder.com/21x19" alt="Icono Llegada">
+                    <div class="text">Destino</div>
+                </div>
+                <div class="item">
+                    <div class="color-box"></div>
+                    <input type="date" class="fecha-salida" name="fecha-salida">
+                </div>
+                <div class="item">
+                    <div class="color-box"></div>
+                    <input type="date" class="fecha-regreso" name="fecha-regreso">
+                </div>
+            </div>
         </div>
     </div>
+    <img class="fondo" src="../assets/fondo.jpg" />
 </body>

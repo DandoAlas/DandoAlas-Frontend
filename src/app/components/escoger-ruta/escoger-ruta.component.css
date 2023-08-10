@@ -10,27 +10,79 @@
 .ruta {
     width: auto;
     height: auto;
-    padding-top: 10px;
+    padding-top: 150px;
     padding-bottom: 10px;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    justify-content: center;
     display: flex;
     margin: 0 auto;
 }
 
+.titulo {
+    color: #000000;
+    font-size: 25px;
+    font-family: Nunito Sans;
+    text-shadow: 3px 3px 5px rgba(126, 138, 162, 0.5);
+    padding-bottom: 50px;
+}
+
+.tipoRuta {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-right: auto;
+    padding-bottom: 20px;
+    gap: 30px;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.checkbox-input {
+    margin-right: 10px;
+}
+
+.informacion {
+    font-family: Nunito Sans;
+    color: black;
+    font-size: 18px;
+}
+
+.escogerRuta {
+    width: auto;
+    flex-direction: column;
+    display: flex;
+}
+
+.datosRuta,
+.informacionRuta {
+    width: auto;
+    flex-direction: row;
+    display: flex;
+}
+
 .item {
-    width: 200px;
+    width: 180px;
     height: 40px;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding: 10px;
     background: white;
     border: 0.50px #8CB4F1 solid;
     justify-content: flex-start;
     align-items: center;
     gap: 10px;
     display: flex;
+}
+
+.informacionRuta .item {
+    width: 192px;
+    background: white;
+    padding-left: 0px;
+    border: none;
 }
 
 .icon {
@@ -40,45 +92,18 @@
 
 .text {
     color: #7C8DB0;
-    font-size: 18px;
+    font-size: 16px;
     font-family: Nunito Sans;
     font-weight: 400;
     word-wrap: break-word;
 }
 
-/* Estilos específicos */
-.color-box {
-    width: 18px;
-    height: 21px;
-    background: #6E7491;
-}
-
-.color-box-group {
-    height: 18px;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    display: inline-flex;
-}
-
-.small-box {
-    width: 8px;
-    height: 8px;
-    background: #6E7491;
-    border-radius: 9999px;
-}
-
-.medium-box {
-    width: 16px;
-    height: 8px;
-    background: #6E7491;
-}
-
-.fecha-llegada,
+.fecha-regreso,
 .fecha-salida {
-    width: 20px;
+    width: auto;
     border: none;
+    color: #7C8DB0;
+    font-family: Nunito Sans;
     font-size: 16px;
     outline: none;
 }
