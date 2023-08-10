@@ -7,12 +7,14 @@ import { EscogerRutaComponent } from './components/escoger-ruta/escoger-ruta.com
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CrearVueloComponent } from './components/crear-vuelo/crear-vuelo.component';
+import { PieComponent } from './components/pie/pie.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     EscogerRutaComponent,
-    CrearVueloComponent
+    CrearVueloComponent,
+    PieComponent
   ],
   imports: [
     BrowserModule,

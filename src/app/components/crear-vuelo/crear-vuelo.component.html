@@ -1,56 +1,3 @@
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <!-- <link rel="stylesheet" href="styles.css"> -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const searchInput = document.querySelector('.search input[type="text"]');
-            const searchInput1 = document.querySelector('.atributo input[type="number"]');
-            const searchInput2 = document.querySelector('.atributo2 input[type="number"]');
-            const searchInput3 = document.querySelector('.atributo3 input[type="number"]');
-            searchInput.addEventListener("focus", function () {
-                if (searchInput.value === "Buscar") {
-                    searchInput.value = "";
-                }
-            });
-            searchInput.addEventListener("blur", function () {
-                if (searchInput.value.trim() === "") {
-                    searchInput.value = "Buscar";
-                } else {
-                    searchInput.value = "Buscar";
-                }
-            });
-            searchInput1.addEventListener("focus", function () {
-                if (searchInput1.value === "Duración del vuelo en minutos") {
-                    searchInput1.value = "";
-                }
-            });
-            searchInput2.addEventListener("focus", function () {
-                if (searchInput2.value === "Número de asientos") {
-                    searchInput2.value = "";
-                }
-            });
-            searchInput3.addEventListener("focus", function () {
-                if (searchInput3.value === "Precio en dólares") {
-                    searchInput3.value = "";
-                }
-            });
-
-
-            const selectSalida = document.querySelector(".salida");
-            const selectLlegada = document.querySelector(".llegada");
-            for (let i = 1; i <= 24; i++) {
-                const option = document.createElement("option");
-                option.value = i;
-                option.textContent = i;
-                selectSalida.appendChild(option);
-                selectLlegada.appendChild(option);
-            }
-        });
-    </script>
-</head>
-
 <body>
     <header>
         <img class="logo" src="../assets/logo.jpg" />
@@ -132,13 +79,13 @@
                 </select>
             </div>
             <div class="atributo">
-                <input type="number" value="Duración del vuelo en minutos">
+                <input type="number" value="0">
             </div>
             <div class="atributo2">
-                <input type="number" value="Número de asientos">
+                <input type="number" value="0">
             </div>
             <div class="atributo3">
-                <input type="number" value="Precio en dólares">
+                <input type="number" value="0">
             </div>
         </div>
     </div>
