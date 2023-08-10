@@ -42,4 +42,24 @@ export class EscogerRutaComponent implements AfterViewInit {
       });
     });
   }
+
+  decrease(inputId: string): void {
+    const inputElement = this.el.nativeElement.querySelector(`#${inputId}`);
+    const currentValue = parseInt(inputElement.value);
+
+    if (currentValue > 0) {
+      inputElement.value = (currentValue - 1).toString();
+    }
+  }
+
+  increase(inputId: string): void {
+    const inputElement = this.el.nativeElement.querySelector(`#${inputId}`);
+    const currentValue = parseInt(inputElement.value);
+    const maxValue = parseInt(inputElement.getAttribute('max'));
+
+    if (currentValue < maxValue) {
+      inputElement.value = (currentValue + 1).toString();
+    }
+  }
+
 }

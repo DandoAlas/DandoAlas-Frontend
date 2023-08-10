@@ -29,18 +29,19 @@
             </form>
         </div>
     </header>
+    <img class="fondo" src="../assets/fondo.jpg" />
     <div></div>
     <div class="ruta">
         <div class="titulo">Busca tu vuelo:</div>
         <div class="escogerRuta">
             <div class="tipoRuta">
                 <label class="checkbox-item">
-                  <input type="checkbox" class="checkbox-input" id="ida" name="item">
-                  <span class="informacion">Ida</span>
+                    <input type="checkbox" class="checkbox-input" id="ida" name="item">
+                    <span class="informacion">Ida</span>
                 </label>
                 <label class="checkbox-item">
-                  <input type="checkbox" class="checkbox-input" id="vuelta" name="item">
-                  <span class="informacion">Ida y vuelta</span>
+                    <input type="checkbox" class="checkbox-input" id="vuelta" name="item">
+                    <span class="informacion">Ida y vuelta</span>
                 </label>
             </div>
             <div class="informacionRuta">
@@ -75,7 +76,42 @@
                     <input type="date" class="fecha-regreso" name="fecha-regreso">
                 </div>
             </div>
+            <div class="pasajero">
+                <div class="informacionRuta">
+                    <div class="item">
+                        <div class="informacion">Edad de los pasajeros/as:</div>
+                    </div>
+                </div>
+                <div class="item">
+                    <label for="menores2">Menores de 2 años:</label>
+                    <div>
+                        <button type="button" (click)="decrease('menores2')">-</button>
+                        <input disabled type="number" id="menores2" name="menores2" min="0" max="10" value="0">
+                        <button type="button" (click)="increase('menores2')">+</button>
+                    </div>
+                    <label for="entre2y25">Entre 2 años y 25 años:</label>
+                    <div>
+                        <button type="button" (click)="decrease('entre2y25')">-</button>
+                        <input disabled type="number" id="entre2y25" name="entre2y25" min="0" max="10" value="1">
+                        <button type="button" (click)="increase('entre2y25')">+</button>
+                    </div>
+                    <label for="entre25y65">Entre 25 y 65 años:</label>
+                    <div>
+                        <button type="button" (click)="decrease('entre25y65')">-</button>
+                        <input disabled type="number" id="entre25y65" name="entre25y65" min="0" max="10" value="0">
+                        <button type="button" (click)="increase('entre25y65')">+</button>
+                    </div>
+                    <label for="mayores65">Mayores de 65 años:</label>
+                    <div>
+                        <button type="button" (click)="decrease('mayores65')">-</button>
+                        <input disabled type="number" id="mayores65" name="mayores65" min="0" max="10" value="0">
+                        <button type="button" (click)="increase('mayores65')">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="boton">
+            <a href="#">Buscar</a>
         </div>
     </div>
-    <img class="fondo" src="../assets/fondo.jpg" />
 </body>

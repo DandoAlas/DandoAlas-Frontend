@@ -94,3 +94,31 @@ header a {
 .hide-text {
     display: none;
 }
+
+.boton {
+    width: 400px;
+    height: 48px;
+    margin: 0 auto;
+    background: #F23B88;
+    border-radius: 4px;
+    justify-content: center;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.50);
+    border-radius: 15px;
+    overflow: hidden;
+    align-items: center;
+    display: flex;
+    font-size: 20px;
+    font-family: Nunito Sans;
+    font-weight: 400;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.boton a {
+    text-align: center;
+    color: white;
+    font-size: 18px;
+    font-family: Poppins;
+    font-weight: 600;
+    word-wrap: break-word
+}

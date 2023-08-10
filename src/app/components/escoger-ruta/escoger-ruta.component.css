@@ -1,6 +1,9 @@
 .fondo {
+    position: absolute;
+    z-index: -1;
     padding-top: 100px;
-    padding-bottom: 20px;
+    left: 50%; /* Centra horizontalmente */
+    transform: translateX(-50%);
     width: 900px;
     height: auto;
     display: flex;
@@ -68,8 +71,9 @@
 
 .item {
     width: 180px;
-    height: 40px;
+    height: auto;
     padding: 10px;
+    margin-bottom: 25px;
     background: white;
     border: 0.50px #8CB4F1 solid;
     justify-content: flex-start;
@@ -80,9 +84,10 @@
 
 .informacionRuta .item {
     width: 192px;
-    background: white;
+    background: transparent;
     padding-left: 0px;
     border: none;
+    margin-bottom: 0px;
 }
 
 .icon {
@@ -106,4 +111,19 @@
     font-family: Nunito Sans;
     font-size: 16px;
     outline: none;
+}
+
+.pasajero {
+    width: 400px;
+    margin: 0px auto;
+}
+
+.pasajero .item {
+    width: auto;
+    flex-direction: column;
+}
+
+.boton {
+    width: 400px;
+    margin-top: 20px;
 }
