@@ -27,9 +27,7 @@
     gap: 30px;
 }
 
-.atributo,
-.atributo2,
-.atributo3 {
+.atributo {
     align-self: stretch;
     height: 40px;
     padding: 10px 20px;
@@ -43,8 +41,6 @@
 
 .texto,
 .atributo input[type="number"],
-.atributo2 input[type="number"],
-.atributo3 input[type="number"],
 .aerolinea,
 .origen,
 .destino,
@@ -61,8 +57,6 @@
 }
 
 .atributo input[type="number"]:focus,
-.atributo2 input[type="number"]:focus,
-.atributo3 input[type="number"]:focus,
 .aerolinea:focus,
 .origen:focus,
 .destino:focus,

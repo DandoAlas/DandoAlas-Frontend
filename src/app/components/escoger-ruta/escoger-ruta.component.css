@@ -14,7 +14,6 @@
     width: auto;
     height: auto;
     padding-top: 150px;
-    padding-bottom: 10px;
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -123,7 +122,76 @@
     flex-direction: column;
 }
 
+.signo {
+    background-color: rgb(126, 138, 162);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.numero {
+    border: none;
+    background: none;
+    text-align: center;
+    width: 40px;
+    font-size: 16px;
+    font-family: Poppins;
+    font-weight: 300;
+}
+
+
 .boton {
     width: 400px;
-    margin-top: 20px;
+    margin: 30px 0 80px 0;
+}
+
+/*seleccion*/
+
+.mostrarVuelos {
+    width: auto;
+    height: auto;
+    padding: 10px 10px 10px 10px;
+    background: rgb(126, 138, 162);
+    flex-direction: column;
+    justify-content: center;
+    font-family: Nunito Sans;
+    align-items: center;
+    gap: 10px;
+    display: inline-flex;
+}
+.vuelo {
+    width: 760px;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    background: #ffffff;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 4px;
+    display: inline-flex;
+}
+
+.infoVuelo {
+    align-self: stretch;
+    align-items: flex-start;
+    gap: 3px;
+    display: inline-flex;
+}
+
+.duracion, .horaSalida, .clase, .precio, .aerolinea {
+    flex: 1 1 0;
+    text-align: center;
+    color: #000000;
+    font-size: 16px;
+    font-weight: 400;
+    word-wrap: break-word;
+}
+
+.aerolinea {
+    color: #7C8DB0;
+    margin-bottom: 5px;
 }
