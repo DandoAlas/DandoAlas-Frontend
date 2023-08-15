@@ -12,7 +12,9 @@
 }
 
 .ruta,
-.carrito {
+.carrito,
+.resumen,
+.resumenBoton {
     width: auto;
     height: auto;
     padding-top: 150px;
@@ -227,7 +229,6 @@
 /*carrito*/
 .carrito{
     width: 630px;
-    background: rgb(126, 138, 162);
 }
 .cart-button {
     width: 100px;
@@ -247,11 +248,14 @@
     background-position: center;
 }
 
-.carrito .item {
+.carrito .item,
+.resumen .item {
     width: 610px;
     justify-content: center;
     align-items: center;
     text-align: center;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
 }
 
 .exit-button-container {
@@ -269,18 +273,29 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    /* Agrega otros estilos al botón de salida si es necesario */
 }
-.carrito .vuelo {
+.carrito .vuelo,
+.resumen .vuelo{
     width: 600px;
     padding-left: 16px;
     padding-right: 16px;
     padding-top: 8px;
     padding-bottom: 8px;
+    border: 0.50px #8CB4F1 solid;
     background: #ffffff;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
     gap: 4px;
     display: inline-flex;
+}
+/*resumen*/
+.resumen{
+    width: 630px;
+    background: rgb(126, 138, 162);
+    padding-top: 0px;
+    margin-top: 60px;
+}
+.resumenBoton .boton {
+    width: 600px;
 }

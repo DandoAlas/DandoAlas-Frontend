@@ -126,11 +126,19 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
   abrirCarrito() {
     this.mostrarContenido = false;
     this.mostrarSeccionCarrito = true;
+    this.mostrarBotonResumen = true;
   }
   exit(){
     this.mostrarContenido = true;
     this.mostrarSeccionCarrito = false;
     this.mostrarSeccionVuelos = false;
     this.mostrarSeccionPasajeros = false;
+    this.mostrarSeccionResumen = false;
+    this.mostrarBotonResumen = false;
+  }
+  mostrarSeccionResumen: boolean = false;
+  mostrarBotonResumen: boolean = false;
+  mostrarResumen() {
+    this.mostrarSeccionResumen = true;
   }
 }

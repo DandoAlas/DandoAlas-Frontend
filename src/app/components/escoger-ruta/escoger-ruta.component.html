@@ -170,7 +170,7 @@
             <input class="exit-button" type="submit" (click)="exit()" value="X">
         </div>
         <div class="item">
-            <div class="titulo">Informacion de los vuelos reservados</div>
+            <div class="titulo">Vuelos reservados</div>
         </div>
         <li class="vuelo" *ngFor="let vuelo of vuelosReservados" class="vuelo">
             <div class="infoVuelo">
@@ -178,6 +178,21 @@
                 <div class="rutaVuelo">{{vuelo.origen}} -> {{vuelo.destino}}</div>
                 <div class="duracion">{{vuelo.fechaSalida}}</div>
             </div>
+        </li>
+    </div>
+    <div class="resumenBoton" *ngIf="mostrarBotonResumen">
+        <input class="boton" type="submit" value="Resumen" (click)="mostrarResumen()">
+    </div>
+    <div class="resumen" *ngIf="mostrarSeccionResumen">
+        <div class="item">
+            <div class="titulo">Informacion de los vuelos reservados</div>
+        </div>
+        <li class="vuelo" *ngFor="let vuelo of vuelosReservados" class="vuelo">
+            <br><div class="">Usted ha reservado un boleto en la aereolínea {{vuelo.nombreAerolinea}}</div><br>
+            <div class="">Con destino a {{vuelo.destino}} desde {{vuelo.origen}}</div><br>
+            <div class="">Para el día {{vuelo.fechaSalida}} a las {{vuelo.horaSalida}}:00h</div><br>
+            <div class="">Este viaje tiene una duración de {{vuelo.duracionVuelo}} minutos</div><br>
+            <div class="">Y el costo total de este boleto es de {{vuelo.precio}} dólares</div>
         </li>
     </div>
 </body>
