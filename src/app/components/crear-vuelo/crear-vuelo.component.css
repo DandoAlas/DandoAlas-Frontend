@@ -41,11 +41,11 @@
 
 .texto,
 .atributo input[type="number"],
-.aerolinea,
+.nombreAerolinea,
 .origen,
 .destino,
-.salida,
-.llegada {
+.horaSalida,
+.horaLlegada {
     width: 400px;
     color: #ccc;
     border: none;
@@ -57,17 +57,17 @@
 }
 
 .atributo input[type="number"]:focus,
-.aerolinea:focus,
+.nombreAerolinea:focus,
 .origen:focus,
 .destino:focus,
-.salida:focus,
-.llegada:focus {
+.horaSalida:focus,
+.horaLlegada:focus {
     color: #555;
     border: none;
 }
 
-.fecha-salida,
-.fecha-regreso {
+.fechaSalida,
+.fechaRegreso {
     width: 150px;
     border: none;
     font-size: 16px;

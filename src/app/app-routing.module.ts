@@ -5,7 +5,7 @@ import { CrearVueloComponent } from './components/crear-vuelo/crear-vuelo.compon
 
 const routes: Routes = [
   {path:'inicio', component:EscogerRutaComponent},
-  {path:'vuelos', component:CrearVueloComponent},
+  {path:'guardar-vuelo', component:CrearVueloComponent},
   {path:'**', component:EscogerRutaComponent}];
 
 @NgModule({
