@@ -11,13 +11,17 @@ import { VuelosService } from 'src/app/services/vuelo.service';
 })
 export class EscogerRutaComponent implements AfterViewInit, OnInit {
   public vuelos: Vuelo[];
+  public vuelosReservados: Vuelo[];
   public url: string;
   public precios: number[];
+  public aux: number;
   constructor(private renderer: Renderer2, private el: ElementRef, private _vueloService: VuelosService
   ) {
     this.url = Global.url;
     this.vuelos = [];
+    this.vuelosReservados = [];
     this.precios = [];
+    this.aux = 0;
   }
 
   ngOnInit(): void {
@@ -66,10 +70,10 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
         const entre2y25Value = parseInt((document.getElementById('entre2y25') as HTMLInputElement).value, 10);
         const entre25y65Value = parseInt((document.getElementById('entre25y65') as HTMLInputElement).value, 10);
         const mayores65Value = parseInt((document.getElementById('mayores65') as HTMLInputElement).value, 10);
-        this.vuelos[i].precio = 
-          (this.precios[i]*0.8)*entre2y25Value +
-          entre25y65Value*this.precios[i] +
-          (this.precios[i]*0.5)*mayores65Value;
+        this.vuelos[i].precio =
+          (this.precios[i] * 0.8) * entre2y25Value +
+          entre25y65Value * this.precios[i] +
+          (this.precios[i] * 0.5) * mayores65Value;
       }
     }
   }
@@ -86,10 +90,10 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
         const entre2y25Value = parseInt((document.getElementById('entre2y25') as HTMLInputElement).value, 10);
         const entre25y65Value = parseInt((document.getElementById('entre25y65') as HTMLInputElement).value, 10);
         const mayores65Value = parseInt((document.getElementById('mayores65') as HTMLInputElement).value, 10);
-        this.vuelos[i].precio = 
-          (this.precios[i]*0.8)*entre2y25Value +
-          entre25y65Value*this.precios[i] +
-          (this.precios[i]*0.5)*mayores65Value;
+        this.vuelos[i].precio =
+          (this.precios[i] * 0.8) * entre2y25Value +
+          entre25y65Value * this.precios[i] +
+          (this.precios[i] * 0.5) * mayores65Value;
       }
     }
   }
@@ -112,6 +116,21 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
     }
     console.log(this.precios)
   }
-  mostrarPasajeros() {
+
+  selectFlight(i: number) {
+    this.vuelosReservados[this.aux] = this.vuelos[i];
+    this.aux++;
+  }
+  mostrarContenido: boolean = true;
+  mostrarSeccionCarrito: boolean = false;
+  abrirCarrito() {
+    this.mostrarContenido = false;
+    this.mostrarSeccionCarrito = true;
+  }
+  exit(){
+    this.mostrarContenido = true;
+    this.mostrarSeccionCarrito = false;
+    this.mostrarSeccionVuelos = false;
+    this.mostrarSeccionPasajeros = false;
   }
 }

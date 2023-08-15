@@ -28,8 +28,7 @@
         </div>
     </header>
     <img class="fondo" src="../assets/fondo.jpg" />
-    <div></div>
-    <div class="ruta">
+    <div *ngIf="mostrarContenido" class="ruta">
         <div class="titulo">Busca tu vuelo:</div>
         <div class="escogerRuta">
             <div class="tipoRuta">
@@ -97,7 +96,7 @@
                     [ngClass]="{'disabled-button': !rutaForm.form.valid}" (click)="mostrarVuelos()">
             </form>
         </div>
-        
+
         <div class="pasajero" *ngIf="mostrarSeccionPasajeros">
             <div class="informacionRuta">
                 <div class="item">
@@ -116,7 +115,7 @@
                 <div>
                     <button class="signo" type="button" (click)="decrease('entre2y25')">-</button>
                     <input class="numero" type="number" id="entre2y25" name="entre2y25" min="0" max="10" value="0"
-                    readonly>
+                        readonly>
                     <button class="signo" type="button" (click)="increase('entre2y25')">+</button>
                 </div>
 
@@ -124,7 +123,7 @@
                 <div>
                     <button class="signo" type="button" (click)="decrease('entre25y65')">-</button>
                     <input class="numero" type="number" id="entre25y65" name="entre25y65" min="0" max="10" value="1"
-                    readonly>
+                        readonly>
                     <button class="signo" type="button" (click)="increase('entre25y65')">+</button>
                 </div>
 
@@ -132,7 +131,7 @@
                 <div>
                     <button class="signo" type="button" (click)="decrease('mayores65')">-</button>
                     <input class="numero" type="number" id="mayores65" name="mayores65" min="0" max="10" value="0"
-                    readonly>
+                        readonly>
                     <button class="signo" type="button" (click)="increase('mayores65')">+</button>
                 </div>
             </div>
@@ -149,7 +148,7 @@
                         <div class="precio"></div>
                     </div>
                 </div>
-                <li class="vuelo" *ngFor="let vuelo of vuelos" class="vuelo">
+                <li class="vuelo" *ngFor="let vuelo of vuelos; let i = index" class="vuelo">
                     <div class="infoVuelo">
                         <div class="aerolinea">{{vuelo.nombreAerolinea}}</div>
                     </div>
@@ -158,21 +157,27 @@
                         <div class="duracion">{{vuelo.duracionVuelo}} minutos</div>
                         <div class="horaSalida">{{vuelo.horaSalida}}:00h</div>
                         <div class="precio">${{vuelo.precio}}</div>
-                        <input class="boton" type="submit" value="Seleccionar" [ngClass]="{'disabled-button': vuelo.precio === 0}">
+                        <input class="boton" type="submit" value="Seleccionar"
+                            [ngClass]="{'disabled-button': vuelo.precio === 0}" (click)="selectFlight(i)">
                     </div>
                 </li>
             </div>
         </div>
     </div>
-    <div class="cart-button" id="cartButton">
-        <button onclick="toggleCart()">Carrito de Compras</button>
-    </div>
-    <div class="cart" id="cart">
-        <h2>Carrito de Compras</h2>
-        <ul>
-            <li>Producto 1</li>
-            <li>Producto 2</li>
-            <li>Producto 3</li>
-        </ul>
+    <input class="cart-button" type="submit" value="" (click)="abrirCarrito()">
+    <div class="carrito" *ngIf="mostrarSeccionCarrito">
+        <div class="exit-button-container">
+            <input class="exit-button" type="submit" (click)="exit()" value="X">
+        </div>
+        <div class="item">
+            <div class="titulo">Informacion de los vuelos reservados</div>
+        </div>
+        <li class="vuelo" *ngFor="let vuelo of vuelosReservados" class="vuelo">
+            <div class="infoVuelo">
+                <div class="duracion">{{vuelo.nombreAerolinea}}</div>
+                <div class="rutaVuelo">{{vuelo.origen}} -> {{vuelo.destino}}</div>
+                <div class="duracion">{{vuelo.fechaSalida}}</div>
+            </div>
+        </li>
     </div>
 </body>

@@ -112,8 +112,5 @@
                 <input class="boton" type="submit" value="Guardar" [disabled]="!vueloForm.form.valid" [ngClass]="{'disabled-button': !vueloForm.form.valid}">
             </div>
         </form>
-        <div *ngIf="showSuccessAlert" class="alert alert-success">
-            El vuelo ha sido creado exitosamente.
-        </div>
     </div>
 </body>
