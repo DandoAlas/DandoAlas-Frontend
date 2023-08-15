@@ -23,7 +23,7 @@ export class VuelosService{
     }
     getVuelo(id:String):Observable<any>{
         let headers=new HttpHeaders().set('Content-Type', 'application/json');       
-        return this._http.get(this.url+'obtener-vuelo/'+id, {headers:headers});
+        return this._http.get(this.url+'obtener-vuelo'+id, {headers:headers});
     }
     getUltimoNumeroVuelo(): Observable<number> {
         let headers = new HttpHeaders().set('Content-Type', 'application/json');       

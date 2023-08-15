@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ElementRef, Renderer2 } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, Renderer2, OnInit } from '@angular/core';
 import { Vuelo } from 'src/app/models/vuelo';
 import { Global } from 'src/app/services/global';
 import { VuelosService } from 'src/app/services/vuelo.service';
@@ -7,11 +7,33 @@ import { VuelosService } from 'src/app/services/vuelo.service';
   selector: 'app-escoger-ruta',
   templateUrl: './escoger-ruta.component.html',
   styleUrls: ['./escoger-ruta.component.css'],
-  providers:[VuelosService]
+  providers: [VuelosService]
 })
-export class EscogerRutaComponent implements AfterViewInit {
+export class EscogerRutaComponent implements AfterViewInit, OnInit {
+  public vuelos: Vuelo[];
+  public url: string;
+  public precios: number[];
   constructor(private renderer: Renderer2, private el: ElementRef, private _vueloService: VuelosService
   ) {
+    this.url = Global.url;
+    this.vuelos = [];
+    this.precios = [];
+  }
+
+  ngOnInit(): void {
+    this.getVuelos();
+  }
+  getVuelos() {
+    this._vueloService.getVuelos().subscribe(
+      response => {
+        if (response.vuelos) {
+          this.vuelos = response.vuelos;
+        }
+      },
+      error => {
+        console.log(<any>error);
+      }
+    )
   }
 
   ngAfterViewInit(): void {
@@ -37,9 +59,18 @@ export class EscogerRutaComponent implements AfterViewInit {
   decrease(inputId: string): void {
     const inputElement = this.el.nativeElement.querySelector(`#${inputId}`);
     const currentValue = parseInt(inputElement.value);
-
     if (currentValue > 0) {
       inputElement.value = (currentValue - 1).toString();
+      for (let i = 0; i < this.vuelos.length; i++) {
+        //no pagan = const menores2Value = parseInt((document.getElementById('menores2') as HTMLInputElement).value, 10);
+        const entre2y25Value = parseInt((document.getElementById('entre2y25') as HTMLInputElement).value, 10);
+        const entre25y65Value = parseInt((document.getElementById('entre25y65') as HTMLInputElement).value, 10);
+        const mayores65Value = parseInt((document.getElementById('mayores65') as HTMLInputElement).value, 10);
+        this.vuelos[i].precio = 
+          (this.precios[i]*0.8)*entre2y25Value +
+          entre25y65Value*this.precios[i] +
+          (this.precios[i]*0.5)*mayores65Value;
+      }
     }
   }
 
@@ -50,6 +81,16 @@ export class EscogerRutaComponent implements AfterViewInit {
 
     if (currentValue < maxValue) {
       inputElement.value = (currentValue + 1).toString();
+      for (let i = 0; i < this.vuelos.length; i++) {
+        //no pagan = const menores2Value = parseInt((document.getElementById('menores2') as HTMLInputElement).value, 10);
+        const entre2y25Value = parseInt((document.getElementById('entre2y25') as HTMLInputElement).value, 10);
+        const entre25y65Value = parseInt((document.getElementById('entre25y65') as HTMLInputElement).value, 10);
+        const mayores65Value = parseInt((document.getElementById('mayores65') as HTMLInputElement).value, 10);
+        this.vuelos[i].precio = 
+          (this.precios[i]*0.8)*entre2y25Value +
+          entre25y65Value*this.precios[i] +
+          (this.precios[i]*0.5)*mayores65Value;
+      }
     }
   }
 
@@ -59,5 +100,18 @@ export class EscogerRutaComponent implements AfterViewInit {
     const month = (today.getMonth() + 1).toString().padStart(2, '0');
     const day = (today.getDate() + 1).toString().padStart(2, '0');
     return `${year}-${month}-${day}`;
+  }
+
+  mostrarSeccionVuelos: boolean = false;
+  mostrarSeccionPasajeros: boolean = false;
+  mostrarVuelos() {
+    this.mostrarSeccionVuelos = true;
+    this.mostrarSeccionPasajeros = true;
+    for (const vuelo of this.vuelos) {
+      this.precios.push(vuelo.precio);
+    }
+    console.log(this.precios)
+  }
+  mostrarPasajeros() {
   }
 }

@@ -117,7 +117,7 @@
     outline: none;
 }
 
-.boton {
+.datosRuta .boton {
     width: 200px;
     height: 45px;
     border-radius: 1px;
@@ -154,7 +154,9 @@
     font-family: Poppins;
     font-weight: 300;
 }
-
+.pasajero .boton {
+    width: 400px;
+}
 /*seleccion*/
 .mostrarVuelos {
     width: auto;
@@ -169,7 +171,7 @@
     display: inline-flex;
 }
 .vuelo {
-    width: 760px;
+    width: 1000px;
     padding-left: 16px;
     padding-right: 16px;
     padding-top: 8px;
@@ -189,7 +191,7 @@
     display: inline-flex;
 }
 
-.duracion, .horaSalida, .clase, .precio, .aerolinea {
+.rutaVuelo, .duracion, .horaSalida, .clase, .precio, .aerolinea {
     flex: 1 1 0;
     text-align: center;
     color: #000000;
@@ -201,4 +203,9 @@
 .aerolinea {
     color: #7C8DB0;
     margin-bottom: 5px;
+}
+
+.mostrarVuelos .boton {
+    width: 180px;
+    background:  #05a72a;
 }

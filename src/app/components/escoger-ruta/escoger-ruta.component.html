@@ -56,7 +56,7 @@
                     <div class="informacion">Fecha de regreso:</div>
                 </div>
             </div>
-            <form class="datosRuta"  #rutaForm="ngForm">
+            <form class="datosRuta" #rutaForm="ngForm">
                 <div class="item">
                     <select class="origen" name="origen" #origen required>
                         <option value="" selected>Seleccionar origen</option>
@@ -93,44 +93,15 @@
                 <div class="item">
                     <input type="date" class="fechaRegreso" name="fechaRegreso" #fechaRegreso [min]="getCurrentDate()">
                 </div>
-                <input class="boton" type="submit" value="Buscar" [disabled]="!rutaForm.form.valid" [ngClass]="{'disabled-button': !rutaForm.form.valid}">
+                <input class="boton" type="submit" value="Buscar" [disabled]="!rutaForm.form.valid"
+                    [ngClass]="{'disabled-button': !rutaForm.form.valid}" (click)="mostrarVuelos()">
             </form>
         </div>
-        <div class="titulo">Selecciona tu vuelo:</div>
-        <div class="mostrarVuelos">
-            <div class="vuelo">
-                <div class="infoVuelo">
-                    <div class="duracion">Duración</div>
-                    <div class="horaSalida">Hora de salida</div>
-                    <div class="precio">Precio </div>
-                </div>
-            </div>
-            <div class="vuelo">
-                <div class="infoVuelo">
-                    <div class="aerolinea">AVIANCA</div>
-                </div>
-                <div class="infoVuelo">
-                    <div class="duracion">30 minutos</div>
-                    <div class="horaSalida">7:00AM</div>
-                    <div class="precio">$62</div>
-                </div>
-            </div>
-            <div class="vuelo">
-                <div class="infoVuelo">
-                    <div class="aerolinea">AVIANCA</div>
-                </div>
-                <div class="infoVuelo">
-                    <div class="duracion">30 minutos</div>
-                    <div class="horaSalida">7:00AM</div>
-                    <div class="precio">$62</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="pasajero">
+        
+        <div class="pasajero" *ngIf="mostrarSeccionPasajeros">
             <div class="informacionRuta">
                 <div class="item">
-                    <div class="informacion">Edad de los pasajeros/as:</div>
+                    <div class="titulo">Selecciona la edad de el/los pasajero/s:</div>
                 </div>
             </div>
             <div class="item"><label for="menores2">Menores de 2 años:</label>
@@ -144,16 +115,16 @@
                 <label for="entre2y25">Entre 2 años y 25 años:</label>
                 <div>
                     <button class="signo" type="button" (click)="decrease('entre2y25')">-</button>
-                    <input class="numero" type="number" id="entre2y25" name="entre2y25" min="0" max="10" value="1"
-                        disabled>
+                    <input class="numero" type="number" id="entre2y25" name="entre2y25" min="0" max="10" value="0"
+                    readonly>
                     <button class="signo" type="button" (click)="increase('entre2y25')">+</button>
                 </div>
 
                 <label for="entre25y65">Entre 25 y 65 años:</label>
                 <div>
                     <button class="signo" type="button" (click)="decrease('entre25y65')">-</button>
-                    <input class="numero" type="number" id="entre25y65" name="entre25y65" min="0" max="10" value="0"
-                        disabled>
+                    <input class="numero" type="number" id="entre25y65" name="entre25y65" min="0" max="10" value="1"
+                    readonly>
                     <button class="signo" type="button" (click)="increase('entre25y65')">+</button>
                 </div>
 
@@ -161,11 +132,47 @@
                 <div>
                     <button class="signo" type="button" (click)="decrease('mayores65')">-</button>
                     <input class="numero" type="number" id="mayores65" name="mayores65" min="0" max="10" value="0"
-                        disabled>
+                    readonly>
                     <button class="signo" type="button" (click)="increase('mayores65')">+</button>
                 </div>
-
             </div>
         </div>
+        <div *ngIf="mostrarSeccionVuelos">
+            <div class="titulo">Selecciona tu vuelo:</div>
+            <div class="mostrarVuelos">
+                <div class="vuelo">
+                    <div class="infoVuelo">
+                        <div class="rutaVuelo">Ruta</div>
+                        <div class="duracion">Duración</div>
+                        <div class="horaSalida">Hora de salida</div>
+                        <div class="precio">Precio </div>
+                        <div class="precio"></div>
+                    </div>
+                </div>
+                <li class="vuelo" *ngFor="let vuelo of vuelos" class="vuelo">
+                    <div class="infoVuelo">
+                        <div class="aerolinea">{{vuelo.nombreAerolinea}}</div>
+                    </div>
+                    <div class="infoVuelo">
+                        <div class="rutaVuelo">{{vuelo.origen}} -> {{vuelo.destino}}</div>
+                        <div class="duracion">{{vuelo.duracionVuelo}} minutos</div>
+                        <div class="horaSalida">{{vuelo.horaSalida}}:00h</div>
+                        <div class="precio">${{vuelo.precio}}</div>
+                        <input class="boton" type="submit" value="Seleccionar" [ngClass]="{'disabled-button': vuelo.precio === 0}">
+                    </div>
+                </li>
+            </div>
+        </div>
+    </div>
+    <div class="cart-button" id="cartButton">
+        <button onclick="toggleCart()">Carrito de Compras</button>
+    </div>
+    <div class="cart" id="cart">
+        <h2>Carrito de Compras</h2>
+        <ul>
+            <li>Producto 1</li>
+            <li>Producto 2</li>
+            <li>Producto 3</li>
+        </ul>
     </div>
 </body>
