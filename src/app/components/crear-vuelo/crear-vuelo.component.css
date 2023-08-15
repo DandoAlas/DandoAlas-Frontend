@@ -5,7 +5,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 30px;
     display: flex;
 }
 
@@ -18,19 +17,36 @@
 }
 
 .detalles {
-    width: 450px;
+    width: 400px;
     height: auto;
     flex-direction: column;
     justify-content: center;
     display: flex;
     align-items: center;
-    gap: 30px;
+    gap: 10px;
+}
+.seccion{
+    flex-direction: row;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 20px;
+}
+.informacion {
+    width: 250px;
+    font-family: Nunito Sans;
+    color: black;
+    align-content: center;
+    font-size: 18px;
+    text-align: left;
 }
 
 .atributo {
     align-self: stretch;
     height: 40px;
-    padding: 10px 20px;
+    padding: 0px 20px;
+    width: 220px;
     background: white;
     border: 0.50px #8CB4F1 solid;
     justify-content: space-between;
@@ -46,8 +62,8 @@
 .destino,
 .horaSalida,
 .horaLlegada {
-    width: 400px;
-    color: #ccc;
+    width: 220px;
+    color: #555;
     border: none;
     font-size: 18px;
     font-family: Poppins;
@@ -56,27 +72,17 @@
     outline: none;
 }
 
-.atributo input[type="number"]:focus,
-.nombreAerolinea:focus,
-.origen:focus,
-.destino:focus,
-.horaSalida:focus,
-.horaLlegada:focus {
+.fechaSalida {
+    width: 200px;
+    border: none;
     color: #555;
-    border: none;
-}
-
-.fechaSalida,
-.fechaRegreso {
-    width: 150px;
-    border: none;
     font-size: 16px;
     outline: none;
 }
 
 .textoFecha {
-    width: 250px;
-    color: #ccc;
+    width: 220px;
+    color: #555;
     border: none;
     font-size: 18px;
     font-family: Poppins;
@@ -84,3 +90,38 @@
     word-wrap: break-word;
     outline: none;
 }
+.boton {
+    margin-top: 50px;
+    width: 515px;
+    color: white;
+    font-size: 18px;
+    font-family: Poppins;
+    font-weight: 600;
+    word-wrap: break-word
+}
+
+.alert {
+    padding: 10px;
+    margin-top: 0px auto;
+    margin-top: 10px;
+    width: 515px;
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    animation: fadeOut 3s ease-in-out; /* Animación para desvanecerse */
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+

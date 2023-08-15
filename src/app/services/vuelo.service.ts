@@ -25,5 +25,9 @@ export class VuelosService{
         let headers=new HttpHeaders().set('Content-Type', 'application/json');       
         return this._http.get(this.url+'obtener-vuelo/'+id, {headers:headers});
     }
+    getUltimoNumeroVuelo(): Observable<number> {
+        let headers = new HttpHeaders().set('Content-Type', 'application/json');       
+        return this._http.get<number>(this.url + 'ultimo-numero-vuelo', {headers: headers});
+    }
 }
 

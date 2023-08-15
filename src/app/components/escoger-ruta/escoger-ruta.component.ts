@@ -1,31 +1,22 @@
 import { Component, AfterViewInit, ElementRef, Renderer2 } from '@angular/core';
+import { Vuelo } from 'src/app/models/vuelo';
+import { Global } from 'src/app/services/global';
+import { VuelosService } from 'src/app/services/vuelo.service';
 
 @Component({
   selector: 'app-escoger-ruta',
   templateUrl: './escoger-ruta.component.html',
-  styleUrls: ['./escoger-ruta.component.css']
+  styleUrls: ['./escoger-ruta.component.css'],
+  providers:[VuelosService]
 })
 export class EscogerRutaComponent implements AfterViewInit {
-
-  constructor(private renderer: Renderer2, private el: ElementRef) { }
+  constructor(private renderer: Renderer2, private el: ElementRef, private _vueloService: VuelosService
+  ) {
+  }
 
   ngAfterViewInit(): void {
-    const searchInput = this.el.nativeElement.querySelector('.search input[type="text"]');
-    this.renderer.listen(searchInput, 'focus', () => {
-      if (searchInput.value === "Buscar") {
-        searchInput.value = "";
-      }
-    });
-    this.renderer.listen(searchInput, 'blur', () => {
-      if (searchInput.value.trim() === "") {
-        searchInput.value = "Buscar";
-      } else {
-        searchInput.value = "Buscar";
-      }
-    });
-
     const checkboxes = this.el.nativeElement.querySelectorAll('.checkbox-input');
-    const fechaRegreso = this.el.nativeElement.querySelector('.fecha-regreso');
+    const fechaRegreso = this.el.nativeElement.querySelector('.fechaRegreso');
     checkboxes.forEach((checkbox: HTMLElement) => {
       this.renderer.listen(checkbox, 'change', () => {
         checkboxes.forEach((otherCheckbox: HTMLElement) => {
@@ -62,4 +53,11 @@ export class EscogerRutaComponent implements AfterViewInit {
     }
   }
 
+  getCurrentDate(): string {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = (today.getMonth() + 1).toString().padStart(2, '0');
+    const day = (today.getDate() + 1).toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
 }

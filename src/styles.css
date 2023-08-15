@@ -100,8 +100,8 @@ header a {
     height: 48px;
     margin: 0 auto;
     background: #F23B88;
-    border-radius: 4px;
     justify-content: center;
+    border-radius: 4px;
     box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.50);
     border-radius: 15px;
     overflow: hidden;
@@ -112,6 +112,12 @@ header a {
     font-weight: 400;
     cursor: pointer;
     text-decoration: none;
+}
+
+.disabled-button {
+    background-color: #bdc3c7;
+    color: #7f8c8d;
+    cursor: not-allowed;
 }
 
 .boton a {

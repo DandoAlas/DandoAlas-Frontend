@@ -18,66 +18,102 @@
             </form>
         </div>
     </header>
-    <form class="formulario" #vueloForm="ngForm" (ngSubmit)="guardarVuelo(vueloForm)">
+    <div class="formulario">
         <div class="titulo">Datos del nuevo vuelo</div>
-        <div class="detalles">
-            <div class="atributo">
-                <select class="nombreAerolinea" name="nombreAerolinea" #nombreAerolinea [(ngModel)]="vuelo.nombreAerolinea">
-                    <option value="" selected>Seleccionar aerolínea</option>
-                    <option value="AVIANCA">AVIANCA</option>
-                    <option value="LATAM">LATAM</option>
-                    <option value="KLM">KLM</option>
-                </select>
+        <form class="detalles" #vueloForm="ngForm" (ngSubmit)="guardarVuelo(vueloForm)">
+            <div class="seccion">
+                <div class="informacion">Nombre de la aereolínea:</div>
+                <div *ngIf="vuelo" class="atributo">
+                    <select class="nombreAerolinea" name="nombreAerolinea" #nombreAerolinea
+                        [(ngModel)]="vuelo.nombreAerolinea" required>
+                        <option value="" selected>Seleccionar aerolínea</option>
+                        <option value="AVIANCA">AVIANCA</option>
+                        <option value="LATAM">LATAM</option>
+                        <option value="KLM">KLM</option>
+                    </select>
+                </div>
             </div>
-            <div class="atributo">
-                <select class="origen" name="origen" #origen [(ngModel)]="vuelo.origen">
-                    <option value="" selected>Seleccionar origen</option>
-                    <option value="Guayaquil">Guayaquil</option>
-                    <option value="LagoAgrio">Lago Agrio</option>
-                    <option value="Cuenca">Cuenca</option>
-                    <option value="Quito">Quito</option>
-                    <option value="Machala">Machala</option>
-                    <option value="Otavalo">Otavalo</option>
-                    <option value="LaTroncal">La Troncal</option>
-                    <option value="Ibarra">Ibarra</option>
-                    <option value="Galapagos">Galápagos</option>
-                    <option value="Esmeraldas">Esmeraldas</option>
-                </select>
+            <div class="seccion">
+                <div class="informacion">Lugar de origen:</div>
+                <div *ngIf="vuelo" class="atributo">
+                    <select class="origen" name="origen" #origen [(ngModel)]="vuelo.origen" required>
+                        <option value="" selected>Seleccionar origen</option>
+                        <option value="Guayaquil">Guayaquil</option>
+                        <option value="LagoAgrio">Lago Agrio</option>
+                        <option value="Cuenca">Cuenca</option>
+                        <option value="Quito">Quito</option>
+                        <option value="Machala">Machala</option>
+                        <option value="Otavalo">Otavalo</option>
+                        <option value="LaTroncal">La Troncal</option>
+                        <option value="Ibarra">Ibarra</option>
+                        <option value="Galapagos">Galápagos</option>
+                        <option value="Esmeraldas">Esmeraldas</option>
+                    </select>
+                </div>
             </div>
-            <div class="atributo">
-                <select class="destino" name="destino" #destino [(ngModel)]="vuelo.destino">
-                    <option value="" selected>Seleccionar destino</option>
-                    <option value="Guayaquil">Guayaquil</option>
-                    <option value="LagoAgrio">Lago Agrio</option>
-                    <option value="Cuenca">Cuenca</option>
-                    <option value="Quito">Quito</option>
-                    <option value="Machala">Machala</option>
-                    <option value="Otavalo">Otavalo</option>
-                    <option value="LaTroncal">La Troncal</option>
-                    <option value="Ibarra">Ibarra</option>
-                    <option value="Galapagos">Galápagos</option>
-                    <option value="Esmeraldas">Esmeraldas</option>
-                </select>
+            <div class="seccion">
+                <div class="informacion">Lugar de destino:</div>
+                <div *ngIf="vuelo" class="atributo">
+                    <select class="destino" name="destino" #destino [(ngModel)]="vuelo.destino" required>
+                        <option value="" selected>Seleccionar destino</option>
+                        <option value="Guayaquil">Guayaquil</option>
+                        <option value="LagoAgrio">Lago Agrio</option>
+                        <option value="Cuenca">Cuenca</option>
+                        <option value="Quito">Quito</option>
+                        <option value="Machala">Machala</option>
+                        <option value="Otavalo">Otavalo</option>
+                        <option value="LaTroncal">La Troncal</option>
+                        <option value="Ibarra">Ibarra</option>
+                        <option value="Galapagos">Galápagos</option>
+                        <option value="Esmeraldas">Esmeraldas</option>
+                    </select>
+                </div>
             </div>
-            <div class="atributo">
-                <div class="textoFecha">Fecha de salida</div>
-                <input type="date" class="fechaSalida" name="fechaSalida" #fechaSalida [(ngModel)]="vuelo.fechaSalida">
+            <div class="seccion">
+                <div class="informacion">Fecha de salida:</div>
+                <div *ngIf="vuelo" class="atributo">
+                    <input type="date" class="fechaSalida" name="fechaSalida" #fechaSalida
+                        [(ngModel)]="vuelo.fechaSalida" required [min]="getCurrentDate()">
+                </div>
             </div>
-            <div class="atributo">
-                <select class="horaSalida" name="horaSalida" #horaSalida [(ngModel)]="vuelo.horaSalida">
-                    <option value="" selected>Seleccionar hora de salida</option>
-                </select>
+            <div class="seccion">
+                <div class="informacion">Hora de salida:</div>
+                <div *ngIf="vuelo" class="atributo">
+                    <select class="horaSalida" name="horaSalida" #horaSalida [(ngModel)]="vuelo.horaSalida" required>
+                        <option value="" selected>Seleccionar hora de salida</option>
+                        <ng-container *ngFor="let i of horas">
+                            <option [value]="i">{{ i }}</option>
+                        </ng-container>
+                    </select>
+                </div>
             </div>
-            <div class="atributo">
-                <input type="number" id="duracion" name="duracionVuelo" min="0" value="0" #duracionVuelo [(ngModel)]="vuelo.duracionVuelo">
+            <div class="seccion">
+                <div class="informacion">Duración en minutos:</div>
+                <div *ngIf="vuelo" class="atributo">
+                    <input type="number" id="duracionVuelo" name="duracionVuelo" min="0" value="1" #duracionVuelo
+                        [(ngModel)]="vuelo.duracionVuelo" required>
+                </div>
             </div>
-            <div class="atributo">
-                <input type="number" id="precio" name="precio" min="0" value="0" #precio>
+            <div class="seccion">
+                <div class="informacion">Precio en dólares:</div>
+                <div *ngIf="vuelo" class="atributo">
+                    <input type="number" id="precio" name="precio" name="precio" min="1" #precio
+                        [(ngModel)]="vuelo.precio" required>
+                </div>
             </div>
-            <div class="atributo">
-                <input type="number" id="costoMaletaAdicional" name="costoMaletaAdicional" min="0" value="65" #costoMaletaAdicional [(ngModel)]="vuelo.costoMaletaAdicional">
+            <div class="seccion">
+                <div class="informacion">Costo adicional por maleta extra:</div>
+                <div *ngIf="vuelo" class="atributo">
+                    <input disabled type="number" id="costoMaletaAdicional" name="costoMaletaAdicional" min="1"
+                        #costoMaletaAdicional [(ngModel)]="vuelo.costoMaletaAdicional" required>
+                </div>
             </div>
+            <div class="seccion">
+                <input class="boton" type="submit" value="Guardar" [disabled]="!vueloForm.form.valid" [ngClass]="{'disabled-button': !vueloForm.form.valid}">
+            </div>
+        </form>
+        <div *ngIf="showSuccessAlert" class="alert alert-success">
+            El vuelo ha sido creado exitosamente.
         </div>
-        <input class="boton" type="submit" value="Guardar" [disabled]="!vueloForm.form.valid">
-    </form>
+    </div>
 </body>

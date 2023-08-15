@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <header>
         <img class="logo" src="../assets/logo.jpg" />
@@ -54,62 +56,46 @@
                     <div class="informacion">Fecha de regreso:</div>
                 </div>
             </div>
-            <div class="datosRuta">
+            <form class="datosRuta"  #rutaForm="ngForm">
                 <div class="item">
-                    <img class="icon" src="https://via.placeholder.com/22x19" alt="Icono Salida">
-                    <div class="text">Origen</div>
+                    <select class="origen" name="origen" #origen required>
+                        <option value="" selected>Seleccionar origen</option>
+                        <option value="Guayaquil">Guayaquil</option>
+                        <option value="LagoAgrio">Lago Agrio</option>
+                        <option value="Cuenca">Cuenca</option>
+                        <option value="Quito">Quito</option>
+                        <option value="Machala">Machala</option>
+                        <option value="Otavalo">Otavalo</option>
+                        <option value="LaTroncal">La Troncal</option>
+                        <option value="Ibarra">Ibarra</option>
+                        <option value="Galapagos">Galápagos</option>
+                        <option value="Esmeraldas">Esmeraldas</option>
+                    </select>
                 </div>
                 <div class="item">
-                    <img class="icon" src="https://via.placeholder.com/21x19" alt="Icono Llegada">
-                    <div class="text">Destino</div>
+                    <select class="destino" name="destino" #destino>
+                        <option value="" selected>Seleccionar destino</option>
+                        <option value="Guayaquil">Guayaquil</option>
+                        <option value="LagoAgrio">Lago Agrio</option>
+                        <option value="Cuenca">Cuenca</option>
+                        <option value="Quito">Quito</option>
+                        <option value="Machala">Machala</option>
+                        <option value="Otavalo">Otavalo</option>
+                        <option value="LaTroncal">La Troncal</option>
+                        <option value="Ibarra">Ibarra</option>
+                        <option value="Galapagos">Galápagos</option>
+                        <option value="Esmeraldas">Esmeraldas</option>
+                    </select>
                 </div>
                 <div class="item">
-                    <div class="color-box"></div>
-                    <input type="date" class="fecha-salida" name="fecha-salida">
+                    <input type="date" class="fechaSalida" name="fechaSalida" #fechaSalida [min]="getCurrentDate()">
                 </div>
                 <div class="item">
-                    <div class="color-box"></div>
-                    <input type="date" class="fecha-regreso" name="fecha-regreso">
+                    <input type="date" class="fechaRegreso" name="fechaRegreso" #fechaRegreso [min]="getCurrentDate()">
                 </div>
-            </div>
-            <div class="pasajero">
-                <div class="informacionRuta">
-                    <div class="item">
-                        <div class="informacion">Edad de los pasajeros/as:</div>
-                    </div>
-                </div>
-                <div class="item"><label for="menores2">Menores de 2 años:</label>
-                    <div>
-                        <button class="signo" type="button" (click)="decrease('menores2')">-</button>
-                        <input class="numero" type="number" id="menores2" name="menores2" min="0" max="10" value="0" disabled>
-                        <button class="signo" type="button" (click)="increase('menores2')">+</button>
-                    </div>
-                    
-                    <label for="entre2y25">Entre 2 años y 25 años:</label>
-                    <div>
-                        <button class="signo" type="button" (click)="decrease('entre2y25')">-</button>
-                        <input class="numero" type="number" id="entre2y25" name="entre2y25" min="0" max="10" value="1" disabled>
-                        <button class="signo" type="button" (click)="increase('entre2y25')">+</button>
-                    </div>
-                    
-                    <label for="entre25y65">Entre 25 y 65 años:</label>
-                    <div>
-                        <button class="signo" type="button" (click)="decrease('entre25y65')">-</button>
-                        <input class="numero" type="number" id="entre25y65" name="entre25y65" min="0" max="10" value="0" disabled>
-                        <button class="signo" type="button" (click)="increase('entre25y65')">+</button>
-                    </div>
-                    
-                    <label for="mayores65">Mayores de 65 años:</label>
-                    <div>
-                        <button class="signo" type="button" (click)="decrease('mayores65')">-</button>
-                        <input class="numero" type="number" id="mayores65" name="mayores65" min="0" max="10" value="0" disabled>
-                        <button class="signo" type="button" (click)="increase('mayores65')">+</button>
-                    </div>
-                    
-                </div>
-            </div>
+                <input class="boton" type="submit" value="Buscar" [disabled]="!rutaForm.form.valid" [ngClass]="{'disabled-button': !rutaForm.form.valid}">
+            </form>
         </div>
-        <div class="boton"><a href="#">Buscar</a></div>
         <div class="titulo">Selecciona tu vuelo:</div>
         <div class="mostrarVuelos">
             <div class="vuelo">
@@ -138,6 +124,47 @@
                     <div class="horaSalida">7:00AM</div>
                     <div class="precio">$62</div>
                 </div>
+            </div>
+        </div>
+
+        <div class="pasajero">
+            <div class="informacionRuta">
+                <div class="item">
+                    <div class="informacion">Edad de los pasajeros/as:</div>
+                </div>
+            </div>
+            <div class="item"><label for="menores2">Menores de 2 años:</label>
+                <div>
+                    <button class="signo" type="button" (click)="decrease('menores2')">-</button>
+                    <input class="numero" type="number" id="menores2" name="menores2" min="0" max="10" value="0"
+                        disabled>
+                    <button class="signo" type="button" (click)="increase('menores2')">+</button>
+                </div>
+
+                <label for="entre2y25">Entre 2 años y 25 años:</label>
+                <div>
+                    <button class="signo" type="button" (click)="decrease('entre2y25')">-</button>
+                    <input class="numero" type="number" id="entre2y25" name="entre2y25" min="0" max="10" value="1"
+                        disabled>
+                    <button class="signo" type="button" (click)="increase('entre2y25')">+</button>
+                </div>
+
+                <label for="entre25y65">Entre 25 y 65 años:</label>
+                <div>
+                    <button class="signo" type="button" (click)="decrease('entre25y65')">-</button>
+                    <input class="numero" type="number" id="entre25y65" name="entre25y65" min="0" max="10" value="0"
+                        disabled>
+                    <button class="signo" type="button" (click)="increase('entre25y65')">+</button>
+                </div>
+
+                <label for="mayores65">Mayores de 65 años:</label>
+                <div>
+                    <button class="signo" type="button" (click)="decrease('mayores65')">-</button>
+                    <input class="numero" type="number" id="mayores65" name="mayores65" min="0" max="10" value="0"
+                        disabled>
+                    <button class="signo" type="button" (click)="increase('mayores65')">+</button>
+                </div>
+
             </div>
         </div>
     </div>

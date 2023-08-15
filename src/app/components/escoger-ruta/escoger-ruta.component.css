@@ -67,6 +67,9 @@
     flex-direction: row;
     display: flex;
 }
+.datosRuta{
+    margin-bottom: 60px;
+}
 
 .item {
     width: 180px;
@@ -80,7 +83,17 @@
     gap: 10px;
     display: flex;
 }
-
+.origen,
+.destino {
+    width: 220px;
+    color: #555;
+    border: none;
+    font-size: 18px;
+    font-family: Poppins;
+    background: transparent;
+    word-wrap: break-word;
+    outline: none;
+}
 .informacionRuta .item {
     width: 192px;
     background: transparent;
@@ -94,27 +107,28 @@
     height: 18.53px;
 }
 
-.text {
-    color: #7C8DB0;
-    font-size: 16px;
-    font-family: Nunito Sans;
-    font-weight: 400;
-    word-wrap: break-word;
-}
-
-.fecha-regreso,
-.fecha-salida {
+.fechaRegreso,
+.fechaSalida {
     width: auto;
     border: none;
-    color: #7C8DB0;
+    color: #555;
     font-family: Nunito Sans;
     font-size: 16px;
     outline: none;
 }
 
+.boton {
+    width: 200px;
+    height: 45px;
+    border-radius: 1px;
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
+}
+
+/*edad pasajero*/
 .pasajero {
     width: 400px;
     margin: 0px auto;
+    margin-bottom: 60px;
 }
 
 .pasajero .item {
@@ -141,14 +155,7 @@
     font-weight: 300;
 }
 
-
-.boton {
-    width: 400px;
-    margin: 30px 0 80px 0;
-}
-
 /*seleccion*/
-
 .mostrarVuelos {
     width: auto;
     height: auto;
