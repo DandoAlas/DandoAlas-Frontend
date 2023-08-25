@@ -1,0 +1,301 @@
+.fondo {
+    position: absolute;
+    z-index: -1;
+    padding-top: 100px;
+    left: 50%;
+    /* Centra horizontalmente */
+    transform: translateX(-50%);
+    width: 900px;
+    height: auto;
+    display: flex;
+    margin: 0 auto;
+}
+
+.ruta,
+.carrito,
+.resumen,
+.resumenBoton {
+    width: auto;
+    height: auto;
+    padding-top: 150px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    display: flex;
+    margin: 0 auto;
+}
+
+.titulo {
+    color: #000000;
+    font-size: 25px;
+    font-family: Nunito Sans;
+    text-shadow: 3px 3px 5px rgba(126, 138, 162, 0.5);
+    padding-bottom: 50px;
+}
+
+.tipoRuta {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-right: auto;
+    padding-bottom: 20px;
+    gap: 30px;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.checkbox-input {
+    margin-right: 10px;
+}
+
+.informacion {
+    font-family: Nunito Sans;
+    color: black;
+    font-size: 18px;
+}
+
+.escogerRuta {
+    width: auto;
+    flex-direction: column;
+    display: flex;
+}
+
+.datosRuta,
+.informacionRuta {
+    width: auto;
+    flex-direction: row;
+    display: flex;
+}
+
+.datosRuta {
+    margin-bottom: 60px;
+}
+
+.item {
+    width: 180px;
+    height: auto;
+    padding: 10px;
+    margin-bottom: 25px;
+    background: white;
+    border: 0.50px #8CB4F1 solid;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    display: flex;
+}
+
+.origen,
+.destino {
+    width: 220px;
+    color: #555;
+    border: none;
+    font-size: 18px;
+    font-family: Poppins;
+    background: transparent;
+    word-wrap: break-word;
+    outline: none;
+}
+
+.informacionRuta .item,
+.carrito .item {
+    width: 192px;
+    background: transparent;
+    padding-left: 0px;
+    border: none;
+    margin-bottom: 0px;
+}
+
+.icon {
+    width: 21.68px;
+    height: 18.53px;
+}
+
+.fechaRegreso,
+.fechaSalida {
+    width: auto;
+    border: none;
+    color: #555;
+    font-family: Nunito Sans;
+    font-size: 16px;
+    outline: none;
+}
+
+.datosRuta .boton {
+    width: 200px;
+    height: 45px;
+    border-radius: 1px;
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
+}
+
+/*edad pasajero*/
+.pasajero {
+    width: 400px;
+    margin: 0px auto;
+    margin-bottom: 60px;
+}
+
+.pasajero .item {
+    width: auto;
+    flex-direction: column;
+}
+
+.signo {
+    background-color: rgb(126, 138, 162);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.numero {
+    border: none;
+    background: none;
+    text-align: center;
+    width: 40px;
+    font-size: 16px;
+    font-family: Poppins;
+    font-weight: 300;
+}
+
+.pasajero .boton {
+    width: 400px;
+}
+
+/*seleccion*/
+.mostrarVuelos{
+    width: auto;
+    height: auto;
+    padding: 10px 10px 10px 10px;
+    background: rgb(126, 138, 162);
+    flex-direction: column;
+    justify-content: center;
+    font-family: Nunito Sans;
+    align-items: center;
+    gap: 10px;
+    display: inline-flex;
+}
+
+.vuelo {
+    width: 1000px;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    background: #ffffff;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 4px;
+    display: inline-flex;
+}
+
+.infoVuelo {
+    align-self: stretch;
+    align-items: flex-start;
+    gap: 3px;
+    display: inline-flex;
+}
+
+.rutaVuelo,
+.duracion,
+.horaSalida,
+.clase,
+.precio,
+.aerolinea {
+    flex: 1 1 0;
+    text-align: center;
+    color: #000000;
+    font-size: 16px;
+    font-weight: 400;
+    word-wrap: break-word;
+}
+
+.aerolinea {
+    color: #7C8DB0;
+    margin-bottom: 5px;
+}
+
+.mostrarVuelos .boton {
+    width: 180px;
+    background: #05a72a;
+}
+
+/*carrito*/
+.carrito{
+    width: 630px;
+}
+.cart-button {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #F23B88;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-image: url('../../../assets/carrito.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.carrito .item,
+.resumen .item {
+    width: 610px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+}
+
+.exit-button-container {
+    width: 600px;
+    justify-content: flex-end;
+    text-align: right;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+}
+
+.exit-button {
+    padding: 5px 10px;
+    background-color: #ccc;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.carrito .vuelo,
+.resumen .vuelo{
+    width: 600px;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border: 0.50px #8CB4F1 solid;
+    background: #ffffff;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 4px;
+    display: inline-flex;
+}
+/*resumen*/
+.resumen{
+    width: 630px;
+    background: rgb(126, 138, 162);
+    padding-top: 0px;
+    margin-top: 60px;
+}
+.resumenBoton .boton {
+    width: 600px;
+}
