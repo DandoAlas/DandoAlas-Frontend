@@ -1,0 +1,53 @@
+<body>
+  <header>
+    <img class="logo" src="../assets/logo.jpg" />
+    <menu>
+      <a [routerLink]="['/inicio']">Inicio</a>
+      <a [routerLink]="['/guardar-vuelo']">Vuelos</a>
+      <a href="#">Promociones</a>
+      <div
+        style="
+          width: auto;
+          height: 40px;
+          padding-left: 20px;
+          padding-right: 20px;
+          background: #f23b88;
+          justify-content: center;
+          align-items: center;
+          display: flex;
+        "
+      >
+        <a [routerLink]="['/login']" style="color: #ffffff; font-weight: 550"
+          >Login</a
+        >
+      </div>
+    </menu>
+    <div class="search">
+      <form>
+        <input type="text" value="Buscar" />
+        <input
+          type="button"
+          value="O"
+          src="https://via.placeholder.com/35x35"
+        />
+      </form>
+    </div>
+  </header>
+  <div class="login-page">
+    <div class="form">
+      <form class="register-form">
+        <input type="text" placeholder="name" />
+        <input type="password" placeholder="password" />
+        <input type="text" placeholder="email address" />
+        <button>create</button>
+        <p class="message">Already registered? <a href="#">Sign In</a></p>
+      </form>
+      <form class="login-form">
+        <input type="text" placeholder="username" />
+        <input type="password" placeholder="password" />
+        <button>login</button>
+        <p class="message">Not registered? <a href="#">Create an account</a></p>
+      </form>
+    </div>
+  </div>
+</body>

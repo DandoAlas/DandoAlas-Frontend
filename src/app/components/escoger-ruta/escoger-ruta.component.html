@@ -17,8 +17,7 @@
             </div>
             <a [routerLink]="['/guardar-vuelo']">Vuelos</a>
             <a href="#">Promociones</a>
-            <a href="#">Sign out</a>
-            <a href="#">?</a>
+            <a [routerLink]="['/login']">Login</a>
         </menu>
         <div class="search">
             <form>
@@ -27,6 +26,7 @@
             </form>
         </div>
     </header>
+    <router-outlet></router-outlet>
     <img class="fondo" src="../assets/fondo.jpg" />
     <div *ngIf="mostrarContenido" class="ruta">
         <div class="titulo">Busca tu vuelo:</div>

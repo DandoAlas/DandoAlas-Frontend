@@ -8,13 +8,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CrearVueloComponent } from './components/crear-vuelo/crear-vuelo.component';
 import { PieComponent } from './components/pie/pie.component';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     EscogerRutaComponent,
     CrearVueloComponent,
-    PieComponent
+    PieComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

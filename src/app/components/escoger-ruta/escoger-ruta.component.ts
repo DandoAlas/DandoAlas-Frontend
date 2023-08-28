@@ -9,6 +9,7 @@ import { VuelosService } from 'src/app/services/vuelo.service';
   styleUrls: ['./escoger-ruta.component.css'],
   providers: [VuelosService]
 })
+
 export class EscogerRutaComponent implements AfterViewInit, OnInit {
   public vuelos: Vuelo[];
   public vuelosReservados: Vuelo[];
