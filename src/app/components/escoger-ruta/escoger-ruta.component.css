@@ -299,3 +299,15 @@
 .resumenBoton .boton {
     width: 600px;
 }
+
+.clase-asiento {
+    width: 150px;
+    color: #555;
+    border: none;
+    font-size: 18px;
+    font-family: Poppins;
+    background: transparent;
+    word-wrap: break-word;
+    outline: none;
+    margin-right: 15px;
+}

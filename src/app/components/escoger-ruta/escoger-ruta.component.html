@@ -145,6 +145,7 @@
                         <div class="duracion">Duración</div>
                         <div class="horaSalida">Hora de salida</div>
                         <div class="precio">Precio </div>
+                        <div class="clase">Clase</div>
                         <div class="precio"></div>
                     </div>
                 </div>
@@ -157,6 +158,13 @@
                         <div class="duracion">{{vuelo.duracionVuelo}} minutos</div>
                         <div class="horaSalida">{{vuelo.horaSalida}}:00h</div>
                         <div class="precio">${{vuelo.precio}}</div>
+                        <div class="item-class">
+                            <select class="clase-asiento" name="calse" #destino>
+                                <option value="" selected>Seleccionar Clase</option>
+                                <option value="clase-turista">Turista</option>
+                                <option value="clase-ejecutiva">Primera Clase</option>
+                            </select>
+                        </div>
                         <input class="boton" type="submit" value="Seleccionar"
                             [ngClass]="{'disabled-button': vuelo.precio === 0}" (click)="selectFlight(i)">
                     </div>
