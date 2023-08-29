@@ -1,5 +1,5 @@
-import { Component, ViewEncapsulation } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, ViewEncapsulation } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 
 @Component({
@@ -11,7 +11,8 @@ import { MatDialogRef } from '@angular/material/dialog';
 export class InformacionVueloComponent {
 
   constructor(
-    public dialogRef: MatDialogRef<InformacionVueloComponent>
+    public dialogRef: MatDialogRef<InformacionVueloComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) { 
     
   }

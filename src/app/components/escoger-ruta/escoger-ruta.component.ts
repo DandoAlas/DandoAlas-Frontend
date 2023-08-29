@@ -43,6 +43,7 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
   openDialog(): void {
     const dialogRef = this.dialog.open(InformacionVueloComponent, {
       width: '250px',
+      data: { vuelo: this.vuelos[0]},
     });
 
     dialogRef.afterClosed().subscribe(result => {

@@ -1,5 +1,12 @@
 <div class="mat-dialog-container">
     <h2>Ventana Emergente</h2>
-    <p>Este es el contenido de la ventana emergente.</p>
+    <p>Aquí está la información del vuelo seleccionado:</p>
+    <div class="vuelo-info">
+      <div>{{ data.vuelo.nombreAerolinea }}</div>
+      <div>{{ data.vuelo.origen }} -> {{ data.vuelo.destino }}</div>
+      <div>{{ data.vuelo.duracionVuelo }} minutos</div>
+      <!-- ... (mostrar el resto de los datos) ... -->
+    </div>
     <button mat-button (click)="onClose()">Cerrar</button>
+    
 </div>
