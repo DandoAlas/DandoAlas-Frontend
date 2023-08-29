@@ -1,13 +1,21 @@
-import { Component, AfterViewInit, ElementRef, Renderer2, OnInit } from '@angular/core';
+import {
+  Component,
+  AfterViewInit,
+  ElementRef,
+  Renderer2,
+  OnInit,
+} from '@angular/core';
 import { Vuelo } from 'src/app/models/vuelo';
 import { Global } from 'src/app/services/global';
 import { VuelosService } from 'src/app/services/vuelo.service';
+import { MatDialog } from '@angular/material/dialog';
+import { InformacionVueloComponent } from '../informacion-vuelo/informacion-vuelo.component';
 
 @Component({
   selector: 'app-escoger-ruta',
   templateUrl: './escoger-ruta.component.html',
   styleUrls: ['./escoger-ruta.component.css'],
-  providers: [VuelosService]
+  providers: [VuelosService],
 })
 export class EscogerRutaComponent implements AfterViewInit, OnInit {
   public vuelos: Vuelo[];
@@ -15,7 +23,11 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
   public url: string;
   public precios: number[];
   public aux: number;
-  constructor(private renderer: Renderer2, private el: ElementRef, private _vueloService: VuelosService
+  constructor(
+    private renderer: Renderer2,
+    private el: ElementRef,
+    private _vueloService: VuelosService,
+    private dialog: MatDialog
   ) {
     this.url = Global.url;
     this.vuelos = [];
@@ -27,21 +39,33 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
   ngOnInit(): void {
     this.getVuelos();
   }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(InformacionVueloComponent, {
+      width: '250px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('La ventana emergente se cerró', result);
+    });
+  }
+
   getVuelos() {
     this._vueloService.getVuelos().subscribe(
-      response => {
+      (response) => {
         if (response.vuelos) {
           this.vuelos = response.vuelos;
         }
       },
-      error => {
+      (error) => {
         console.log(<any>error);
       }
-    )
+    );
   }
 
   ngAfterViewInit(): void {
-    const checkboxes = this.el.nativeElement.querySelectorAll('.checkbox-input');
+    const checkboxes =
+      this.el.nativeElement.querySelectorAll('.checkbox-input');
     const fechaRegreso = this.el.nativeElement.querySelector('.fechaRegreso');
     checkboxes.forEach((checkbox: HTMLElement) => {
       this.renderer.listen(checkbox, 'change', () => {
@@ -67,13 +91,22 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
       inputElement.value = (currentValue - 1).toString();
       for (let i = 0; i < this.vuelos.length; i++) {
         //no pagan = const menores2Value = parseInt((document.getElementById('menores2') as HTMLInputElement).value, 10);
-        const entre2y25Value = parseInt((document.getElementById('entre2y25') as HTMLInputElement).value, 10);
-        const entre25y65Value = parseInt((document.getElementById('entre25y65') as HTMLInputElement).value, 10);
-        const mayores65Value = parseInt((document.getElementById('mayores65') as HTMLInputElement).value, 10);
+        const entre2y25Value = parseInt(
+          (document.getElementById('entre2y25') as HTMLInputElement).value,
+          10
+        );
+        const entre25y65Value = parseInt(
+          (document.getElementById('entre25y65') as HTMLInputElement).value,
+          10
+        );
+        const mayores65Value = parseInt(
+          (document.getElementById('mayores65') as HTMLInputElement).value,
+          10
+        );
         this.vuelos[i].precio =
-          (this.precios[i] * 0.8) * entre2y25Value +
+          this.precios[i] * 0.8 * entre2y25Value +
           entre25y65Value * this.precios[i] +
-          (this.precios[i] * 0.5) * mayores65Value;
+          this.precios[i] * 0.5 * mayores65Value;
       }
     }
   }
@@ -87,13 +120,22 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
       inputElement.value = (currentValue + 1).toString();
       for (let i = 0; i < this.vuelos.length; i++) {
         //no pagan = const menores2Value = parseInt((document.getElementById('menores2') as HTMLInputElement).value, 10);
-        const entre2y25Value = parseInt((document.getElementById('entre2y25') as HTMLInputElement).value, 10);
-        const entre25y65Value = parseInt((document.getElementById('entre25y65') as HTMLInputElement).value, 10);
-        const mayores65Value = parseInt((document.getElementById('mayores65') as HTMLInputElement).value, 10);
+        const entre2y25Value = parseInt(
+          (document.getElementById('entre2y25') as HTMLInputElement).value,
+          10
+        );
+        const entre25y65Value = parseInt(
+          (document.getElementById('entre25y65') as HTMLInputElement).value,
+          10
+        );
+        const mayores65Value = parseInt(
+          (document.getElementById('mayores65') as HTMLInputElement).value,
+          10
+        );
         this.vuelos[i].precio =
-          (this.precios[i] * 0.8) * entre2y25Value +
+          this.precios[i] * 0.8 * entre2y25Value +
           entre25y65Value * this.precios[i] +
-          (this.precios[i] * 0.5) * mayores65Value;
+          this.precios[i] * 0.5 * mayores65Value;
       }
     }
   }
@@ -114,7 +156,7 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
     for (const vuelo of this.vuelos) {
       this.precios.push(vuelo.precio);
     }
-    console.log(this.precios)
+    console.log(this.precios);
   }
 
   selectFlight(i: number) {
@@ -128,7 +170,7 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
     this.mostrarSeccionCarrito = true;
     this.mostrarBotonResumen = true;
   }
-  exit(){
+  exit() {
     this.mostrarContenido = true;
     this.mostrarSeccionCarrito = false;
     this.mostrarSeccionVuelos = false;
