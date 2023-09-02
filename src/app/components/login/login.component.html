@@ -42,9 +42,25 @@
         <button>create</button>
         <p class="message">Already registered? <a href="#">Sign In</a></p>
       </form>
-      <form class="login-form">
-        <input type="text" placeholder="Usuario" />
-        <input type="password" placeholder="Contraseña" />
+      <form
+        #frmLogin="ngForm"
+        class="login-form"
+        (ngSubmit)="onLogin(frmLogin)"
+      >
+        <input
+          type="email"
+          name="email"
+          placeholder="Correo"
+          ngModel
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Contraseña"
+          ngModel
+          required
+        />
         <button>login</button>
       </form>
     </div>

@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { CrearVueloComponent } from './components/crear-vuelo/crear-vuelo.component';
 import { PieComponent } from './components/pie/pie.component';
 import { LoginComponent } from './components/login/login.component';
+import { AuthService } from './services/auth.service';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,9 @@ import { LoginComponent } from './components/login/login.component';
     HttpClientModule,
     FormsModule
   ],
-  providers: [],
+  providers: [
+    AuthService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
