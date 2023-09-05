@@ -1,5 +1,6 @@
 import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Pasajero } from 'src/app/models/pasajero';
 import { Vuelo } from 'src/app/models/vuelo';
 import { Global } from 'src/app/services/global';
 import { VuelosService } from 'src/app/services/vuelo.service';
@@ -19,6 +20,7 @@ export class CrearVueloComponent {
   public status: string;
   //public idGuardado: string;
   public contadorVuelos!: number;
+  public pasajeros: Pasajero[];
   constructor(private renderer: Renderer2, private el: ElementRef, private _vueloService: VuelosService) {
     for (let i = 1; i <= 24; i++) {
       this.horas.push(i);
@@ -26,10 +28,11 @@ export class CrearVueloComponent {
     this.titulo = "GUARDAR";
     this.url = Global.url;
     this.status = "";
+    this.pasajeros = [];
     this._vueloService.getUltimoNumeroVuelo().subscribe(
       ultimoNumero => {
         this.contadorVuelos = ultimoNumero + 1; // Inicializa el contador con el último número + 1
-        this.vuelo = new Vuelo('', this.contadorVuelos, '', '', '', '', '', 1, '1', [], 65, '', true);
+        this.vuelo = new Vuelo('', this.contadorVuelos, '', '', '', '', '', 1, '1', this.pasajeros, 65, '', 30, '', true);
       },
       error => {
         console.log("Error al obtener el último número de vuelo:", error);
@@ -46,16 +49,14 @@ export class CrearVueloComponent {
           this.status = 'success';
           this.showSuccessAlert = true; // Mostrar la alerta de éxito
           this.incrementarContadorVuelos();
-
           setTimeout(() => {
             this.showSuccessAlert = false; // Ocultar la alerta después de 3 segundos
-          }, 3000); // 3000 milisegundos = 3 segundos
+          }, 6000); // 3000 milisegundos = 3 segundos
 
           console.log(response.vuelo._id);
           //form.reset();
         } else {
           this.status = 'failed';
-          console.log("casi");
         }
       },
       error => {
@@ -65,7 +66,7 @@ export class CrearVueloComponent {
   }
   incrementarContadorVuelos() {
     this.contadorVuelos++;
-    this.vuelo = new Vuelo('', this.contadorVuelos, '', '', '', '', '', 1, '1', [], 65, '', true);
+    this.vuelo = new Vuelo('', this.contadorVuelos, '', '', '', '', '', 1, '1', [], 65, '', 30, '', true);
   }
   getCurrentDate(): string {
     const today = new Date();

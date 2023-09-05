@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Segoe UI';
+}
 .fondo {
     position: absolute;
     z-index: -1;
@@ -103,7 +107,7 @@
 
 .informacionRuta .item,
 .carrito .item {
-    width: 192px;
+    width: 180px;
     background: transparent;
     padding-left: 0px;
     border: none;
@@ -225,7 +229,16 @@
     width: 180px;
     background: #05a72a;
 }
-
+/*pasajero*/
+.boton {
+    margin-top: 20px;
+    width: 570px;
+    color: white;
+    font-size: 18px;
+    font-family: Poppins;
+    font-weight: 600;
+    word-wrap: break-word
+}
 /*carrito*/
 .carrito{
     width: 630px;

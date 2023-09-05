@@ -10,6 +10,7 @@ import { CrearVueloComponent } from './components/crear-vuelo/crear-vuelo.compon
 import { PieComponent } from './components/pie/pie.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthService } from './services/auth.service';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { AuthService } from './services/auth.service';
     EscogerRutaComponent,
     CrearVueloComponent,
     PieComponent,
-    LoginComponent
+    LoginComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

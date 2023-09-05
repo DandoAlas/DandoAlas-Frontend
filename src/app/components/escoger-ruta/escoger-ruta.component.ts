@@ -1,13 +1,16 @@
 import { Component, AfterViewInit, ElementRef, Renderer2, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { Pasajero } from 'src/app/models/pasajero';
 import { Vuelo } from 'src/app/models/vuelo';
 import { Global } from 'src/app/services/global';
+import { PasajeroService } from 'src/app/services/pasajero.service';
 import { VuelosService } from 'src/app/services/vuelo.service';
 
 @Component({
   selector: 'app-escoger-ruta',
   templateUrl: './escoger-ruta.component.html',
   styleUrls: ['./escoger-ruta.component.css'],
-  providers: [VuelosService]
+  providers: [VuelosService, PasajeroService]
 })
 
 export class EscogerRutaComponent implements AfterViewInit, OnInit {
@@ -16,13 +19,18 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
   public url: string;
   public precios: number[];
   public aux: number;
-  constructor(private renderer: Renderer2, private el: ElementRef, private _vueloService: VuelosService
+  //pasajero
+  public pasajero!: Pasajero;
+  public status: string;
+  constructor(private renderer: Renderer2, private el: ElementRef, private _vueloService: VuelosService, private _pasajeroService: PasajeroService
   ) {
     this.url = Global.url;
     this.vuelos = [];
     this.vuelosReservados = [];
     this.precios = [];
     this.aux = 0;
+    this.status = "";
+    this.pasajero = new Pasajero('','', '', 0);
   }
 
   ngOnInit(): void {
@@ -129,7 +137,7 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
     this.mostrarSeccionCarrito = true;
     this.mostrarBotonResumen = true;
   }
-  exit(){
+  exit() {
     this.mostrarContenido = true;
     this.mostrarSeccionCarrito = false;
     this.mostrarSeccionVuelos = false;
@@ -141,5 +149,24 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
   mostrarBotonResumen: boolean = false;
   mostrarResumen() {
     this.mostrarSeccionResumen = true;
+  }
+
+  //pasajeros
+  guardarPasajero(form: NgForm) {
+    this._pasajeroService.guardarPasajero(this.pasajero).subscribe(
+      response => {
+        if (response.pasajero) {
+          this.status = 'success';
+          console.log(response.pasajero._id);
+          form.reset();
+          console.log(this.pasajero);
+        } else {
+          this.status = 'failed';
+        }
+      },
+      error => {
+        console.log(<any>error);
+      }
+    );
   }
 }
