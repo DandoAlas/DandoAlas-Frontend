@@ -50,8 +50,8 @@ export class CrearVueloComponent {
           this.showSuccessAlert = true; // Mostrar la alerta de éxito
           this.incrementarContadorVuelos();
           setTimeout(() => {
-            this.showSuccessAlert = false; // Ocultar la alerta después de 3 segundos
-          }, 6000); // 3000 milisegundos = 3 segundos
+            this.showSuccessAlert = false;
+          }, 6000); 
 
           console.log(response.vuelo._id);
           //form.reset();

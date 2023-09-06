@@ -159,7 +159,7 @@
                         <div class="precio"></div>
                     </div>
                 </div>
-                <li class="vuelo" *ngFor="let vuelo of vuelos; let i = index" class="vuelo">
+                <li class="vuelo" *ngFor="let vuelo of vuelos; let i = index">
                     <div class="infoVuelo">
                         <div class="aerolinea">{{vuelo.nombreAerolinea}}</div>
                     </div>
@@ -169,56 +169,123 @@
                         <div class="horaSalida">{{vuelo.horaSalida}}:00h</div>
                         <div class="precio">${{vuelo.precio}}</div>
                         <input class="boton" type="submit" value="Seleccionar"
-                            [ngClass]="{'disabled-button': vuelo.precio === 0}" (click)="selectFlight(i)">
+                            [ngClass]="{'disabled-button': vuelo.precio === 0}" (click)="selectFlight(i)"
+                            (click)="mostrarPasajero()">
+                        <div *ngIf="showSuccessAlert" class="alert alert-success">
+                            <div class=""><img style="width: 30px;" class="check" src="../assets/check.jpg" />
+                                Puede añadir maletas adicionales por cada pasajero(2 maletas de mano y una de 23 kilos)</div><br>
+                            <div class=""><img style="width: 30px;" class="check" src="../assets/check.jpg" />
+                                La  maleta de 23 kilos (costo 65 dólares) </div><br>
+                            <div class=""><img style="width: 30px;" class="check" src="../assets/check.jpg" />
+                                La  maleta de mano (costo 10 dólares)</div><br>
+                            <div class=""><img style="width: 30px;" class="check" src="../assets/checkX.jpg" />
+                                No puede escoger asientos.</div><br>
+                        </div>
+                        <div *ngIf="showSuccessAlert" class="alert alert-success">
+                            <div class=""><img style="width: 30px;" class="check" src="../assets/check.jpg" />
+                                Puede añadir maletas adicionales por cada pasajero(5 maletas de mano y una de 23 kilos)</div><br>
+                            <div class=""><img style="width: 30px;" class="check" src="../assets/check.jpg" />
+                                La  maleta de 23 kilos (costo 65 dólares) </div><br>
+                            <div class=""><img style="width: 30px;" class="check" src="../assets/check.jpg" />
+                                La  maleta de mano (costo 10 dólares)</div><br>
+                            <div class=""><img style="width: 30px;" class="check" src="../assets/check.jpg" />
+                                Si puede escoger asientos.</div><br>
+                        </div>
                     </div>
                 </li>
             </div>
         </div>
 
+        <div *ngIf="mostrarInformacionPasajero">
+            <li class="formulario" *ngFor="let i of getRange(cantidadPasajeros)">
+                <form class="detalles" #pasajeroForm="ngForm" (ngSubmit)="guardarPasajero(pasajeroForm)">
+                    <div class="titulo">Información del pasajero</div>
+                    <div class="seccion">
+                        <div class="informacion">Nombres completos</div>
+                        <div *ngIf="pasajero" class="atributo">
+                            <input type="text" id="nombres" name="nombres" #nombres [(ngModel)]="pasajero.nombres"
+                                required>
+                        </div>
+                    </div>
+                    <div class="seccion">
+                        <div class="informacion">Apellidos completos</div>
+                        <div *ngIf="pasajero" class="atributo">
+                            <input type="text" id="apellidos" name="apellidos" #apellidos
+                                [(ngModel)]="pasajero.apellidos" required>
+                        </div>
+                    </div>
+                    <div class="seccion">
+                        <div class="informacion">Fecha de nacimiento:</div>
+                        <div *ngIf="pasajero" class="atributo">
+                            <input type="date" class="fechaNacimiento" name="fechaNacimiento" #fechaNacimiento
+                                [(ngModel)]="pasajero.fechaNacimiento" required>
+                        </div>
+                    </div>
+                    <div class="seccion">
+                        <div class="informacion">Cédula o pasaporte:</div>
+                        <div *ngIf="pasajero" class="atributo">
+                            <input type="number" id="cedula" name="cedula" #cedula [(ngModel)]="pasajero.cedula"
+                                required>
+                        </div>
+                    </div>
+                    <div class="seccion">
+                        <input class="boton" type="submit" value="Guardar pasajero"
+                            [disabled]="!pasajeroForm.form.valid"
+                            [ngClass]="{'disabled-button': !pasajeroForm.form.valid}" (click)="mostrarPago()">
+                    </div>
+                </form>
+            </li>
+        </div>
+
+        <div class="seccion">
+            <input class="boton" type="submit" value="Realizar el pago" [disabled]="!mostrarBotonPago"
+            [ngClass]="{'disabled-button': !mostrarBotonPago}">
+        </div>
+        <div class="seccion">
+            <input class="boton" type="submit" value="Pagar a través de PAYPAL" [disabled]="!mostrarBotonPago"
+            [ngClass]="{'disabled-button': !mostrarBotonPago}">
+        </div>
+
+
         <div class="formulario">
-            <form class="detalles" #pasajeroForm="ngForm" (ngSubmit)="guardarPasajero(pasajeroForm)">
-                <div class="titulo">Información del pasajero</div>
+            <form class="detalles" #usuarioForm="ngForm" (ngSubmit)="guardarUsuario(usuarioForm)">
+                <div class="titulo">Información de contacto</div>
                 <div class="seccion">
-                    <div class="informacion">Nombres completos</div>
-                    <div *ngIf="pasajero" class="atributo">
-                        <input type="text" id="nombres" name="nombres" #nombres [(ngModel)]="pasajero.nombres" required>
+                    <div class="informacion">Nombre y apellido</div>
+                    <div *ngIf="usuario" class="atributo">
+                        <input type="text" id="nombreApellido" name="nombreApellido" #nombreApellido
+                            [(ngModel)]="usuario.nombreApellido" required>
                     </div>
                 </div>
                 <div class="seccion">
-                    <div class="informacion">Apellidos completos</div>
-                    <div *ngIf="pasajero" class="atributo">
-                        <input type="text" id="apellidos" name="apellidos" #apellidos [(ngModel)]="pasajero.apellidos" required>
-                    </div>
-                </div>
-                <div class="seccion">
-                    <div class="informacion">Fecha de nacimiento:</div>
-                    <div *ngIf="pasajero" class="atributo">
-                        <input type="date" class="fechaNacimiento" name="fechaNacimiento" #fechaNacimiento
-                            [(ngModel)]="pasajero.fechaNacimiento" required>
+                    <div class="informacion">Correo electronico</div>
+                    <div *ngIf="usuario" class="atributo">
+                        <input type="email" id="correo" name="correo" #correo [(ngModel)]="usuario.correo" required>
                     </div>
                 </div>
                 <div class="seccion">
                     <div class="informacion">Cédula o pasaporte:</div>
-                    <div *ngIf="pasajero" class="atributo">
-                        <input type="number" id="cedula" name="cedula" #cedula [(ngModel)]="pasajero.cedula" required>
+                    <div *ngIf="usuario" class="atributo">
+                        <input type="number" id="cedula" name="cedula" #cedula [(ngModel)]="usuario.cedula" required>
                     </div>
                 </div>
                 <div class="seccion">
-                    <input class="boton" type="submit" value="Guardar pasajero" [disabled]="!pasajeroForm.form.valid"
-                        [ngClass]="{'disabled-button': !pasajeroForm.form.valid}">
+                    <div class="informacion">Teléfono celular</div>
+                    <div *ngIf="usuario" class="atributo">
+                        <input type="number" id="telefono" name="telefono" #telefono [(ngModel)]="usuario.telefono"
+                            required>
+                    </div>
+                </div>
+                <div class="seccion">
+                    <input class="boton" type="submit" value="Guardar contacto" [disabled]="!usuarioForm.form.valid"
+                        [ngClass]="{'disabled-button': !usuarioForm.form.valid}">
                 </div>
             </form>
         </div>
-        <div class="seccion">
-            <input class="boton" type="submit" value="Realizar el pago">
-        </div>
-        <div class="seccion">
-            <input class="boton" type="submit" value="Pagar a través de PAYPAL" >
-        </div>
-
-
 
     </div>
+
+
     <input class="cart-button" type="submit" value="" (click)="abrirCarrito()">
     <div class="carrito" *ngIf="mostrarSeccionCarrito">
         <div class="exit-button-container">
@@ -242,13 +309,14 @@
         <div class="item">
             <div class="titulo">Informacion de los vuelos reservados</div>
         </div>
-        <li class="vuelo" *ngFor="let vuelo of vuelosReservados" class="vuelo">
+        <li class="vuelo" *ngFor="let vuelo of vuelosReservados">
             <br>
             <div class="">Usted ha reservado un boleto en la aereolínea {{vuelo.nombreAerolinea}}</div><br>
             <div class="">Con destino a {{vuelo.destino}} desde {{vuelo.origen}}</div><br>
             <div class="">Para el día {{vuelo.fechaSalida}} a las {{vuelo.horaSalida}}:00h</div><br>
             <div class="">Este viaje tiene una duración de {{vuelo.duracionVuelo}} minutos</div><br>
-            <div class="">Y el costo total de este boleto es de {{vuelo.precio}} dólares</div>
+            <div class="">El costo total de este boleto es de ${{vuelo.precio}} dólares</div><br>
+            <div class="">Y la cantidad de pasajeros es/son {{cantidadPasajeros}}</div><br>
         </li>
     </div>
 

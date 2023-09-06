@@ -1,16 +1,18 @@
 import { Component, AfterViewInit, ElementRef, Renderer2, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Pasajero } from 'src/app/models/pasajero';
+import { Usuario } from 'src/app/models/usuario';
 import { Vuelo } from 'src/app/models/vuelo';
 import { Global } from 'src/app/services/global';
 import { PasajeroService } from 'src/app/services/pasajero.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 import { VuelosService } from 'src/app/services/vuelo.service';
 
 @Component({
   selector: 'app-escoger-ruta',
   templateUrl: './escoger-ruta.component.html',
   styleUrls: ['./escoger-ruta.component.css'],
-  providers: [VuelosService, PasajeroService]
+  providers: [VuelosService, PasajeroService, UsuarioService]
 })
 
 export class EscogerRutaComponent implements AfterViewInit, OnInit {
@@ -21,16 +23,24 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
   public aux: number;
   //pasajero
   public pasajero!: Pasajero;
+  public cantidadPasajeros: number;
   public status: string;
-  constructor(private renderer: Renderer2, private el: ElementRef, private _vueloService: VuelosService, private _pasajeroService: PasajeroService
+  //usuario
+  public usuario!: Usuario;
+  constructor(private renderer: Renderer2, private el: ElementRef,
+    private _vueloService: VuelosService,
+    private _pasajeroService: PasajeroService,
+    private _usuarioService: UsuarioService
   ) {
     this.url = Global.url;
     this.vuelos = [];
     this.vuelosReservados = [];
     this.precios = [];
     this.aux = 0;
+    this.cantidadPasajeros = 1;
     this.status = "";
-    this.pasajero = new Pasajero('','', '', 0);
+    this.pasajero = new Pasajero('', '', '', 0);
+    this.usuario = new Usuario('', '', 0, '');
   }
 
   ngOnInit(): void {
@@ -84,6 +94,7 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
           entre25y65Value * this.precios[i] +
           (this.precios[i] * 0.5) * mayores65Value;
       }
+      this.cantidadPasajeros--;
     }
   }
 
@@ -104,6 +115,7 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
           entre25y65Value * this.precios[i] +
           (this.precios[i] * 0.5) * mayores65Value;
       }
+      this.cantidadPasajeros++;
     }
   }
 
@@ -125,10 +137,14 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
     }
     console.log(this.precios)
   }
-
+  public showSuccessAlert: boolean = false;
   selectFlight(i: number) {
     this.vuelosReservados[this.aux] = this.vuelos[i];
     this.aux++;
+    this.showSuccessAlert = true;
+    setTimeout(() => {
+      this.showSuccessAlert = false;
+    }, 20000);
   }
   mostrarContenido: boolean = true;
   mostrarSeccionCarrito: boolean = false;
@@ -152,6 +168,10 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
   }
 
   //pasajeros
+  mostrarInformacionPasajero: boolean = false;
+  mostrarPasajero() {
+    this.mostrarInformacionPasajero = true;
+  }
   guardarPasajero(form: NgForm) {
     this._pasajeroService.guardarPasajero(this.pasajero).subscribe(
       response => {
@@ -160,6 +180,36 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
           console.log(response.pasajero._id);
           form.reset();
           console.log(this.pasajero);
+        } else {
+          this.status = 'failed';
+        }
+      },
+      error => {
+        console.log(<any>error);
+      }
+    );
+  }
+  getRange(num: number): number[] {
+    return new Array(num);
+  }
+  //pago
+  aux1: number = 1;
+  mostrarBotonPago: boolean = false;
+  mostrarPago() {
+    if (this.aux1 === this.cantidadPasajeros) {
+      this.mostrarBotonPago = true;
+    }
+    this.aux1++;
+  }
+  /*contacto*/
+  guardarUsuario(form: NgForm) {
+    this._usuarioService.guardarUsuario(this.usuario).subscribe(
+      response => {
+        if (response.usuario) {
+          this.status = 'success';
+          console.log(response.usuario._id);
+          form.reset();
+          console.log(this.usuario);
         } else {
           this.status = 'failed';
         }

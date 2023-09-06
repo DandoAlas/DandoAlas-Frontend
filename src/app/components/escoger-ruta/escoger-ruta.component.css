@@ -98,8 +98,6 @@
     width: 220px;
     color: #555;
     border: none;
-    font-size: 18px;
-    font-family: Poppins;
     background: transparent;
     word-wrap: break-word;
     outline: none;
@@ -175,7 +173,8 @@
 .mostrarVuelos{
     width: auto;
     height: auto;
-    padding: 10px 10px 10px 10px;
+    padding: 10px;
+    margin-bottom: 40px;
     background: rgb(126, 138, 162);
     flex-direction: column;
     justify-content: center;
@@ -187,6 +186,7 @@
 
 .vuelo {
     width: 1000px;
+    height: auto;
     padding-left: 16px;
     padding-right: 16px;
     padding-top: 8px;
@@ -201,6 +201,7 @@
 
 .infoVuelo {
     align-self: stretch;
+    height: 30px;
     align-items: flex-start;
     gap: 3px;
     display: inline-flex;
@@ -227,18 +228,51 @@
 
 .mostrarVuelos .boton {
     width: 180px;
+    height: 30px;
+    margin-top: -17px;
     background: #05a72a;
+}
+.mostrarVuelos .boton:hover,
+.mostrarVuelos .boton:active {
+    background: #52db72;
+}
+
+.mostrarVuelos .disabled-button {
+    background-color: #bdc3c7;
+}
+.mostrarVuelos .disabled-button:hover {
+    background-color: #bdc3c7;
+}
+/*alerta*/
+.alert {
+    background-color: #d4edda;
+    color: #212b24;
+    border: 1px solid #57c7c7;
+    flex-direction: column;
+    font-size: 15px;
+    animation: fadeOut 20s ease-in-out;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 0;
+    }
 }
 /*pasajero*/
 .boton {
-    margin-top: 20px;
-    width: 570px;
-    color: white;
-    font-size: 18px;
-    font-family: Poppins;
-    font-weight: 600;
-    word-wrap: break-word
+    width: 490px;
 }
+.formulario {
+    padding-bottom: 30px;
+    padding-top: 30px;
+}
+
 /*carrito*/
 .carrito{
     width: 630px;
