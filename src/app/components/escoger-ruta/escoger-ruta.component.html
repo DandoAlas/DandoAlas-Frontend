@@ -245,7 +245,7 @@
             <input class="boton" type="submit" value="Pagar a través de PAYPAL" [disabled]="!mostrarBotonPago"
             [ngClass]="{'disabled-button': !mostrarBotonPago}">
         </div>
-
+        <div id = "MyPaypalButtons"></div>
 
         <div class="formulario">
             <form class="detalles" #usuarioForm="ngForm" (ngSubmit)="guardarUsuario(usuarioForm)">
