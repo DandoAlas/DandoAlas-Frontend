@@ -2,19 +2,6 @@
     box-sizing: border-box;
     font-family: 'Segoe UI';
 }
-.fondo {
-    position: absolute;
-    z-index: -1;
-    padding-top: 100px;
-    left: 50%;
-    /* Centra horizontalmente */
-    transform: translateX(-50%);
-    width: 900px;
-    height: auto;
-    display: flex;
-    margin: 0 auto;
-}
-
 .ruta,
 .carrito,
 .resumen,
@@ -22,6 +9,7 @@
     width: auto;
     height: auto;
     padding-top: 150px;
+    min-height: 450px;
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -243,8 +231,16 @@
 .mostrarVuelos .disabled-button:hover {
     background-color: #bdc3c7;
 }
-/*alerta*/
-.alert {
+.escogerRuta .alert {
+    background-color: #ec3030;
+    color: #cbe4d2;
+    border: 1px solid #57c7c7;
+    flex-direction: column;
+    font-size: 15px;
+    animation: fadeOut 6s ease-in-out;
+}
+/*alerta seleccion vuelo*/
+.mostrarVuelos .alert {
     background-color: #d4edda;
     color: #212b24;
     border: 1px solid #57c7c7;
@@ -276,6 +272,10 @@
 /*carrito*/
 .carrito{
     width: 630px;
+}
+.a{
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    padding-top: -35px;
 }
 .cart-button {
     width: 100px;
@@ -316,7 +316,8 @@
 
 .exit-button {
     padding: 5px 10px;
-    background-color: #ccc;
+    background-color: #ff0000;
+    color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -345,4 +346,5 @@
 }
 .resumenBoton .boton {
     width: 600px;
+    margin-top: -300px;
 }

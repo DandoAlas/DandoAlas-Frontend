@@ -28,7 +28,6 @@
     </header>
     <router-outlet></router-outlet>
     <div *ngIf="mostrarContenido" class="ruta">
-        <div class="titulo">Busca tu vuelo:</div>
         <div class="escogerRuta">
             <div class="tipoRuta">
                 <label class="checkbox-item">
@@ -57,9 +56,9 @@
                     <div class="informacion">Clase:</div>
                 </div>
             </div>
-            <form class="datosRuta" #rutaForm="ngForm" (ngSubmit)="getVuelos()">
+            <form class="datosRuta" #rutaForm="ngForm" (ngSubmit)="buscarVuelosConFiltros()">
                 <div class="item">
-                    <select class="origen" name="origen" #origen required>
+                    <select class="origen" name="origen" [(ngModel)]="origen" required>
                         <option value="" selected>Seleccionar origen</option>
                         <option value="Guayaquil">Guayaquil</option>
                         <option value="LagoAgrio">Lago Agrio</option>
@@ -74,7 +73,7 @@
                     </select>
                 </div>
                 <div class="item">
-                    <select class="destino" name="destino" #destino required>
+                    <select class="destino" name="destino" [(ngModel)]="destino" required>
                         <option value="" selected>Seleccionar destino</option>
                         <option value="Guayaquil">Guayaquil</option>
                         <option value="LagoAgrio">Lago Agrio</option>
@@ -89,23 +88,26 @@
                     </select>
                 </div>
                 <div class="item">
-                    <input type="date" class="fechaSalida" name="fechaSalida" #fechaSalida [min]="getCurrentDate()"
-                        required>
+                    <input type="date" class="fechaSalida" name="fechaSalida" [(ngModel)]="fechaSalida"
+                        [min]="getCurrentDate()" required>
                 </div>
                 <div class="item">
-                    <input type="date" class="fechaRegreso" name="fechaRegreso" #fechaRegreso [min]="getCurrentDate()"
-                        required>
+                    <input type="date" class="fechaRegreso" name="fechaRegreso" [min]="fechaSalida">
                 </div>
                 <div class="item">
-                    <select class="destino" name="destino" #destino required>
+                    <select class="destino" name="clase" [(ngModel)]="clase" required>
                         <option value="" selected>Seleccionar la clase</option>
-                        <option value="Guayaquil">Turista</option>
-                        <option value="LagoAgrio">Primera clase</option>
+                        <option value="Turista">Turista</option>
+                        <option value="PrimeraClase">Primera clase</option>
                     </select>
                 </div>
                 <input class="boton" type="submit" value="Buscar" [disabled]="!rutaForm.form.valid"
                     [ngClass]="{'disabled-button': !rutaForm.form.valid}" (click)="mostrarVuelos()">
             </form>
+            <div *ngIf="noExistenVuelos" class="alert alert-success">
+                <div class=""><img style="width: 30px;" class="check" src="../assets/checkX.jpg" />
+                    No existen vuelos para esa ruta en esa fecha</div>
+            </div>
         </div>
 
         <div class="pasajero" *ngIf="mostrarSeccionPasajeros">
@@ -147,6 +149,7 @@
                 </div>
             </div>
         </div>
+
         <div *ngIf="mostrarSeccionVuelos">
             <div class="titulo">Selecciona tu vuelo:</div>
             <div class="mostrarVuelos">
@@ -169,25 +172,26 @@
                         <div class="horaSalida">{{vuelo.horaSalida}}:00h</div>
                         <div class="precio">${{vuelo.precio}}</div>
                         <input class="boton" type="submit" value="Seleccionar"
-                            [ngClass]="{'disabled-button': vuelo.precio === 0}" (click)="selectFlight(i)"
-                            (click)="mostrarPasajero()">
-                        <div *ngIf="showSuccessAlert" class="alert alert-success">
+                            [ngClass]="{'disabled-button': vuelo.precio === 0}" (click)="selectFlight(i)">
+                        <div *ngIf="beneficiosTurista" class="alert alert-success">
                             <div class=""><img style="width: 30px;" class="check" src="../assets/check.jpg" />
-                                Puede añadir maletas adicionales por cada pasajero(2 maletas de mano y una de 23 kilos)</div><br>
+                                Puede añadir maletas adicionales por cada pasajero(2 maletas de mano y una de 23 kilos)
+                            </div><br>
                             <div class=""><img style="width: 30px;" class="check" src="../assets/check.jpg" />
-                                La  maleta de 23 kilos (costo 65 dólares) </div><br>
+                                La maleta de 23 kilos (costo 65 dólares) </div><br>
                             <div class=""><img style="width: 30px;" class="check" src="../assets/check.jpg" />
-                                La  maleta de mano (costo 10 dólares)</div><br>
+                                La maleta de mano (costo 10 dólares)</div><br>
                             <div class=""><img style="width: 30px;" class="check" src="../assets/checkX.jpg" />
                                 No puede escoger asientos.</div><br>
                         </div>
-                        <div *ngIf="showSuccessAlert" class="alert alert-success">
+                        <div *ngIf="beneficiosPrimera" class="alert alert-success">
                             <div class=""><img style="width: 30px;" class="check" src="../assets/check.jpg" />
-                                Puede añadir maletas adicionales por cada pasajero(5 maletas de mano y una de 23 kilos)</div><br>
+                                Puede añadir maletas adicionales por cada pasajero(5 maletas de mano y una de 23 kilos)
+                            </div><br>
                             <div class=""><img style="width: 30px;" class="check" src="../assets/check.jpg" />
-                                La  maleta de 23 kilos (costo 65 dólares) </div><br>
+                                La maleta de 23 kilos (costo 65 dólares) </div><br>
                             <div class=""><img style="width: 30px;" class="check" src="../assets/check.jpg" />
-                                La  maleta de mano (costo 10 dólares)</div><br>
+                                La maleta de mano (costo 10 dólares)</div><br>
                             <div class=""><img style="width: 30px;" class="check" src="../assets/check.jpg" />
                                 Si puede escoger asientos.</div><br>
                         </div>
@@ -197,7 +201,7 @@
         </div>
 
         <div *ngIf="mostrarInformacionPasajero">
-            <li class="formulario" *ngFor="let i of getRange(cantidadPasajeros)">
+            <div class="formulario">
                 <form class="detalles" #pasajeroForm="ngForm" (ngSubmit)="guardarPasajero(pasajeroForm)">
                     <div class="titulo">Información del pasajero</div>
                     <div class="seccion">
@@ -218,7 +222,7 @@
                         <div class="informacion">Fecha de nacimiento:</div>
                         <div *ngIf="pasajero" class="atributo">
                             <input type="date" class="fechaNacimiento" name="fechaNacimiento" #fechaNacimiento
-                                [(ngModel)]="pasajero.fechaNacimiento" required>
+                                [(ngModel)]="pasajero.fechaNacimiento" [max]="getCurrentDate()" required>
                         </div>
                     </div>
                     <div class="seccion">
@@ -234,90 +238,115 @@
                             [ngClass]="{'disabled-button': !pasajeroForm.form.valid}" (click)="mostrarPago()">
                     </div>
                 </form>
-            </li>
+            </div>
         </div>
 
+        <div *ngIf="mostrarInformacionUsuario">
+            <div class="formulario">
+                <form class="detalles" #usuarioForm="ngForm" (ngSubmit)="guardarUsuario(usuarioForm)">
+                    <div class="titulo">Información de contacto</div>
+                    <div class="seccion">
+                        <div class="informacion">Nombre y apellido</div>
+                        <div *ngIf="usuario" class="atributo">
+                            <input type="text" id="nombreApellido" name="nombreApellido" #nombreApellido
+                                [(ngModel)]="usuario.nombreApellido" required>
+                        </div>
+                    </div>
+                    <div class="seccion">
+                        <div class="informacion">Correo electronico</div>
+                        <div *ngIf="usuario" class="atributo">
+                            <input type="email" id="correo" name="correo" #correo [(ngModel)]="usuario.correo" required>
+                        </div>
+                    </div>
+                    <div class="seccion">
+                        <div class="informacion">Cédula o pasaporte:</div>
+                        <div *ngIf="usuario" class="atributo">
+                            <input type="number" id="cedula" name="cedula" #cedula [(ngModel)]="usuario.cedula"
+                                required>
+                        </div>
+                    </div>
+                    <div class="seccion">
+                        <div class="informacion">Teléfono celular</div>
+                        <div *ngIf="usuario" class="atributo">
+                            <input type="number" id="telefono" name="telefono" #telefono [(ngModel)]="usuario.telefono"
+                                required>
+                        </div>
+                    </div>
+                    <div class="seccion">
+                        <input class="boton" type="submit" value="Guardar contacto" [disabled]="!usuarioForm.form.valid"
+                            [ngClass]="{'disabled-button': !usuarioForm.form.valid}" (click)="mostrarBotones()"
+                            (click)="mostrarResumenP()">
+                    </div>
+                </form>
+            </div>
+            
+            <div class="resumen" *ngIf="mostrarSeccionResumenP">
+                <div class="item">
+                    <div class="titulo">Informacion de los vuelos reservados</div>
+                </div>
+                <li class="vuelo" *ngFor="let vuelo of vuelosReservados">
+                    <br>
+                    <div class="">{{vuelo.origen}}, {{vuelo.destino}}-Ecuador</div><br>
+                    <div class="">Salida: {{vuelo.fechaSalida}} a las {{vuelo.horaSalida}}:00h</div><br>
+                    <div class="">Duración del viaje: {{vuelo.duracionVuelo}} minutos</div><br>
+                    <div class="">Operado por: {{vuelo.nombreAerolinea}} minutos</div><br>
+                    <div class="">Costo total: ${{vuelo.precio}} dólares</div><br>
+                    <div class="">Clase: {{vuelo.clase}}</div><br>
+                    <div class="">Pasajeros: {{cantidadPasajeros}}</div><br>
+                </li>
+            </div>
+        </div>
+
+    </div>
+
+    <input class="cart-button" type="submit" value="" (click)="abrirCarrito()">
+    <div class="b">
+        <div class="carrito" *ngIf="mostrarSeccionCarrito">
+            <div class="exit-button-container">
+                <input class="exit-button" type="submit" (click)="exit()" value="X">
+            </div>
+            <div class="a">
+                <div class="item">
+                    <div class="titulo">Vuelos reservados</div>
+                </div>
+                <li class="vuelo" *ngFor="let vuelo of vuelosReservados" class="vuelo">
+                    <div class="infoVuelo">
+                        <div class="duracion">{{vuelo.nombreAerolinea}}</div>
+                        <div class="rutaVuelo">{{vuelo.origen}} -> {{vuelo.destino}}</div>
+                        <div class="duracion">{{vuelo.fechaSalida}}</div>
+                    </div>
+                </li>
+                <div class="resumenBoton" *ngIf="mostrarBotonResumen">
+                    <input class="boton" type="submit" value="Resumen" (click)="mostrarResumen()">
+                </div>
+                <div class="resumen" *ngIf="mostrarSeccionResumen">
+                    <div class="item">
+                        <div class="titulo">Informacion de los vuelos reservados</div>
+                    </div>
+                    <li class="vuelo" *ngFor="let vuelo of vuelosReservados">
+                        <br>
+                        <div class="">{{vuelo.origen}}, {{vuelo.destino}}-Ecuador</div><br>
+                        <div class="">Salida: {{vuelo.fechaSalida}} a las {{vuelo.horaSalida}}:00h</div><br>
+                        <div class="">Duración del viaje: {{vuelo.duracionVuelo}} minutos</div><br>
+                        <div class="">Operado por: {{vuelo.nombreAerolinea}} minutos</div><br>
+                        <div class="">Costo total: ${{vuelo.precio}} dólares</div><br>
+                        <div class="">Clase: {{vuelo.clase}}</div><br>
+                        <div class="">Pasajeros: {{cantidadPasajeros}}</div><br>
+                    </li>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="mostrarBotonesPago">
         <div class="seccion">
             <input class="boton" type="submit" value="Realizar el pago" [disabled]="!mostrarBotonPago"
-            [ngClass]="{'disabled-button': !mostrarBotonPago}">
+                [ngClass]="{'disabled-button': !mostrarBotonPago}">
         </div>
         <div class="seccion">
             <input class="boton" type="submit" value="Pagar a través de PAYPAL" [disabled]="!mostrarBotonPago"
-            [ngClass]="{'disabled-button': !mostrarBotonPago}">
+                [ngClass]="{'disabled-button': !mostrarBotonPago}">
         </div>
-
-
-        <div class="formulario">
-            <form class="detalles" #usuarioForm="ngForm" (ngSubmit)="guardarUsuario(usuarioForm)">
-                <div class="titulo">Información de contacto</div>
-                <div class="seccion">
-                    <div class="informacion">Nombre y apellido</div>
-                    <div *ngIf="usuario" class="atributo">
-                        <input type="text" id="nombreApellido" name="nombreApellido" #nombreApellido
-                            [(ngModel)]="usuario.nombreApellido" required>
-                    </div>
-                </div>
-                <div class="seccion">
-                    <div class="informacion">Correo electronico</div>
-                    <div *ngIf="usuario" class="atributo">
-                        <input type="email" id="correo" name="correo" #correo [(ngModel)]="usuario.correo" required>
-                    </div>
-                </div>
-                <div class="seccion">
-                    <div class="informacion">Cédula o pasaporte:</div>
-                    <div *ngIf="usuario" class="atributo">
-                        <input type="number" id="cedula" name="cedula" #cedula [(ngModel)]="usuario.cedula" required>
-                    </div>
-                </div>
-                <div class="seccion">
-                    <div class="informacion">Teléfono celular</div>
-                    <div *ngIf="usuario" class="atributo">
-                        <input type="number" id="telefono" name="telefono" #telefono [(ngModel)]="usuario.telefono"
-                            required>
-                    </div>
-                </div>
-                <div class="seccion">
-                    <input class="boton" type="submit" value="Guardar contacto" [disabled]="!usuarioForm.form.valid"
-                        [ngClass]="{'disabled-button': !usuarioForm.form.valid}">
-                </div>
-            </form>
-        </div>
-
-    </div>
-
-
-    <input class="cart-button" type="submit" value="" (click)="abrirCarrito()">
-    <div class="carrito" *ngIf="mostrarSeccionCarrito">
-        <div class="exit-button-container">
-            <input class="exit-button" type="submit" (click)="exit()" value="X">
-        </div>
-        <div class="item">
-            <div class="titulo">Vuelos reservados</div>
-        </div>
-        <li class="vuelo" *ngFor="let vuelo of vuelosReservados" class="vuelo">
-            <div class="infoVuelo">
-                <div class="duracion">{{vuelo.nombreAerolinea}}</div>
-                <div class="rutaVuelo">{{vuelo.origen}} -> {{vuelo.destino}}</div>
-                <div class="duracion">{{vuelo.fechaSalida}}</div>
-            </div>
-        </li>
-    </div>
-    <div class="resumenBoton" *ngIf="mostrarBotonResumen">
-        <input class="boton" type="submit" value="Resumen" (click)="mostrarResumen()">
-    </div>
-    <div class="resumen" *ngIf="mostrarSeccionResumen">
-        <div class="item">
-            <div class="titulo">Informacion de los vuelos reservados</div>
-        </div>
-        <li class="vuelo" *ngFor="let vuelo of vuelosReservados">
-            <br>
-            <div class="">Usted ha reservado un boleto en la aereolínea {{vuelo.nombreAerolinea}}</div><br>
-            <div class="">Con destino a {{vuelo.destino}} desde {{vuelo.origen}}</div><br>
-            <div class="">Para el día {{vuelo.fechaSalida}} a las {{vuelo.horaSalida}}:00h</div><br>
-            <div class="">Este viaje tiene una duración de {{vuelo.duracionVuelo}} minutos</div><br>
-            <div class="">El costo total de este boleto es de ${{vuelo.precio}} dólares</div><br>
-            <div class="">Y la cantidad de pasajeros es/son {{cantidadPasajeros}}</div><br>
-        </li>
     </div>
 
 </body>
