@@ -1,9 +1,11 @@
 import { Component, AfterViewInit, ElementRef, Renderer2, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Pago } from 'src/app/models/pago';
 import { Pasajero } from 'src/app/models/pasajero';
 import { Usuario } from 'src/app/models/usuario';
 import { Vuelo } from 'src/app/models/vuelo';
 import { Global } from 'src/app/services/global';
+import { PagoService } from 'src/app/services/pago.service';
 import { PasajeroService } from 'src/app/services/pasajero.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { VuelosService } from 'src/app/services/vuelo.service';
@@ -12,7 +14,7 @@ import { VuelosService } from 'src/app/services/vuelo.service';
   selector: 'app-escoger-ruta',
   templateUrl: './escoger-ruta.component.html',
   styleUrls: ['./escoger-ruta.component.css'],
-  providers: [VuelosService, PasajeroService, UsuarioService]
+  providers: [VuelosService, PasajeroService, UsuarioService, PagoService]
 })
 
 export class EscogerRutaComponent implements AfterViewInit, OnInit {
@@ -27,9 +29,11 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
   public status: string;
   //usuario
   public usuario!: Usuario;
+  public pago!: Pago;
   constructor(private renderer: Renderer2, private el: ElementRef,
     private _vueloService: VuelosService,
     private _pasajeroService: PasajeroService,
+    private _pagoService: PagoService,
     private _usuarioService: UsuarioService
   ) {
     this.url = Global.url;
@@ -40,7 +44,8 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
     this.cantidadPasajeros = 1;
     this.status = "";
     this.pasajero = new Pasajero('', '', '', 0);
-    this.usuario = new Usuario('', '', 0, '');
+    this.usuario = new Usuario('', '', 0, '');;
+    this.pago = new Pago(this.usuario.nombreApellido, 0, '');
   }
 
   ngOnInit(): void {
@@ -295,5 +300,28 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
   mostrarBotonPago: boolean = false;
   mostrarBotones() {
     this.mostrarBotonPago = true;
+  }
+
+  
+  guardarPago(form: NgForm) {
+    this._pagoService.guardarPago(this.pago).subscribe(
+      response => {
+        if (response.pago) {
+          this.status = 'success';
+          console.log(response.pago._id);
+          form.reset();
+          console.log(this.pago);
+        } else {
+          this.status = 'failed';
+        }
+      },
+      error => {
+        console.log(<any>error);
+      }
+    );
+  }
+  mostrarPagoT: boolean = false;
+  mostrarPagoTotal() {
+    this.mostrarPagoT = true;
   }
 }

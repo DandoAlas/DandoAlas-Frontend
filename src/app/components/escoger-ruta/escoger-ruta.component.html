@@ -341,7 +341,7 @@
     <div *ngIf="mostrarBotonesPago">
         <div class="seccion">
             <input class="boton" type="submit" value="Realizar el pago" [disabled]="!mostrarBotonPago"
-                [ngClass]="{'disabled-button': !mostrarBotonPago}">
+                [ngClass]="{'disabled-button': !mostrarBotonPago}" (click)="mostrarPagoTotal()">
         </div>
         <div class="seccion">
             <input class="boton" type="submit" value="Pagar a través de PAYPAL" [disabled]="!mostrarBotonPago"
@@ -349,4 +349,37 @@
         </div>
     </div>
 
+    <div *ngIf="mostrarPagoT">
+        <div class="formulario">
+            <form class="detalles" #pagoForm="ngForm" (ngSubmit)="guardarPago(pagoForm)">
+                <div class="titulo">Información del pago</div>
+                <div class="seccion">
+                    <div class="informacion">Nombre y apellido</div>
+                    <div *ngIf="pago" class="atributo">
+                        <input type="text" id="propietario" name="propietario" #propietario
+                            [(ngModel)]="pago.propietario" required>
+                    </div>
+                </div>
+                <div class="seccion">
+                    <div class="informacion">Cuenta:</div>
+                    <div *ngIf="pago" class="atributo">
+                        <input type="number" id="cuenta" name="cuenta" #cuenta [(ngModel)]="pago.cuenta"
+                            required>
+                    </div>
+                </div>
+                <div class="seccion">
+                    <div class="informacion">Banco:</div>
+                    <div *ngIf="pago" class="atributo">
+                        <input type="text" id="banco" name="banco" #banco
+                            [(ngModel)]="pago.banco" required>
+                    </div>
+                </div>
+                <div class="seccion">
+                    <input class="boton" type="submit" value="Pagar"
+                        [disabled]="!pagoForm.form.valid"
+                        [ngClass]="{'disabled-button': !pagoForm.form.valid}">
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
