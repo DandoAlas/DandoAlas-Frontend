@@ -35,6 +35,13 @@ export class VuelosService {
         let headers = new HttpHeaders().set('Content-Type', 'application/json');
         return this._http.get<number>(this.url + 'ultimo-numero-vuelo', { headers: headers });
     }
+
+    eliminarVuelo(id: string): Observable<any> {
+        let headers = new HttpHeaders().set('Content-Type', 'application/json');
+        return this._http.delete(this.url + 'eliminar-vuelo/' + id, { headers: headers });
+    }
+
+    
     getVuelosConFiltros(origen: string, destino: string, fechaSalida: string): Observable<any> {
         let headers = new HttpHeaders().set('Content-Type', 'application/json');
         let params = new HttpParams();
