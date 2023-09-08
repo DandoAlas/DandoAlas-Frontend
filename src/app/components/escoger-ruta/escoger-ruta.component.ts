@@ -30,7 +30,7 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
   public url: string;
   public precios: number[];
   public aux: number;
-  
+
   //pasajero
   public pasajero!: Pasajero;
   public cantidadPasajeros: number;
@@ -40,13 +40,13 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
   public usuario!: Usuario;
   public pago!: Pago;
 
-  constructor(private renderer: Renderer2, private el: ElementRef,
+  constructor(
+    private renderer: Renderer2, 
+    private el: ElementRef,
     private _vueloService: VuelosService,
     private _pasajeroService: PasajeroService,
     private _pagoService: PagoService,
     private _usuarioService: UsuarioService
-    private renderer: Renderer2,
-    private el: ElementRef,
   ) {
     this.url = Global.url;
     this.vuelos = [];
@@ -57,21 +57,24 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
     this.status = '';
     this.pasajero = new Pasajero('', '', '', 0);
     this.usuario = new Usuario('', '', 0, '');
-    render({
-      id: '#MyPaypalButtons',
-      currency: 'USD',
-      value: '100.00',
-      onApprove: (details) => {
-        alert('Transacción exitosa');
-      },
-    });
     this.usuario = new Usuario('', '', 0, '');;
     this.pago = new Pago(this.usuario.nombreApellido, 0, '');
   }
 
   ngOnInit(): void {
-    //this.getVuelos();
   }
+
+  paypalButton(){
+    render({
+      id: '#MyPaypalButtons',
+      currency: 'USD',
+      value: "100",
+      onApprove: (details) => {
+        alert('Transacción exitosa');
+      },
+    });
+  }
+
   getVuelos() {
     this._vueloService.getVuelos().subscribe(
       (response) => {
@@ -348,7 +351,7 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
     this.mostrarBotonPago = true;
   }
 
-  
+
   guardarPago(form: NgForm) {
     this._pagoService.guardarPago(this.pago).subscribe(
       response => {
