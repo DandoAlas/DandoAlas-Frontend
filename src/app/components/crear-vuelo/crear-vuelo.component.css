@@ -17,7 +17,24 @@
  }
  
 
+/* Agrega esta clase para el botón de edición en azul */
+.editar-btn-blue {
+    background-color: blue;
+    color: white;
+    border: none;
+    width: 70px;
+    padding: 8px 12px;
+    text-align: center;
+    display: block;
+    margin: 0 auto;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
 
+.editar-btn-blue:hover {
+    background-color: darkblue;
+}
 .informacion-vuelos {
     margin: 0 auto;
     max-width: 40%; /* Puedes ajustar este porcentaje según prefieras */
@@ -60,3 +77,4 @@
   .eliminar-btn:hover {
     background-color: darkred;
   }
+  

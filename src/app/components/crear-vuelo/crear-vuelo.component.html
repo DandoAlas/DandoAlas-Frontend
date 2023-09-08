@@ -18,13 +18,12 @@
         </div>
     </header>
     <div class="container">
-
-        <div class="formulario">
+        <div class="formulario" id="formVuelo">
             <form class="detalles" #vueloForm="ngForm" (ngSubmit)="guardarVuelo(vueloForm)">
                 <div class="titulo">Datos del nuevo vuelo</div>
                 <div class="seccion">
                     <div class="informacion">Nombre de la aereolínea:</div>
-                    <div  class="atributo">
+                    <div class="atributo">
                         <select class="nombreAerolinea" name="nombreAerolinea" #nombreAerolinea
                             [(ngModel)]="vuelo.nombreAerolinea" required>
                             <option value="" selected>Seleccionar aerolínea</option>
@@ -113,6 +112,28 @@
                         </select>
                     </div>
                 </div>
+                <!-- Botón para Guardar un nuevo vuelo -->
+                <input class="boton" type="submit" value="Guardar" [disabled]="!vueloForm.form.valid"
+                    [ngClass]="{'disabled-button': !vueloForm.form.valid}">
+
+                <!-- Botón para Confirmar la Actualización de un vuelo existente -->
+                <input class="boton" *ngIf="vuelo._id" type="button" value="Confirmar Actualización"
+                    (click)="confirmarActualizacion()" [disabled]="!vueloForm.form.valid"
+                    [ngClass]="{'disabled-button': !vueloForm.form.valid}">
+
+            </form>
+
+            <!-- Mensaje para vuelo guardado exitosamente -->
+            <div *ngIf="mensajeGuardado" class="alert alert-success">
+                El vuelo ha sido creado exitosamente.
+            </div>
+
+            <!-- Mensaje para vuelo actualizado exitosamente -->
+            <div *ngIf="mensajeActualizado" class="alert alert-success">
+                El vuelo ha sido actualizado exitosamente.
+            </div>
+        </div>
+      <!-- GURARDAR VUELO -->
                 <input class="boton" type="submit" value="Guardar" [disabled]="!vueloForm.form.valid"
                     [ngClass]="{'disabled-button': !vueloForm.form.valid}">
             </form>
@@ -120,7 +141,7 @@
                 El vuelo ha sido creado exitosamente.
             </div>
         </div>
-        
+
         <!-- Columna de información de los vuelos -->
         <div class="informacion-vuelos">
             <h2>Vuelos Creados</h2>
@@ -139,6 +160,9 @@
                 <button class="eliminar-btn" (click)="eliminarVuelo(vuelo._id)">Eliminar</button>
                 -->
                 <button class="eliminar-btn" (click)="confirmarEliminacion(vuelo._id)">Eliminar</button>
+                <!-- Aplica la clase CSS "editar-btn-blue" al botón de edición -->
+                <button class="editar-btn" [ngClass]="{'editar-btn-blue': true}"
+                    (click)="editarVuelo(vuelo._id)">Editar</button>
 
                 <hr>
             </div>
