@@ -12,3 +12,69 @@
     font-weight: 600;
     word-wrap: break-word
 }
+.informacion-vuelos h2 {
+    text-align: center;
+ }
+ 
+
+/* Agrega esta clase para el botón de edición en azul */
+.editar-btn-blue {
+    background-color: blue;
+    color: white;
+    border: none;
+    width: 70px;
+    padding: 8px 12px;
+    text-align: center;
+    display: block;
+    margin: 0 auto;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.editar-btn-blue:hover {
+    background-color: darkblue;
+}
+.informacion-vuelos {
+    margin: 0 auto;
+    max-width: 40%; /* Puedes ajustar este porcentaje según prefieras */
+    overflow-y: auto; /* Agrega un scroll vertical si la altura del contenido es mayor que un máximo */
+    max-height: 600px; /* Puedes ajustar esta altura según prefieras */
+    border: 5px solid #F23B88; /* Borde del recuadro */
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra opcional para darle profundidad */
+  }
+  
+
+.eliminar-btn {
+    display: block;
+    margin: 10px auto;
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.eliminar-btn:hover {
+    background-color: darkred;
+}
+
+.eliminar-btn {
+    color: white;
+    background-color: red;
+    border: none;
+    padding: 8px 12px;
+    text-align: center;
+    display: block;
+    margin: 0 auto;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .eliminar-btn:hover {
+    background-color: darkred;
+  }
+  
