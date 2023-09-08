@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2 } from '@angular/core';
+import { Component, OnInit, ElementRef, Renderer2 } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Pasajero } from 'src/app/models/pasajero';
 import { Vuelo } from 'src/app/models/vuelo';
@@ -11,50 +11,71 @@ import { VuelosService } from 'src/app/services/vuelo.service';
   styleUrls: ['./crear-vuelo.component.css'],
   providers: [VuelosService]
 })
-export class CrearVueloComponent {
+export class CrearVueloComponent implements OnInit {
   public horas: number[] = [];
   public titulo: string;
   public vuelo!: Vuelo;
-  //public vueloGuardar: Vuelo;
+  public vuelos: Vuelo[] = []; // Nuevo
   public url: string;
   public status: string;
-  //public idGuardado: string;
   public contadorVuelos!: number;
-  public pasajeros: Pasajero[];
+  public pasajeros?: Pasajero[];
+  
   constructor(private renderer: Renderer2, private el: ElementRef, private _vueloService: VuelosService) {
     for (let i = 1; i <= 24; i++) {
       this.horas.push(i);
+      this.vuelo = new Vuelo('', 0, '', '', '', '', '', 1, '1', [], 65, '', 30, 'Confirmado', true);
+      
+
     }
     this.titulo = "GUARDAR";
     this.url = Global.url;
     this.status = "";
     this.pasajeros = [];
-    this._vueloService.getUltimoNumeroVuelo().subscribe(
-      ultimoNumero => {
-        this.contadorVuelos = ultimoNumero + 1; // Inicializa el contador con el último número + 1
-        this.vuelo = new Vuelo('', this.contadorVuelos, '', '', '', '', '', 1, '1', this.pasajeros, 65, '', 30, '', true);
+  }
+
+  /*
+  ngOnInit() {
+    this.cargarVuelos();
+  }
+  */
+  ngOnInit() {
+    this.cargarVuelos();
+    
+    if (this.vuelos && this.vuelos.length > 0) {
+        const maxNumeroVuelo = Math.max(...this.vuelos.map(v => v.numeroVuelo || 0));
+        this.contadorVuelos = maxNumeroVuelo + 1;
+    } else {
+        this.contadorVuelos = 1; 
+    }
+}
+
+  cargarVuelos() {
+    this._vueloService.getVuelos().subscribe(
+      response => {
+        this.vuelos = response.vuelos;
       },
       error => {
-        console.log("Error al obtener el último número de vuelo:", error);
-        this.contadorVuelos = 1;
+        console.error("Error al obtener los vuelos:", error);
       }
     );
-    console.log(this.vuelo);
   }
+
   public showSuccessAlert: boolean = false;
+
+  /*
   guardarVuelo(form: NgForm) {
+    this.incrementarContadorVuelos();
+
     this._vueloService.guardarVuelo(this.vuelo).subscribe(
       response => {
         if (response.vuelo) {
           this.status = 'success';
-          this.showSuccessAlert = true; // Mostrar la alerta de éxito
-          this.incrementarContadorVuelos();
+          this.showSuccessAlert = true;
           setTimeout(() => {
             this.showSuccessAlert = false;
           }, 6000); 
-
-          console.log(response.vuelo._id);
-          //form.reset();
+          this.cargarVuelos(); // Actualizar la lista de vuelos después de guardar uno nuevo
         } else {
           this.status = 'failed';
         }
@@ -64,10 +85,73 @@ export class CrearVueloComponent {
       }
     );
   }
+*/
+guardarVuelo(form: NgForm) {
+  this.incrementarContadorVuelos();
+  
+  const vueloToSend = this.getCleanVuelo();
+  
+  if (!vueloToSend._id) {
+    vueloToSend._id = ''; // Asegurarte de que _id no sea undefined.
+  }
+  // Si hay otros campos que podrían ser undefined, inicialízalos aquí.
+
+  this._vueloService.guardarVuelo(vueloToSend as Vuelo).subscribe(
+      response => {
+          if (response.vuelo) {
+              this.status = 'success';
+              this.showSuccessAlert = true;
+              setTimeout(() => {
+                  this.showSuccessAlert = false;
+              }, 6000); 
+              this.cargarVuelos(); // Actualizar la lista de vuelos después de guardar uno nuevo
+          } else {
+              this.status = 'failed';
+          }
+      },
+      error => {
+          console.log(<any>error);
+      }
+  );
+}
+
+getCleanVuelo(): Partial<Vuelo> {
+  const { pasajeros, ...rest } = this.vuelo;
+  return rest;
+}
+
+
+
+
+
+  eliminarVuelo(id: string) {
+    console.log("ID del vuelo a eliminar:", id);
+
+    this._vueloService.eliminarVuelo(id).subscribe(
+      response => {
+        console.log("Vuelo eliminado con éxito", response);
+        this.cargarVuelos(); // Actualizar la lista de vuelos después de eliminar uno
+      },
+      error => {
+        console.error("Error al eliminar el vuelo:", error);
+      }
+    );
+  }
+
   incrementarContadorVuelos() {
     this.contadorVuelos++;
-    this.vuelo = new Vuelo('', this.contadorVuelos, '', '', '', '', '', 1, '1', [], 65, '', 30, '', true);
+  //  this.vuelo = new Vuelo('', this.contadorVuelos, '', '', '', '', '', 1, '1', [], 65, '', 30, '', true);
+    this.vuelo.numeroVuelo = this.contadorVuelos;
+
   }
+  confirmarEliminacion(vueloId: string) {
+    const respuesta = window.confirm("¿Seguro que quieres eliminar el vuelo?");
+    if (respuesta) {
+      this.eliminarVuelo(vueloId);
+    }
+  }
+  
+
   getCurrentDate(): string {
     const today = new Date();
     const year = today.getFullYear();

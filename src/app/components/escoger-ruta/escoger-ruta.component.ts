@@ -6,10 +6,12 @@ import {
   OnInit,
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Pago } from 'src/app/models/pago';
 import { Pasajero } from 'src/app/models/pasajero';
 import { Usuario } from 'src/app/models/usuario';
 import { Vuelo } from 'src/app/models/vuelo';
 import { Global } from 'src/app/services/global';
+import { PagoService } from 'src/app/services/pago.service';
 import { PasajeroService } from 'src/app/services/pasajero.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { VuelosService } from 'src/app/services/vuelo.service';
@@ -20,7 +22,7 @@ import { transition } from '@angular/animations';
   selector: 'app-escoger-ruta',
   templateUrl: './escoger-ruta.component.html',
   styleUrls: ['./escoger-ruta.component.css'],
-  providers: [VuelosService, PasajeroService, UsuarioService],
+  providers: [VuelosService, PasajeroService, UsuarioService, PagoService]
 })
 export class EscogerRutaComponent implements AfterViewInit, OnInit {
   public vuelos: Vuelo[];
@@ -28,18 +30,23 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
   public url: string;
   public precios: number[];
   public aux: number;
+  
   //pasajero
   public pasajero!: Pasajero;
   public cantidadPasajeros: number;
   public status: string;
+
   //usuario
   public usuario!: Usuario;
-  constructor(
-    private renderer: Renderer2,
-    private el: ElementRef,
+  public pago!: Pago;
+
+  constructor(private renderer: Renderer2, private el: ElementRef,
     private _vueloService: VuelosService,
     private _pasajeroService: PasajeroService,
+    private _pagoService: PagoService,
     private _usuarioService: UsuarioService
+    private renderer: Renderer2,
+    private el: ElementRef,
   ) {
     this.url = Global.url;
     this.vuelos = [];
@@ -58,10 +65,12 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
         alert('Transacción exitosa');
       },
     });
+    this.usuario = new Usuario('', '', 0, '');;
+    this.pago = new Pago(this.usuario.nombreApellido, 0, '');
   }
 
   ngOnInit(): void {
-    this.getVuelos();
+    //this.getVuelos();
   }
   getVuelos() {
     this._vueloService.getVuelos().subscribe(
@@ -75,7 +84,7 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
       }
     );
   }
-
+  esRegreso: boolean = false;
   ngAfterViewInit(): void {
     const checkboxes =
       this.el.nativeElement.querySelectorAll('.checkbox-input');
@@ -90,6 +99,7 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
               fechaRegreso.disabled = true;
             } else {
               fechaRegreso.disabled = false;
+              this.esRegreso = true;
             }
           }
         });
@@ -165,6 +175,7 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
 
   mostrarSeccionVuelos: boolean = false;
   mostrarSeccionPasajeros: boolean = false;
+  noExistenVuelos: boolean = false;
   mostrarVuelos() {
     this.mostrarSeccionVuelos = true;
     this.mostrarSeccionPasajeros = true;
@@ -172,16 +183,85 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
       this.precios.push(vuelo.precio);
     }
     console.log(this.precios);
+    this._vueloService.getVuelosConFiltros(this.origen, this.destino, this.fechaSalida).subscribe(
+      response => {
+        if (response.vuelos) {
+          this.vuelos = response.vuelos;
+          if (this.vuelos.length === 0) {
+            this.noExistenVuelos = true;
+            setTimeout(() => {
+              this.noExistenVuelos = false;
+            }, 6000);
+          } else {
+            this.mostrarSeccionVuelos = true;
+            this.mostrarSeccionPasajeros = true;
+            for (const vuelo of this.vuelos) {
+              this.precios.push(vuelo.precio);
+            }
+            console.log(this.precios);
+          }
+        }
+      },
+      error => {
+        console.log(<any>error);
+        this.noExistenVuelos = true;
+        setTimeout(() => {
+          this.noExistenVuelos = false;
+        }, 6000);
+      }
+    );
   }
-  public showSuccessAlert: boolean = false;
+  public beneficiosTurista: boolean = false;
+  public beneficiosPrimera: boolean = false;
   selectFlight(i: number) {
     this.vuelosReservados[this.aux] = this.vuelos[i];
     this.aux++;
-    this.showSuccessAlert = true;
+    this.beneficiosTurista = true;
+    if (this.esRegreso) {
+      this.esRegreso = false;
+      this._vueloService.getVuelosConFiltros(this.destino, this.origen, this.fechaRegreso).subscribe(
+        response => {
+          if (response.vuelos) {
+            this.vuelos = response.vuelos;
+            if (this.vuelos.length === 0) {
+              this.noExistenVuelos = true;
+              setTimeout(() => {
+                this.noExistenVuelos = false;
+              }, 6000);
+            } else {
+              this.mostrarSeccionVuelos = true;
+              for (const vuelo of this.vuelos) {
+                this.precios.push(vuelo.precio);
+              }
+              console.log(this.precios);
+            }
+          }
+        },
+        error => {
+          console.log(<any>error);
+        }
+      );
+    } else {
+      this.mostrarSeccionVuelos = false;
+      this.mostrarSeccionPasajeros = false;
+      this.mostrarPasajero();
+    }
+    //this.beneficiosPrimera = true;
     setTimeout(() => {
-      this.showSuccessAlert = false;
+      //this.beneficiosPrimera = false;
+      this.beneficiosTurista = false;
     }, 20000);
   }
+
+  public origen: string = '';
+  public destino: string = '';
+  public fechaSalida: string = '';
+  public fechaRegreso: string = '';
+  public clase: string = '';
+
+  buscarVuelosConFiltros() {
+  }
+
   mostrarContenido: boolean = true;
   mostrarSeccionCarrito: boolean = false;
   abrirCarrito() {
@@ -198,13 +278,18 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
     this.mostrarBotonResumen = false;
   }
   mostrarSeccionResumen: boolean = false;
+  mostrarSeccionResumenP: boolean = false;
   mostrarBotonResumen: boolean = false;
   mostrarResumen() {
     this.mostrarSeccionResumen = true;
   }
+  mostrarResumenP() {
+    this.mostrarSeccionResumenP = true;
+  }
 
   //pasajeros
   mostrarInformacionPasajero: boolean = false;
+  i: number = 1;
   mostrarPasajero() {
     this.mostrarInformacionPasajero = true;
   }
@@ -230,14 +315,17 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
   }
   //pago
   aux1: number = 1;
-  mostrarBotonPago: boolean = false;
   mostrarPago() {
     if (this.aux1 === this.cantidadPasajeros) {
-      this.mostrarBotonPago = true;
+      this.mostrarInformacionPasajero = false;
+      this.mostrarInformacionUsuario = true;
+      this.mostrarBotonesPago = true;
     }
     this.aux1++;
   }
   /*contacto*/
+  mostrarInformacionUsuario: boolean = false;
+  mostrarBotonesPago: boolean = false;
   guardarUsuario(form: NgForm) {
     this._usuarioService.guardarUsuario(this.usuario).subscribe(
       (response) => {
@@ -254,5 +342,32 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
         console.log(<any>error);
       }
     );
+  }
+  mostrarBotonPago: boolean = false;
+  mostrarBotones() {
+    this.mostrarBotonPago = true;
+  }
+
+  
+  guardarPago(form: NgForm) {
+    this._pagoService.guardarPago(this.pago).subscribe(
+      response => {
+        if (response.pago) {
+          this.status = 'success';
+          console.log(response.pago._id);
+          form.reset();
+          console.log(this.pago);
+        } else {
+          this.status = 'failed';
+        }
+      },
+      error => {
+        console.log(<any>error);
+      }
+    );
+  }
+  mostrarPagoT: boolean = false;
+  mostrarPagoTotal() {
+    this.mostrarPagoT = true;
   }
 }
