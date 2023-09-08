@@ -65,31 +65,31 @@ export class VuelosService {
     if (destino) {
       params = params.set('destino', destino);
     }
-*/ kevinC7
+
+// kevinC7
     if (fechaSalida) {
       params = params.set('fechaSalida', fechaSalida);
- /*
 
-    eliminarVuelo(id: string): Observable<any> {
-        let headers = new HttpHeaders().set('Content-Type', 'application/json');
-        return this._http.delete(this.url + 'eliminar-vuelo/' + id, { headers: headers });
-    }
+//     eliminarVuelo(id: string): Observable<any> {
+//         let headers = new HttpHeaders().set('Content-Type', 'application/json');
+//         return this._http.delete(this.url + 'eliminar-vuelo/' + id, { headers: headers });
+//     }
 
     
-    getVuelosConFiltros(origen: string, destino: string, fechaSalida: string): Observable<any> {
-        let headers = new HttpHeaders().set('Content-Type', 'application/json');
-        let params = new HttpParams();
-        if (origen) {
-            params = params.set('origen', origen);
-        }
-        if (destino) {
-            params = params.set('destino', destino);
-        }
-        if (fechaSalida) {
-            params = params.set('fechaSalida', fechaSalida);
-        }
-        return this._http.get(this.url + 'buscar', { headers: headers, params: params });
-// develop
+//     getVuelosConFiltros(origen: string, destino: string, fechaSalida: string): Observable<any> {
+//         let headers = new HttpHeaders().set('Content-Type', 'application/json');
+//         let params = new HttpParams();
+//         if (origen) {
+//             params = params.set('origen', origen);
+//         }
+//         if (destino) {
+//             params = params.set('destino', destino);
+//         }
+//         if (fechaSalida) {
+//             params = params.set('fechaSalida', fechaSalida);
+//         }
+//         return this._http.get(this.url + 'buscar', { headers: headers, params: params });
+// // develop
     }
     return this._http.get(this.url + 'buscar', {
       headers: headers,
