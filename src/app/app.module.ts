@@ -11,6 +11,7 @@ import { PieComponent } from './components/pie/pie.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthService } from './services/auth.service';
 import { HomeComponent } from './components/home/home.component';
+import { PromocionesComponent } from './components/promociones/promociones.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { HomeComponent } from './components/home/home.component';
     CrearVueloComponent,
     PieComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    PromocionesComponent
   ],
   imports: [
     BrowserModule,

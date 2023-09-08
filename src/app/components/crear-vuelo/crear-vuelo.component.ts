@@ -22,7 +22,6 @@ export class CrearVueloComponent implements OnInit {
   public status: string;
   public contadorVuelos!: number;
   public pasajeros?: Pasajero[];
-
   constructor(
     private cdr: ChangeDetectorRef,
     private renderer: Renderer2,
@@ -76,11 +75,13 @@ export class CrearVueloComponent implements OnInit {
       },
       (error) => {
         console.error('Error al obtener los vuelos:', error);
+        
       }
     );
   }
 
   public showSuccessAlert: boolean = false;
+
   mensajeGuardado: boolean = false;
 
   guardarVuelo(form: NgForm) {
@@ -108,7 +109,6 @@ export class CrearVueloComponent implements OnInit {
   
           // Limpiar el formulario
           //form.reset();
-  
         } else {
           this.status = 'failed';
         }
@@ -205,6 +205,7 @@ export class CrearVueloComponent implements OnInit {
       },
       (error) => {
         console.error('Error al eliminar el vuelo:', error);
+
       }
     );
   }
