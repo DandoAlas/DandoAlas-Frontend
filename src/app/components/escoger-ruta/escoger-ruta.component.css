@@ -1,16 +1,7 @@
-.fondo {
-    position: absolute;
-    z-index: -1;
-    padding-top: 100px;
-    left: 50%;
-    /* Centra horizontalmente */
-    transform: translateX(-50%);
-    width: 900px;
-    height: auto;
-    display: flex;
-    margin: 0 auto;
+* {
+    box-sizing: border-box;
+    font-family: 'Segoe UI';
 }
-
 .ruta,
 .carrito,
 .resumen,
@@ -18,6 +9,7 @@
     width: auto;
     height: auto;
     padding-top: 150px;
+    min-height: 450px;
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -94,8 +86,6 @@
     width: 220px;
     color: #555;
     border: none;
-    font-size: 18px;
-    font-family: Poppins;
     background: transparent;
     word-wrap: break-word;
     outline: none;
@@ -103,7 +93,7 @@
 
 .informacionRuta .item,
 .carrito .item {
-    width: 192px;
+    width: 180px;
     background: transparent;
     padding-left: 0px;
     border: none;
@@ -171,7 +161,8 @@
 .mostrarVuelos{
     width: auto;
     height: auto;
-    padding: 10px 10px 10px 10px;
+    padding: 10px;
+    margin-bottom: 40px;
     background: rgb(126, 138, 162);
     flex-direction: column;
     justify-content: center;
@@ -183,6 +174,7 @@
 
 .vuelo {
     width: 1000px;
+    height: auto;
     padding-left: 16px;
     padding-right: 16px;
     padding-top: 8px;
@@ -197,6 +189,7 @@
 
 .infoVuelo {
     align-self: stretch;
+    height: 30px;
     align-items: flex-start;
     gap: 3px;
     display: inline-flex;
@@ -223,12 +216,66 @@
 
 .mostrarVuelos .boton {
     width: 180px;
+    height: 30px;
+    margin-top: -17px;
     background: #05a72a;
+}
+.mostrarVuelos .boton:hover,
+.mostrarVuelos .boton:active {
+    background: #52db72;
+}
+
+.mostrarVuelos .disabled-button {
+    background-color: #bdc3c7;
+}
+.mostrarVuelos .disabled-button:hover {
+    background-color: #bdc3c7;
+}
+.escogerRuta .alert {
+    background-color: #ec3030;
+    color: #cbe4d2;
+    border: 1px solid #57c7c7;
+    flex-direction: column;
+    font-size: 15px;
+    animation: fadeOut 6s ease-in-out;
+}
+/*alerta seleccion vuelo*/
+.mostrarVuelos .alert {
+    background-color: #d4edda;
+    color: #212b24;
+    border: 1px solid #57c7c7;
+    flex-direction: column;
+    font-size: 15px;
+    animation: fadeOut 20s ease-in-out;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+/*pasajero*/
+.boton {
+    width: 490px;
+}
+.formulario {
+    padding-bottom: 30px;
+    padding-top: 30px;
 }
 
 /*carrito*/
 .carrito{
     width: 630px;
+}
+.a{
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    padding-top: -35px;
 }
 .cart-button {
     width: 100px;
@@ -269,7 +316,8 @@
 
 .exit-button {
     padding: 5px 10px;
-    background-color: #ccc;
+    background-color: #ff0000;
+    color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -298,4 +346,5 @@
 }
 .resumenBoton .boton {
     width: 600px;
+    margin-top: -300px;
 }

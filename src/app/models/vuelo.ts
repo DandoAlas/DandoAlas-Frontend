@@ -1,3 +1,5 @@
+import { Pasajero } from "./pasajero";
+
 export class Vuelo {
     constructor(
         public _id: string,
@@ -11,15 +13,9 @@ export class Vuelo {
         public duracionVuelo: string,
         public pasajeros: Pasajero[],
         public costoMaletaAdicional: number,
+        public clase: string,
+        public numAsientos: number,
         public estado: string,
         public disponibilidad: boolean
-    ) { }
-}
-
-export class Pasajero {
-    constructor(
-        public identificacion: string,
-        public numeroAsiento: number,
-        public costo: number
     ) { }
 }

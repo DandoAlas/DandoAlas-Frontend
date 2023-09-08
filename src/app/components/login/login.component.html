@@ -1,0 +1,68 @@
+<body>
+  <header>
+    <img class="logo" src="../assets/logo.jpg" />
+    <menu>
+      <a [routerLink]="['/inicio']">Inicio</a>
+      <a [routerLink]="['/buscar-vuelo']">Buscar vuelo</a>
+      <a [routerLink]="['/promociones']">Promociones</a>
+      <div
+        style="
+          width: auto;
+          height: 40px;
+          padding-left: 20px;
+          padding-right: 20px;
+          background: #f23b88;
+          justify-content: center;
+          align-items: center;
+          display: flex;
+        "
+      >
+        <a [routerLink]="['/login']" style="color: #ffffff; font-weight: 550"
+          >Login</a
+        >
+      </div>
+    </menu>
+    <div class="search">
+      <form>
+        <input type="text" value="Buscar" />
+        <input
+          type="button"
+          value="O"
+          src="https://via.placeholder.com/35x35"
+        />
+      </form>
+    </div>
+  </header>
+  <div class="login-page">
+    <div class="form">
+      <form class="register-form">
+        <input type="text" placeholder="name" />
+        <input type="password" placeholder="password" />
+        <input type="text" placeholder="email address" />
+        <button>create</button>
+        <p class="message">Already registered? <a href="#">Sign In</a></p>
+      </form>
+      <form
+        #frmLogin="ngForm"
+        class="login-form"
+        (ngSubmit)="onLogin(frmLogin)"
+      >
+        <input
+          type="email"
+          name="email"
+          placeholder="Correo"
+          ngModel
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Contraseña"
+          ngModel
+          required
+        />
+        <button class="boton">login</button>
+      </form>
+    </div>
+  </div>
+</body>

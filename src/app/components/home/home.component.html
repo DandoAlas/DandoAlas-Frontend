@@ -1,0 +1,34 @@
+<body>
+    <header>
+        <img class="logo" src="../assets/logo.jpg" />
+        <menu>
+            <a [routerLink]="['/inicio']">Inicio</a>
+            <a [routerLink]="['/buscar-vuelo']">Buscar vuelos</a>
+            <a [routerLink]="['/promociones']">Promociones</a>
+            <a [routerLink]="['/login']">Login</a>
+        </menu>
+        <div class="search">
+            <form>
+                <input type="text" value="Buscar">
+                <input type="button" value="O" src="https://via.placeholder.com/35x35">
+            </form>
+        </div>
+    </header>
+    <section class="showcase">
+        <video src="../assets/video.mp4" muted loop autoplay></video>
+        <div class="overlay"></div>
+        <div class="text">
+            <h2>AGENCIA</h2>
+            <h3>DANDO ALAS</h3>
+            <p>Somos una agencia de viajes que brinda los mejores servicios
+                turísticos superando las expectativas de nuestros pasajeros
+                dando a conocer las riquezas de nuestro Ecuador.</p>
+            <a [routerLink]="['/buscar-vuelo']">¿A DÓNDE QUIERES IR?</a>
+        </div>
+        <ul class="social">
+            <li><a href="#"><img src="https://i.ibb.co/x7P24fL/facebook.png"></a></li>
+            <li><a href="#"><img src="https://i.ibb.co/Wnxq2Nq/twitter.png"></a></li>
+            <li><a href="#"><img src="https://i.ibb.co/ySwtH4B/instagram.png"></a></li>
+        </ul>
+    </section>
+</body>
