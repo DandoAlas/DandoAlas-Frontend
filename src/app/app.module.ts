@@ -12,6 +12,7 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthService } from './services/auth.service';
 import { HomeComponent } from './components/home/home.component';
 import { PromocionesComponent } from './components/promociones/promociones.component';
+import { AsientosComponent } from './components/asientos/asientos.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { PromocionesComponent } from './components/promociones/promociones.compo
     PieComponent,
     LoginComponent,
     HomeComponent,
-    PromocionesComponent
+    PromocionesComponent,
+    AsientosComponent
   ],
   imports: [
     BrowserModule,

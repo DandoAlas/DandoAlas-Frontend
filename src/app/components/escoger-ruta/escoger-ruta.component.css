@@ -348,3 +348,267 @@
     width: 600px;
     margin-top: -300px;
 }
+
+/*ASIENTO*/
+.plane {
+    margin: 20px auto;
+    max-width: 450px;
+}
+
+.cockpit {
+    height: 250px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    border-bottom: 5px solid #3a3939;
+
+    &:before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 700px;
+        width: 98.2%;
+        border-radius: 60%;
+        border-right: 5px solid #3a3939;
+        border-left: 5px solid #3a3939;
+    }
+
+    h1 {
+        width: 60%;
+        margin: 100px auto 35px auto;
+    }
+}
+
+.fuselage {
+    border: 5px solid #3a3939;
+    border-top: 0px;
+}
+
+ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.row {
+    --bs-gutter-x: 0rem;
+    --bs-gutter-y: 0;
+}
+
+.seats {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+}
+
+.seat {
+    display: flex;
+    height: 40px;
+    flex: 0 0 14.28571428571429%;
+    padding: 2px;
+    position: relative;
+
+    &:nth-child(3) {
+        margin-right: 14.28571428571429%;
+    }
+
+    input[type="checkbox"] {
+        position: absolute;
+        opacity: 0;
+    }
+
+    input[type="checkbox"]:checked {
+        +label {
+            background: #bada55;
+            -webkit-animation-name: rubberBand;
+            animation-name: rubberBand;
+            animation-duration: 300ms;
+            animation-fill-mode: both;
+        }
+    }
+
+    input[type="checkbox"]:disabled {
+        +label {
+            background: #dddddd;
+            text-indent: -9999px;
+            overflow: hidden;
+
+            &:after {
+                content: "X";
+                text-indent: 0;
+                position: absolute;
+                top: 4px;
+                left: 50%;
+                transform: translate(-50%, 0%);
+            }
+
+            &:hover {
+                box-shadow: none;
+                cursor: not-allowed;
+            }
+        }
+    }
+
+    .active {
+        background-color: green;
+        /* Estilo activado */
+    }
+
+    .inactive {
+        background-color: red;
+        /* Estilo desactivado */
+    }
+
+    label {
+        display: block;
+        position: relative;
+        width: 100%;
+        text-align: center;
+        font-size: 14px;
+        font-weight: bold;
+        line-height: 1.5rem;
+        padding: 2px 0;
+        border-radius: 5px;
+        animation-duration: 300ms;
+        animation-fill-mode: both;
+
+        &:before {
+            content: "";
+            position: absolute;
+            width: 75%;
+            height: 75%;
+            top: 1px;
+            left: 50%;
+            transform: translate(-50%, 0%);
+            background: rgb(255, 0, 0);
+            border-radius: 3px;
+        }
+
+        &:hover {
+            cursor: pointer;
+            box-shadow: 0 0 0px 2px #00ff48;
+        }
+    }
+}
+h2 {
+    font-family: 'Hug';
+    margin: 15px;
+    font-size: 12px;
+    text-align: center;
+    color: #fed809;
+}
+
+h5 {
+    font-family: 'Hug';
+    margin: 15px;
+    font-size: 13px;
+    text-align: center;
+    color: #f8770f;
+}
+
+.btn-primary {
+    font-family: 'Asap';
+    border-radius: 20px;
+    background-color: #fed809;
+    color: white;
+    align-items: center;
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-danger {
+    font-family: 'Asap';
+    border-radius: 20px;
+    background-color: #e2097e;
+    color: white;
+    border: 3px #be8fa8;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.btn-success {
+    font-family: 'Asap';
+    border-radius: 20px;
+    background-color: white;
+    color: #e2097e;
+    border: 2px #e2097e;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.modal-header {
+    align-items: center;
+}
+
+.modal-title {
+    font-family: 'Hug';
+    margin: 15px;
+    font-size: 13px;
+    margin-left: 20px;
+    color: #f8770f;
+    text-align: center;
+}
+
+label {
+    margin: 2px;
+    display: inline-block;
+    font-family: 'gro';
+    font-size: 15px;
+
+}
+
+/* Estilo para etiquetas con contenido del 1A al 5F (color rosado) */
+label[for^="1"],
+label[for^="2"],
+label[for^="3"],
+label[for^="4"],
+label[for^="5"] {
+    color: #063147;
+}
+
+/* Estilo para etiquetas con contenido del 6A al 10F (color morado) */
+label[for^="6"],
+label[for^="7"],
+label[for^="8"],
+label[for^="9"],
+label[for^="10"] {
+    color: #203b06;
+}
+
+/* Estilo para la leyenda de colores */
+.legend {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+/* Estilo para cada elemento de la leyenda */
+.legend li {
+    margin-bottom: 10px;
+}
+
+/* Estilo para los cuadros de colores */
+.legend-color {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    border: 1px solid #ffffff;
+    border-radius: 50%;
+    /* Borde alrededor de los cuadros de colores (opcional) */
+}
+
+/* Estilo para las imágenes de los asientos */
+.plane img {
+    position: absolute;
+    max-width: 40px;
+    max-height: 40px;
+    margin-left: 15px;
+    margin-bottom: 15px;
+    z-index: -1;
+}
