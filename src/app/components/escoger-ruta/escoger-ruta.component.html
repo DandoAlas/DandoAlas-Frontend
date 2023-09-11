@@ -241,7 +241,7 @@
             </div>
         </div>
 
-        <div *ngIf="mostrarInformacionUsuario">
+        <div *ngIf="!mostrarInformacionUsuario">
             <div class="formulario">
                 <form class="detalles" #usuarioForm="ngForm" (ngSubmit)="guardarUsuario(usuarioForm)">
                     <div class="titulo">Información de contacto</div>
@@ -347,8 +347,8 @@
                 [ngClass]="{'disabled-button': !mostrarBotonPago}" (click)="mostrarPagoTotal()">
         </div> -->
         <div class="seccion">
-            <input (click)="paypalButton()" class="boton" type="submit" value="Pagar a través de PAYPAL" [disabled]="mostrarBotonPago"
-                [ngClass]="{'disabled-button': mostrarBotonPago}">
+            <input (click)="paypalButton()" class="boton" type="submit" value="Pagar a través de PAYPAL" [disabled]="!mostrarBotonPago"
+                [ngClass]="{'disabled-button': !mostrarBotonPago}">
         </div>
         <!-- <div class="seccion">
             <div id="MyPaypalButtons"></div>
