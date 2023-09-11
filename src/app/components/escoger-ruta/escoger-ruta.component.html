@@ -340,18 +340,19 @@
 
     
 
-    <div *ngIf="mostrarBotonesPago">
-        <div class="seccion">
+    <!-- <div *ngIf="!mostrarBotonesPago"> -->
+        <div>
+        <!-- <div class="seccion">
             <input class="boton" type="submit" value="Realizar el pago" [disabled]="!mostrarBotonPago"
                 [ngClass]="{'disabled-button': !mostrarBotonPago}" (click)="mostrarPagoTotal()">
-        </div>
+        </div> -->
         <div class="seccion">
-            <input (click)="paypalButton()" class="boton" type="submit" value="Pagar a través de PAYPAL" [disabled]="!mostrarBotonPago"
-                [ngClass]="{'disabled-button': !mostrarBotonPago}">
+            <input (click)="paypalButton()" class="boton" type="submit" value="Pagar a través de PAYPAL" [disabled]="mostrarBotonPago"
+                [ngClass]="{'disabled-button': mostrarBotonPago}">
         </div>
-        <div class="seccion">
+        <!-- <div class="seccion">
             <div id="MyPaypalButtons"></div>
-        </div>   
+        </div>    -->
     </div>
     <div *ngIf="mostrarPagoT">
         <div class="formulario">

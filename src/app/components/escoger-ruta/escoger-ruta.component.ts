@@ -41,6 +41,9 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
   public usuario!: Usuario;
   public pago!: Pago;
 
+  //valor Total
+  public valorTotal: number = 0;
+
   constructor(
     private renderer: Renderer2, 
     private el: ElementRef,
@@ -58,22 +61,58 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
     this.status = '';
     this.pasajero = new Pasajero('', '', '', 0);
     this.usuario = new Usuario('', '', 0, '');
-    this.usuario = new Usuario('', '', 0, '');;
+    this.usuario = new Usuario('', '', 0, '');
     this.pago = new Pago(this.usuario.nombreApellido, 0, '');
   }
 
   ngOnInit(): void {
+    this.getVuelos();
   }
 
-  paypalButton(){
-    render({
-      id: '#MyPaypalButtons',
-      currency: 'USD',
-      value: "100",
-      onApprove: (details) => {
-        alert('Transacción exitosa');
-      },
-    });
+  async paypalButton() {
+    const response = await fetch('http://localhost:3600/create-order', {
+      method: 'POST',
+      body: JSON.stringify({
+        value: '100'
+        // value: this.valorTotal.toString()
+      }),
+      headers: {
+        'Content-Type': 'application/json' // Especifica el tipo de contenido JSON
+      }
+    })
+    const data = await response.json();
+    window.open(data.links[1].href, 'PaypalPopup', 'width=500,height=800');
+  }
+
+  async captureOrder() {
+    try {
+      const response = await fetch(`http://localhost:3600/capture-order`, {
+        method: 'GET', // Puedes usar POST si lo prefieres
+      });
+  
+      if (!response.ok) {
+        throw new Error('Error al capturar la orden.');
+      }
+  
+      const responseData = await response.text(); // Puedes usar response.json() si la respuesta es JSON
+  
+      if (responseData === 'payed') {
+        // La orden fue capturada correctamente
+        console.log('La orden fue capturada correctamente.');
+      } else {
+        // Algo salió mal
+        console.error('Error al capturar la orden.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  sumaValorTotal(){
+    for (const vuelo of this.vuelosReservados) {
+      this.valorTotal = this.valorTotal + vuelo.precio;
+    }
+    console.log(this.valorTotal);
   }
 
   getVuelos() {
@@ -289,6 +328,8 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
   }
   mostrarResumenP() {
     this.mostrarSeccionResumenP = true;
+    // this.mostrarInformacionUsuario = false;
+    this.sumaValorTotal();
   }
 
   //pasajeros
