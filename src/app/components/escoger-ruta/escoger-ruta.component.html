@@ -316,8 +316,7 @@
                     </div>
                     <div class="seccion">
                         <input class="boton" type="submit" value="Guardar contacto" [disabled]="!usuarioForm.form.valid"
-                            [ngClass]="{'disabled-button': !usuarioForm.form.valid}" (click)="mostrarResumenP()"
-                            (click)="paypalButton()">
+                            [ngClass]="{'disabled-button': !usuarioForm.form.valid}" (click)="mostrarResumenP()">
                     </div>
                 </form>
             </div>
@@ -341,10 +340,6 @@
             </div>
         </div>
 
-    </div>
-
-    <div class="seccion">
-        <div id="MyPaypalButtons"></div>
     </div>
     <input class="cart-button" type="submit" value="" (click)="abrirCarrito()">
     <div class="b">
@@ -387,10 +382,11 @@
     <!-- PAGO CON PAYPAL -->
     <div *ngIf="mostrarBotonesPago">
         <div class="seccion">
-            <input (click)="paypalButton()" class="boton" type="submit" value="Pagar a través de PAYPAL" [disabled]="!mostrarBotonPago"
-                [ngClass]="{'disabled-button': !mostrarBotonPago}">
+            <input (click)="paypalButton()" class="boton" type="submit" value="Pagar a través de PAYPAL" [disabled]="mostrarBotonPago"
+                [ngClass]="{'disabled-button': mostrarBotonPago}">
         </div>
     </div>
+    
     <div *ngIf="mostrarPagoT">
         <div class="formulario">
             <form class="detalles" #pagoForm="ngForm" (ngSubmit)="guardarPago(pagoForm)">

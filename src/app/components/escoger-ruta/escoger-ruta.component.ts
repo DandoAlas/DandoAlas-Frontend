@@ -49,9 +49,6 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
   //valor Total
   public valorTotal: number = 0;
 
-  //valorTotal
-  public valorTotal: number;
-
   //ASIENTOS
   rows: any[] = [];
   disabledCheckboxes: string[] = [];
@@ -192,12 +189,6 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
       .catch((error) => {
         console.error('Error al enviar el email:', error);
       });
-  }
-
-  sumaValorTotal() {
-    for (const vuelo of this.vuelosReservados) {
-      this.valorTotal = this.valorTotal + vuelo.precio;
-    }
   }
 
   sumaValorTotal(){
@@ -460,7 +451,7 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
     if (this.aux1 === this.cantidadPasajeros) {
       this.mostrarInformacionPasajero = false;
       this.mostrarInformacionUsuario = true;
-      //this.mostrarBotonesPago = true;
+      this.mostrarBotonesPago = true;
     }
     this.aux1++;
   }
