@@ -23,7 +23,7 @@ import { transition } from '@angular/animations';
   selector: 'app-escoger-ruta',
   templateUrl: './escoger-ruta.component.html',
   styleUrls: ['./escoger-ruta.component.css'],
-  providers: [VuelosService, PasajeroService, UsuarioService, PagoService]
+  providers: [VuelosService, PasajeroService, UsuarioService, PagoService],
 })
 export class EscogerRutaComponent implements AfterViewInit, OnInit {
   public vuelos: Vuelo[];
@@ -40,9 +40,13 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
   //usuario
   public usuario!: Usuario;
   public pago!: Pago;
+  public _idUsuario: string = '';
+
+  //valor Total
+  public valorTotal: number = 0;
 
   constructor(
-    private renderer: Renderer2, 
+    private renderer: Renderer2,
     private el: ElementRef,
     private _vueloService: VuelosService,
     private _pasajeroService: PasajeroService,
@@ -58,22 +62,105 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
     this.status = '';
     this.pasajero = new Pasajero('', '', '', 0);
     this.usuario = new Usuario('', '', 0, '');
-    this.usuario = new Usuario('', '', 0, '');;
+    this.usuario = new Usuario('', '', 0, '');
     this.pago = new Pago(this.usuario.nombreApellido, 0, '');
   }
 
   ngOnInit(): void {
+    this.getVuelos();
   }
 
-  paypalButton(){
-    render({
-      id: '#MyPaypalButtons',
-      currency: 'USD',
-      value: "100",
-      onApprove: (details) => {
-        alert('Transacción exitosa');
+  async getUser() {
+    
+    if(this._idUsuario === ''){
+      console.log("No hay usuario");
+      return;
+    } 
+    const user = await fetch(`http://localhost:3600/obtener-usuario/${this._idUsuario}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json', // Especifica el tipo de contenido JSON
       },
     });
+
+    return user.json();
+  }
+
+  async paypalButton() {
+
+    console.log(this.vuelosReservados);
+
+    const response = await fetch('http://localhost:3600/create-order', {
+      method: 'POST',
+      body: JSON.stringify({
+        value: this.valorTotal.toString()
+      }),
+      headers: {
+        'Content-Type': 'application/json', // Especifica el tipo de contenido JSON
+      },
+    });
+
+    const data = await response.json();
+    const paypalWindow = window.open(
+      data.links[1].href,
+      'PaypalPopup',
+      'width=500,height=800'
+    );
+
+    if (paypalWindow) {
+      // Agrega esta comprobación para evitar el error
+      const checkWindowClosed = setInterval(() => {
+        if (paypalWindow.closed) {
+          clearInterval(checkWindowClosed);
+          // Después de que se cierre la ventana de PayPal, llama al endpoint /send-email
+         this.sendEmail();
+        }
+      }, 1000); // Verifica cada segundo si la ventana de PayPal se ha cerrado
+    } else {
+      // Maneja la respuesta en caso de que no sea 200, por ejemplo, mostrando un mensaje de error.
+      console.error('Error en la solicitud:', response.status);
+    }
+  }
+
+  async sendEmail() {
+    const dataUser = await this.getUser();
+
+    fetch('http://localhost:3600/send-email', {
+      method: 'POST',
+      body: JSON.stringify({
+        name: dataUser.usuario.nombreApellido,
+        cedula: dataUser.usuario.cedula,
+        email: dataUser.usuario.correo,
+        value: this.valorTotal.toString(),
+        origen: this.vuelosReservados[0].origen,
+        destino: this.vuelosReservados[0].destino,
+        fechaSalida: this.vuelosReservados[0].fechaSalida,
+        horaSalida: this.vuelosReservados[0].horaSalida,
+        duracionVuelo: this.vuelosReservados[0].duracionVuelo,
+        nombreAerolinea: this.vuelosReservados[0].nombreAerolinea,
+        clase: this.vuelosReservados[0].clase,
+      }),
+      headers: {
+        'Content-Type': 'application/json', // Especifica el tipo de contenido JSON
+      },
+      // Puedes incluir un cuerpo si es necesario para enviar datos al endpoint /send-email
+    })
+      .then((emailResponse) => {
+        if (emailResponse.status === 200) {
+          console.log('Email enviado con éxito');
+        } else {
+          console.error('Error al enviar el email:', emailResponse.status);
+        }
+      })
+      .catch((error) => {
+        console.error('Error al enviar el email:', error);
+      });
+  }
+
+  sumaValorTotal() {
+    for (const vuelo of this.vuelosReservados) {
+      this.valorTotal = this.valorTotal + vuelo.precio;
+    }
   }
 
   getVuelos() {
@@ -187,44 +274,10 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
       this.precios.push(vuelo.precio);
     }
     console.log(this.precios);
-    this._vueloService.getVuelosConFiltros(this.origen, this.destino, this.fechaSalida).subscribe(
-      response => {
-        if (response.vuelos) {
-          this.vuelos = response.vuelos;
-          if (this.vuelos.length === 0) {
-            this.noExistenVuelos = true;
-            setTimeout(() => {
-              this.noExistenVuelos = false;
-            }, 6000);
-          } else {
-            this.mostrarSeccionVuelos = true;
-            this.mostrarSeccionPasajeros = true;
-            for (const vuelo of this.vuelos) {
-              this.precios.push(vuelo.precio);
-            }
-            console.log(this.precios);
-          }
-        }
-      },
-      error => {
-        console.log(<any>error);
-        this.noExistenVuelos = true;
-        setTimeout(() => {
-          this.noExistenVuelos = false;
-        }, 6000);
-      }
-    );
-  }
-  public beneficiosTurista: boolean = false;
-  public beneficiosPrimera: boolean = false;
-  selectFlight(i: number) {
-    this.vuelosReservados[this.aux] = this.vuelos[i];
-    this.aux++;
-    this.beneficiosTurista = true;
-    if (this.esRegreso) {
-      this.esRegreso = false;
-      this._vueloService.getVuelosConFiltros(this.destino, this.origen, this.fechaRegreso).subscribe(
-        response => {
+    this._vueloService
+      .getVuelosConFiltros(this.origen, this.destino, this.fechaSalida)
+      .subscribe(
+        (response) => {
           if (response.vuelos) {
             this.vuelos = response.vuelos;
             if (this.vuelos.length === 0) {
@@ -234,6 +287,7 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
               }, 6000);
             } else {
               this.mostrarSeccionVuelos = true;
+              this.mostrarSeccionPasajeros = true;
               for (const vuelo of this.vuelos) {
                 this.precios.push(vuelo.precio);
               }
@@ -241,10 +295,47 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
             }
           }
         },
-        error => {
+        (error) => {
           console.log(<any>error);
+          this.noExistenVuelos = true;
+          setTimeout(() => {
+            this.noExistenVuelos = false;
+          }, 6000);
         }
       );
+  }
+  public beneficiosTurista: boolean = false;
+  public beneficiosPrimera: boolean = false;
+  selectFlight(i: number) {
+    this.vuelosReservados[this.aux] = this.vuelos[i];
+    this.aux++;
+    this.beneficiosTurista = true;
+    if (this.esRegreso) {
+      this.esRegreso = false;
+      this._vueloService
+        .getVuelosConFiltros(this.destino, this.origen, this.fechaRegreso)
+        .subscribe(
+          (response) => {
+            if (response.vuelos) {
+              this.vuelos = response.vuelos;
+              if (this.vuelos.length === 0) {
+                this.noExistenVuelos = true;
+                setTimeout(() => {
+                  this.noExistenVuelos = false;
+                }, 6000);
+              } else {
+                this.mostrarSeccionVuelos = true;
+                for (const vuelo of this.vuelos) {
+                  this.precios.push(vuelo.precio);
+                }
+                console.log(this.precios);
+              }
+            }
+          },
+          (error) => {
+            console.log(<any>error);
+          }
+        );
     } else {
       this.mostrarSeccionVuelos = false;
       this.mostrarSeccionPasajeros = false;
@@ -263,8 +354,7 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
   public fechaRegreso: string = '';
   public clase: string = '';
 
-  buscarVuelosConFiltros() {
-  }
+  buscarVuelosConFiltros() {}
 
   mostrarContenido: boolean = true;
   mostrarSeccionCarrito: boolean = false;
@@ -281,14 +371,19 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
     this.mostrarSeccionResumen = false;
     this.mostrarBotonResumen = false;
   }
+
   mostrarSeccionResumen: boolean = false;
   mostrarSeccionResumenP: boolean = false;
   mostrarBotonResumen: boolean = false;
+
   mostrarResumen() {
     this.mostrarSeccionResumen = true;
   }
   mostrarResumenP() {
     this.mostrarSeccionResumenP = true;
+    // this.mostrarInformacionUsuario = false;
+    this.sumaValorTotal();
+    console.log(this.vuelosReservados);
   }
 
   //pasajeros
@@ -297,12 +392,12 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
   mostrarPasajero() {
     this.mostrarInformacionPasajero = true;
   }
+
   guardarPasajero(form: NgForm) {
     this._pasajeroService.guardarPasajero(this.pasajero).subscribe(
       (response) => {
         if (response.pasajero) {
           this.status = 'success';
-          console.log(response.pasajero._id);
           form.reset();
           console.log(this.pasajero);
         } else {
@@ -330,14 +425,14 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
   /*contacto*/
   mostrarInformacionUsuario: boolean = false;
   mostrarBotonesPago: boolean = false;
+
   guardarUsuario(form: NgForm) {
     this._usuarioService.guardarUsuario(this.usuario).subscribe(
       (response) => {
         if (response.usuario) {
+          this._idUsuario = response.usuario._id; //Guardamos el id del usuario
           this.status = 'success';
-          console.log(response.usuario._id);
           form.reset();
-          console.log(this.usuario);
         } else {
           this.status = 'failed';
         }
@@ -347,15 +442,15 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
       }
     );
   }
+
   mostrarBotonPago: boolean = false;
   mostrarBotones() {
     this.mostrarBotonPago = true;
   }
 
-
   guardarPago(form: NgForm) {
     this._pagoService.guardarPago(this.pago).subscribe(
-      response => {
+      (response) => {
         if (response.pago) {
           this.status = 'success';
           console.log(response.pago._id);
@@ -365,11 +460,12 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
           this.status = 'failed';
         }
       },
-      error => {
+      (error) => {
         console.log(<any>error);
       }
     );
   }
+
   mostrarPagoT: boolean = false;
   mostrarPagoTotal() {
     this.mostrarPagoT = true;
