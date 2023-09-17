@@ -204,6 +204,48 @@
             <div class="formulario">
                 <form class="detalles" #pasajeroForm="ngForm" (ngSubmit)="guardarPasajero(pasajeroForm)">
                     <div class="titulo">Información del pasajero</div>
+
+                    <!-- EMPIEZA LO DE ASIENTOS -->
+
+                    <input class="boton" type="submit" value="Elegir asiento" (click)="openPopup()">
+                    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStyle}">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <div class="plane">
+                                        <div class="cockpit">
+                                            <br>
+                                            <br>
+                                            <br>
+                                            <br>
+                                            <h1>ASIENTOS <br>DISPONBLES</h1>
+                                            <br>
+                                            <br>
+                                            <br>
+                                        </div>
+                                        <ol class="cabin fuselage" #seatsContainer>
+                                            <li *ngFor="let row of rows" class="row row--{{ row.rowNumber }}">
+                                                <ol class="seats" type="A">
+                                                    <li *ngFor="let seat of row.seats" class="seat"
+                                                        (click)="toggleSeatState(seat)">
+                                                        <input type="checkbox" [id]="seat.id" [name]="seat.id"
+                                                            (change)="handleCheckboxChange($event)"
+                                                            [disabled]="selected >= maxSelectedCheckboxes && !seat.selected || disabledCheckboxes.includes(seat.id)" />
+                                                        <label [for]="seat.id"></label>
+                                                        <img [src]="seat.imageSrc" alt="Asiento" />
+                                                    </li>
+                                                </ol>
+                                            </li>
+                                        </ol>
+                                    </div>
+                                </div>
+                                <input class="boton" type="submit" value="Aceptar asiento" (click)="closePopup()">
+                        </div>
+                    </div>
+                    <input class="boton" type="submit" value="Elegir aleatoreamente" (click)="toggleRandom()"
+                        (click)="closePopup()">
+
+                    <!-- ACABA LO DE ASIENTOS -->
+
                     <div class="seccion">
                         <div class="informacion">Nombres completos</div>
                         <div *ngIf="pasajero" class="atributo">
@@ -274,13 +316,15 @@
                     </div>
                     <div class="seccion">
                         <input class="boton" type="submit" value="Guardar contacto" [disabled]="!usuarioForm.form.valid"
-                            [ngClass]="{'disabled-button': !usuarioForm.form.valid}" (click)="mostrarBotones()"
-                            (click)="mostrarResumenP()">
+                            [ngClass]="{'disabled-button': !usuarioForm.form.valid}" (click)="mostrarResumenP()"
+                            (click)="paypalButton()">
                     </div>
                 </form>
             </div>
-            
-            <div class="resumen" *ngIf="mostrarSeccionResumenP">
+        </div>
+
+        <div *ngIf="mostrarSeccionResumenP">
+            <div class="resumen">
                 <div class="item">
                     <div class="titulo">Informacion de los vuelos reservados</div>
                 </div>
@@ -289,7 +333,7 @@
                     <div class="">{{vuelo.origen}}, {{vuelo.destino}}-Ecuador</div><br>
                     <div class="">Salida: {{vuelo.fechaSalida}} a las {{vuelo.horaSalida}}:00h</div><br>
                     <div class="">Duración del viaje: {{vuelo.duracionVuelo}} minutos</div><br>
-                    <div class="">Operado por: {{vuelo.nombreAerolinea}} minutos</div><br>
+                    <div class="">Operado por: {{vuelo.nombreAerolinea}}</div><br>
                     <div class="">Costo total: ${{vuelo.precio}} dólares</div><br>
                     <div class="">Clase: {{vuelo.clase}}</div><br>
                     <div class="">Pasajeros: {{cantidadPasajeros}}</div><br>
@@ -299,6 +343,9 @@
 
     </div>
 
+    <div class="seccion">
+        <div id="MyPaypalButtons"></div>
+    </div>
     <input class="cart-button" type="submit" value="" (click)="abrirCarrito()">
     <div class="b">
         <div class="carrito" *ngIf="mostrarSeccionCarrito">
@@ -358,20 +405,17 @@
                 <div class="seccion">
                     <div class="informacion">Cuenta:</div>
                     <div *ngIf="pago" class="atributo">
-                        <input type="number" id="cuenta" name="cuenta" #cuenta [(ngModel)]="pago.cuenta"
-                            required>
+                        <input type="number" id="cuenta" name="cuenta" #cuenta [(ngModel)]="pago.cuenta" required>
                     </div>
                 </div>
                 <div class="seccion">
                     <div class="informacion">Banco:</div>
                     <div *ngIf="pago" class="atributo">
-                        <input type="text" id="banco" name="banco" #banco
-                            [(ngModel)]="pago.banco" required>
+                        <input type="text" id="banco" name="banco" #banco [(ngModel)]="pago.banco" required>
                     </div>
                 </div>
                 <div class="seccion">
-                    <input class="boton" type="submit" value="Pagar"
-                        [disabled]="!pagoForm.form.valid"
+                    <input class="boton" type="submit" value="Pagar" [disabled]="!pagoForm.form.valid"
                         [ngClass]="{'disabled-button': !pagoForm.form.valid}">
                 </div>
             </form>
