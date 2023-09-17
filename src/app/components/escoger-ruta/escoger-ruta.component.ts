@@ -40,6 +40,7 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
   //usuario
   public usuario!: Usuario;
   public pago!: Pago;
+  public _idUsuario: string = '';
 
   //valor Total
   public valorTotal: number = 0;
@@ -69,12 +70,30 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
     this.getVuelos();
   }
 
+  async getUser() {
+    
+    if(this._idUsuario === ''){
+      console.log("No hay usuario");
+      return;
+    } 
+    const user = await fetch(`http://localhost:3600/obtener-usuario/${this._idUsuario}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json', // Especifica el tipo de contenido JSON
+      },
+    });
+
+    return user.json();
+  }
+
   async paypalButton() {
+
+    console.log(this.vuelosReservados);
+
     const response = await fetch('http://localhost:3600/create-order', {
       method: 'POST',
       body: JSON.stringify({
-        value: '15',
-        // value: this.valorTotal.toString()
+        value: this.valorTotal.toString()
       }),
       headers: {
         'Content-Type': 'application/json', // Especifica el tipo de contenido JSON
@@ -93,36 +112,8 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
       const checkWindowClosed = setInterval(() => {
         if (paypalWindow.closed) {
           clearInterval(checkWindowClosed);
-
           // Después de que se cierre la ventana de PayPal, llama al endpoint /send-email
-          fetch('http://localhost:3600/send-email', {
-            method: 'POST',
-            body: JSON.stringify({
-              value: this.valorTotal.toString(),
-              // name: this.usuario.nombreApellido.toString(),
-              name: 'Kevin',
-              // email: this.usuario.correo,
-              email: 'ksmc1999pyk@gmail.com',
-              cedula: '8707860897'          
-            }),
-            headers: {
-              'Content-Type': 'application/json', // Especifica el tipo de contenido JSON
-            },
-            // Puedes incluir un cuerpo si es necesario para enviar datos al endpoint /send-email
-          })
-            .then((emailResponse) => {
-              if (emailResponse.status === 200) {
-                console.log('Email enviado con éxito');
-              } else {
-                console.error(
-                  'Error al enviar el email:',
-                  emailResponse.status
-                );
-              }
-            })
-            .catch((error) => {
-              console.error('Error al enviar el email:', error);
-            });
+         this.sendEmail();
         }
       }, 1000); // Verifica cada segundo si la ventana de PayPal se ha cerrado
     } else {
@@ -131,11 +122,45 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
     }
   }
 
+  async sendEmail() {
+    const dataUser = await this.getUser();
+
+    fetch('http://localhost:3600/send-email', {
+      method: 'POST',
+      body: JSON.stringify({
+        name: dataUser.usuario.nombreApellido,
+        cedula: dataUser.usuario.cedula,
+        email: dataUser.usuario.correo,
+        value: this.valorTotal.toString(),
+        origen: this.vuelosReservados[0].origen,
+        destino: this.vuelosReservados[0].destino,
+        fechaSalida: this.vuelosReservados[0].fechaSalida,
+        horaSalida: this.vuelosReservados[0].horaSalida,
+        duracionVuelo: this.vuelosReservados[0].duracionVuelo,
+        nombreAerolinea: this.vuelosReservados[0].nombreAerolinea,
+        clase: this.vuelosReservados[0].clase,
+      }),
+      headers: {
+        'Content-Type': 'application/json', // Especifica el tipo de contenido JSON
+      },
+      // Puedes incluir un cuerpo si es necesario para enviar datos al endpoint /send-email
+    })
+      .then((emailResponse) => {
+        if (emailResponse.status === 200) {
+          console.log('Email enviado con éxito');
+        } else {
+          console.error('Error al enviar el email:', emailResponse.status);
+        }
+      })
+      .catch((error) => {
+        console.error('Error al enviar el email:', error);
+      });
+  }
+
   sumaValorTotal() {
     for (const vuelo of this.vuelosReservados) {
       this.valorTotal = this.valorTotal + vuelo.precio;
     }
-    console.log(this.valorTotal);
   }
 
   getVuelos() {
@@ -346,17 +371,19 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
     this.mostrarSeccionResumen = false;
     this.mostrarBotonResumen = false;
   }
+
   mostrarSeccionResumen: boolean = false;
   mostrarSeccionResumenP: boolean = false;
   mostrarBotonResumen: boolean = false;
+
   mostrarResumen() {
     this.mostrarSeccionResumen = true;
-    console.log("Este es el resumen", this.usuario);
   }
   mostrarResumenP() {
     this.mostrarSeccionResumenP = true;
     // this.mostrarInformacionUsuario = false;
     this.sumaValorTotal();
+    console.log(this.vuelosReservados);
   }
 
   //pasajeros
@@ -365,12 +392,12 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
   mostrarPasajero() {
     this.mostrarInformacionPasajero = true;
   }
+
   guardarPasajero(form: NgForm) {
     this._pasajeroService.guardarPasajero(this.pasajero).subscribe(
       (response) => {
         if (response.pasajero) {
           this.status = 'success';
-          console.log(response.pasajero._id);
           form.reset();
           console.log(this.pasajero);
         } else {
@@ -398,13 +425,13 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
   /*contacto*/
   mostrarInformacionUsuario: boolean = false;
   mostrarBotonesPago: boolean = false;
+
   guardarUsuario(form: NgForm) {
     this._usuarioService.guardarUsuario(this.usuario).subscribe(
       (response) => {
         if (response.usuario) {
+          this._idUsuario = response.usuario._id; //Guardamos el id del usuario
           this.status = 'success';
-          console.log(response.usuario._id);
-          console.log('Este es el usuario del front', this.usuario);
           form.reset();
         } else {
           this.status = 'failed';
@@ -415,6 +442,7 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
       }
     );
   }
+
   mostrarBotonPago: boolean = false;
   mostrarBotones() {
     this.mostrarBotonPago = true;
@@ -437,6 +465,7 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
       }
     );
   }
+
   mostrarPagoT: boolean = false;
   mostrarPagoTotal() {
     this.mostrarPagoT = true;
