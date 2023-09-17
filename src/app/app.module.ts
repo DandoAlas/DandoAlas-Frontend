@@ -8,13 +8,22 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CrearVueloComponent } from './components/crear-vuelo/crear-vuelo.component';
 import { PieComponent } from './components/pie/pie.component';
+import { LoginComponent } from './components/login/login.component';
+import { AuthService } from './services/auth.service';
+import { HomeComponent } from './components/home/home.component';
+import { PromocionesComponent } from './components/promociones/promociones.component';
+import { AsientosComponent } from './components/asientos/asientos.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     EscogerRutaComponent,
     CrearVueloComponent,
-    PieComponent
+    PieComponent,
+    LoginComponent,
+    HomeComponent,
+    PromocionesComponent,
+    AsientosComponent
   ],
   imports: [
     BrowserModule,
@@ -22,7 +31,9 @@ import { PieComponent } from './components/pie/pie.component';
     HttpClientModule,
     FormsModule
   ],
-  providers: [],
+  providers: [
+    AuthService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

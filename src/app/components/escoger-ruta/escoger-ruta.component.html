@@ -11,14 +11,13 @@
     <header>
         <img class="logo" src="../assets/logo.jpg" />
         <menu>
+            <a [routerLink]="['/inicio']">Inicio</a>
             <div
                 style="width: auto; height: 40px; padding-left: 20px; padding-right: 20px; background: #F23B88; justify-content: center; align-items: center;display: flex">
-                <a [routerLink]="['/inicio']" style="color: #ffffff; font-weight: 550;">Inicio</a>
+                <a [routerLink]="['/buscar-vuelo']" style="color: #ffffff; font-weight: 550;">Buscar vuelo</a>
             </div>
-            <a [routerLink]="['/guardar-vuelo']">Vuelos</a>
-            <a href="#">Promociones</a>
-            <a href="#">Sign out</a>
-            <a href="#">?</a>
+            <a [routerLink]="['/promociones']">Promociones</a>
+            <a [routerLink]="['/login']">Login</a>
         </menu>
         <div class="search">
             <form>
@@ -27,9 +26,8 @@
             </form>
         </div>
     </header>
-    <img class="fondo" src="../assets/fondo.jpg" />
+    <router-outlet></router-outlet>
     <div *ngIf="mostrarContenido" class="ruta">
-        <div class="titulo">Busca tu vuelo:</div>
         <div class="escogerRuta">
             <div class="tipoRuta">
                 <label class="checkbox-item">
@@ -54,10 +52,13 @@
                 <div class="item">
                     <div class="informacion">Fecha de regreso:</div>
                 </div>
-            </div>
-            <form class="datosRuta" #rutaForm="ngForm">
                 <div class="item">
-                    <select class="origen" name="origen" #origen required>
+                    <div class="informacion">Clase:</div>
+                </div>
+            </div>
+            <form class="datosRuta" #rutaForm="ngForm" (ngSubmit)="buscarVuelosConFiltros()">
+                <div class="item">
+                    <select class="origen" name="origen" [(ngModel)]="origen" required>
                         <option value="" selected>Seleccionar origen</option>
                         <option value="Guayaquil">Guayaquil</option>
                         <option value="LagoAgrio">Lago Agrio</option>
@@ -72,7 +73,7 @@
                     </select>
                 </div>
                 <div class="item">
-                    <select class="destino" name="destino" #destino>
+                    <select class="destino" name="destino" [(ngModel)]="destino" required>
                         <option value="" selected>Seleccionar destino</option>
                         <option value="Guayaquil">Guayaquil</option>
                         <option value="LagoAgrio">Lago Agrio</option>
@@ -87,14 +88,26 @@
                     </select>
                 </div>
                 <div class="item">
-                    <input type="date" class="fechaSalida" name="fechaSalida" #fechaSalida [min]="getCurrentDate()">
+                    <input type="date" class="fechaSalida" name="fechaSalida" [(ngModel)]="fechaSalida"
+                        [min]="getCurrentDate()" required>
                 </div>
                 <div class="item">
-                    <input type="date" class="fechaRegreso" name="fechaRegreso" #fechaRegreso [min]="getCurrentDate()">
+                    <input type="date" class="fechaRegreso" name="fechaRegreso" [min]="fechaSalida">
+                </div>
+                <div class="item">
+                    <select class="destino" name="clase" [(ngModel)]="clase" required>
+                        <option value="" selected>Seleccionar la clase</option>
+                        <option value="Turista">Turista</option>
+                        <option value="PrimeraClase">Primera clase</option>
+                    </select>
                 </div>
                 <input class="boton" type="submit" value="Buscar" [disabled]="!rutaForm.form.valid"
                     [ngClass]="{'disabled-button': !rutaForm.form.valid}" (click)="mostrarVuelos()">
             </form>
+            <div *ngIf="noExistenVuelos" class="alert alert-success">
+                <div class=""><img style="width: 30px;" class="check" src="../assets/checkX.jpg" />
+                    No existen vuelos para esa ruta en esa fecha</div>
+            </div>
         </div>
 
         <div class="pasajero" *ngIf="mostrarSeccionPasajeros">
@@ -136,6 +149,7 @@
                 </div>
             </div>
         </div>
+
         <div *ngIf="mostrarSeccionVuelos">
             <div class="titulo">Selecciona tu vuelo:</div>
             <div class="mostrarVuelos">
@@ -148,7 +162,7 @@
                         <div class="precio"></div>
                     </div>
                 </div>
-                <li class="vuelo" *ngFor="let vuelo of vuelos; let i = index" class="vuelo">
+                <li class="vuelo" *ngFor="let vuelo of vuelos; let i = index">
                     <div class="infoVuelo">
                         <div class="aerolinea">{{vuelo.nombreAerolinea}}</div>
                     </div>
@@ -159,40 +173,252 @@
                         <div class="precio">${{vuelo.precio}}</div>
                         <input class="boton" type="submit" value="Seleccionar"
                             [ngClass]="{'disabled-button': vuelo.precio === 0}" (click)="selectFlight(i)">
+                        <div *ngIf="beneficiosTurista" class="alert alert-success">
+                            <div class=""><img style="width: 30px;" class="check" src="../assets/check.jpg" />
+                                Puede añadir maletas adicionales por cada pasajero(2 maletas de mano y una de 23 kilos)
+                            </div><br>
+                            <div class=""><img style="width: 30px;" class="check" src="../assets/check.jpg" />
+                                La maleta de 23 kilos (costo 65 dólares) </div><br>
+                            <div class=""><img style="width: 30px;" class="check" src="../assets/check.jpg" />
+                                La maleta de mano (costo 10 dólares)</div><br>
+                            <div class=""><img style="width: 30px;" class="check" src="../assets/checkX.jpg" />
+                                No puede escoger asientos.</div><br>
+                        </div>
+                        <div *ngIf="beneficiosPrimera" class="alert alert-success">
+                            <div class=""><img style="width: 30px;" class="check" src="../assets/check.jpg" />
+                                Puede añadir maletas adicionales por cada pasajero(5 maletas de mano y una de 23 kilos)
+                            </div><br>
+                            <div class=""><img style="width: 30px;" class="check" src="../assets/check.jpg" />
+                                La maleta de 23 kilos (costo 65 dólares) </div><br>
+                            <div class=""><img style="width: 30px;" class="check" src="../assets/check.jpg" />
+                                La maleta de mano (costo 10 dólares)</div><br>
+                            <div class=""><img style="width: 30px;" class="check" src="../assets/check.jpg" />
+                                Si puede escoger asientos.</div><br>
+                        </div>
                     </div>
                 </li>
             </div>
         </div>
+
+        <div *ngIf="mostrarInformacionPasajero">
+            <div class="formulario">
+                <form class="detalles" #pasajeroForm="ngForm" (ngSubmit)="guardarPasajero(pasajeroForm)">
+                    <div class="titulo">Información del pasajero</div>
+
+                    <!-- EMPIEZA LO DE ASIENTOS -->
+
+                    <input class="boton" type="submit" value="Elegir asiento" (click)="openPopup()">
+                    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStyle}">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <div class="plane">
+                                        <div class="cockpit">
+                                            <br>
+                                            <br>
+                                            <br>
+                                            <br>
+                                            <h1>ASIENTOS <br>DISPONBLES</h1>
+                                            <br>
+                                            <br>
+                                            <br>
+                                        </div>
+                                        <ol class="cabin fuselage" #seatsContainer>
+                                            <li *ngFor="let row of rows" class="row row--{{ row.rowNumber }}">
+                                                <ol class="seats" type="A">
+                                                    <li *ngFor="let seat of row.seats" class="seat"
+                                                        (click)="toggleSeatState(seat)">
+                                                        <input type="checkbox" [id]="seat.id" [name]="seat.id"
+                                                            (change)="handleCheckboxChange($event)"
+                                                            [disabled]="selected >= maxSelectedCheckboxes && !seat.selected || disabledCheckboxes.includes(seat.id)" />
+                                                        <label [for]="seat.id"></label>
+                                                        <img [src]="seat.imageSrc" alt="Asiento" />
+                                                    </li>
+                                                </ol>
+                                            </li>
+                                        </ol>
+                                    </div>
+                                </div>
+                                <input class="boton" type="submit" value="Aceptar asiento" (click)="closePopup()">
+                        </div>
+                    </div>
+                    <input class="boton" type="submit" value="Elegir aleatoreamente" (click)="toggleRandom()"
+                        (click)="closePopup()">
+
+                    <!-- ACABA LO DE ASIENTOS -->
+
+                    <div class="seccion">
+                        <div class="informacion">Nombres completos</div>
+                        <div *ngIf="pasajero" class="atributo">
+                            <input type="text" id="nombres" name="nombres" #nombres [(ngModel)]="pasajero.nombres"
+                                required>
+                        </div>
+                    </div>
+                    <div class="seccion">
+                        <div class="informacion">Apellidos completos</div>
+                        <div *ngIf="pasajero" class="atributo">
+                            <input type="text" id="apellidos" name="apellidos" #apellidos
+                                [(ngModel)]="pasajero.apellidos" required>
+                        </div>
+                    </div>
+                    <div class="seccion">
+                        <div class="informacion">Fecha de nacimiento:</div>
+                        <div *ngIf="pasajero" class="atributo">
+                            <input type="date" class="fechaNacimiento" name="fechaNacimiento" #fechaNacimiento
+                                [(ngModel)]="pasajero.fechaNacimiento" [max]="getCurrentDate()" required>
+                        </div>
+                    </div>
+                    <div class="seccion">
+                        <div class="informacion">Cédula o pasaporte:</div>
+                        <div *ngIf="pasajero" class="atributo">
+                            <input type="number" id="cedula" name="cedula" #cedula [(ngModel)]="pasajero.cedula"
+                                required>
+                        </div>
+                    </div>
+                    <div class="seccion">
+                        <input class="boton" type="submit" value="Guardar pasajero"
+                            [disabled]="!pasajeroForm.form.valid"
+                            [ngClass]="{'disabled-button': !pasajeroForm.form.valid}" (click)="mostrarPago()">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div *ngIf="mostrarInformacionUsuario">
+            <div class="formulario">
+                <form class="detalles" #usuarioForm="ngForm" (ngSubmit)="guardarUsuario(usuarioForm)">
+                    <div class="titulo">Información de contacto</div>
+                    <div class="seccion">
+                        <div class="informacion">Nombre y apellido</div>
+                        <div *ngIf="usuario" class="atributo">
+                            <input type="text" id="nombreApellido" name="nombreApellido" #nombreApellido
+                                [(ngModel)]="usuario.nombreApellido" required>
+                        </div>
+                    </div>
+                    <div class="seccion">
+                        <div class="informacion">Correo electronico</div>
+                        <div *ngIf="usuario" class="atributo">
+                            <input type="email" id="correo" name="correo" #correo [(ngModel)]="usuario.correo" required>
+                        </div>
+                    </div>
+                    <div class="seccion">
+                        <div class="informacion">Cédula o pasaporte:</div>
+                        <div *ngIf="usuario" class="atributo">
+                            <input type="number" id="cedula" name="cedula" #cedula [(ngModel)]="usuario.cedula"
+                                required>
+                        </div>
+                    </div>
+                    <div class="seccion">
+                        <div class="informacion">Teléfono celular</div>
+                        <div *ngIf="usuario" class="atributo">
+                            <input type="number" id="telefono" name="telefono" #telefono [(ngModel)]="usuario.telefono"
+                                required>
+                        </div>
+                    </div>
+                    <div class="seccion">
+                        <input class="boton" type="submit" value="Guardar contacto" [disabled]="!usuarioForm.form.valid"
+                            [ngClass]="{'disabled-button': !usuarioForm.form.valid}" (click)="mostrarResumenP()"
+                            (click)="paypalButton()">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div *ngIf="mostrarSeccionResumenP">
+            <div class="resumen">
+                <div class="item">
+                    <div class="titulo">Informacion de los vuelos reservados</div>
+                </div>
+                <li class="vuelo" *ngFor="let vuelo of vuelosReservados">
+                    <br>
+                    <div class="">{{vuelo.origen}}, {{vuelo.destino}}-Ecuador</div><br>
+                    <div class="">Salida: {{vuelo.fechaSalida}} a las {{vuelo.horaSalida}}:00h</div><br>
+                    <div class="">Duración del viaje: {{vuelo.duracionVuelo}} minutos</div><br>
+                    <div class="">Operado por: {{vuelo.nombreAerolinea}}</div><br>
+                    <div class="">Costo total: ${{vuelo.precio}} dólares</div><br>
+                    <div class="">Clase: {{vuelo.clase}}</div><br>
+                    <div class="">Pasajeros: {{cantidadPasajeros}}</div><br>
+                </li>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="seccion">
+        <div id="MyPaypalButtons"></div>
     </div>
     <input class="cart-button" type="submit" value="" (click)="abrirCarrito()">
-    <div class="carrito" *ngIf="mostrarSeccionCarrito">
-        <div class="exit-button-container">
-            <input class="exit-button" type="submit" (click)="exit()" value="X">
-        </div>
-        <div class="item">
-            <div class="titulo">Vuelos reservados</div>
-        </div>
-        <li class="vuelo" *ngFor="let vuelo of vuelosReservados" class="vuelo">
-            <div class="infoVuelo">
-                <div class="duracion">{{vuelo.nombreAerolinea}}</div>
-                <div class="rutaVuelo">{{vuelo.origen}} -> {{vuelo.destino}}</div>
-                <div class="duracion">{{vuelo.fechaSalida}}</div>
+    <div class="b">
+        <div class="carrito" *ngIf="mostrarSeccionCarrito">
+            <div class="exit-button-container">
+                <input class="exit-button" type="submit" (click)="exit()" value="X">
             </div>
-        </li>
-    </div>
-    <div class="resumenBoton" *ngIf="mostrarBotonResumen">
-        <input class="boton" type="submit" value="Resumen" (click)="mostrarResumen()">
-    </div>
-    <div class="resumen" *ngIf="mostrarSeccionResumen">
-        <div class="item">
-            <div class="titulo">Informacion de los vuelos reservados</div>
+            <div class="a">
+                <div class="item">
+                    <div class="titulo">Vuelos reservados</div>
+                </div>
+                <li class="vuelo" *ngFor="let vuelo of vuelosReservados" class="vuelo">
+                    <div class="infoVuelo">
+                        <div class="duracion">{{vuelo.nombreAerolinea}}</div>
+                        <div class="rutaVuelo">{{vuelo.origen}} -> {{vuelo.destino}}</div>
+                        <div class="duracion">{{vuelo.fechaSalida}}</div>
+                    </div>
+                </li>
+                <div class="resumenBoton" *ngIf="mostrarBotonResumen">
+                    <input class="boton" type="submit" value="Resumen" (click)="mostrarResumen()">
+                </div>
+                <div class="resumen" *ngIf="mostrarSeccionResumen">
+                    <div class="item">
+                        <div class="titulo">Informacion de los vuelos reservados</div>
+                    </div>
+                    <li class="vuelo" *ngFor="let vuelo of vuelosReservados">
+                        <br>
+                        <div class="">{{vuelo.origen}}, {{vuelo.destino}}-Ecuador</div><br>
+                        <div class="">Salida: {{vuelo.fechaSalida}} a las {{vuelo.horaSalida}}:00h</div><br>
+                        <div class="">Duración del viaje: {{vuelo.duracionVuelo}} minutos</div><br>
+                        <div class="">Operado por: {{vuelo.nombreAerolinea}} minutos</div><br>
+                        <div class="">Costo total: ${{vuelo.precio}} dólares</div><br>
+                        <div class="">Clase: {{vuelo.clase}}</div><br>
+                        <div class="">Pasajeros: {{cantidadPasajeros}}</div><br>
+                    </li>
+                </div>
+            </div>
         </div>
-        <li class="vuelo" *ngFor="let vuelo of vuelosReservados" class="vuelo">
-            <br><div class="">Usted ha reservado un boleto en la aereolínea {{vuelo.nombreAerolinea}}</div><br>
-            <div class="">Con destino a {{vuelo.destino}} desde {{vuelo.origen}}</div><br>
-            <div class="">Para el día {{vuelo.fechaSalida}} a las {{vuelo.horaSalida}}:00h</div><br>
-            <div class="">Este viaje tiene una duración de {{vuelo.duracionVuelo}} minutos</div><br>
-            <div class="">Y el costo total de este boleto es de {{vuelo.precio}} dólares</div>
-        </li>
+    </div>
+    <!-- PAGO CON PAYPAL -->
+    <div *ngIf="mostrarBotonesPago">
+        <div class="seccion">
+            <input (click)="paypalButton()" class="boton" type="submit" value="Pagar a través de PAYPAL" [disabled]="!mostrarBotonPago"
+                [ngClass]="{'disabled-button': !mostrarBotonPago}">
+        </div>
+    </div>
+    <div *ngIf="mostrarPagoT">
+        <div class="formulario">
+            <form class="detalles" #pagoForm="ngForm" (ngSubmit)="guardarPago(pagoForm)">
+                <div class="titulo">Información del pago</div>
+                <div class="seccion">
+                    <div class="informacion">Nombre y apellido</div>
+                    <div *ngIf="pago" class="atributo">
+                        <input type="text" id="propietario" name="propietario" #propietario
+                            [(ngModel)]="pago.propietario" required>
+                    </div>
+                </div>
+                <div class="seccion">
+                    <div class="informacion">Cuenta:</div>
+                    <div *ngIf="pago" class="atributo">
+                        <input type="number" id="cuenta" name="cuenta" #cuenta [(ngModel)]="pago.cuenta" required>
+                    </div>
+                </div>
+                <div class="seccion">
+                    <div class="informacion">Banco:</div>
+                    <div *ngIf="pago" class="atributo">
+                        <input type="text" id="banco" name="banco" #banco [(ngModel)]="pago.banco" required>
+                    </div>
+                </div>
+                <div class="seccion">
+                    <input class="boton" type="submit" value="Pagar" [disabled]="!pagoForm.form.valid"
+                        [ngClass]="{'disabled-button': !pagoForm.form.valid}">
+                </div>
+            </form>
+        </div>
     </div>
 </body>
