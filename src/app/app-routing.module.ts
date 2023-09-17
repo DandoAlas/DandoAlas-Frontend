@@ -5,13 +5,14 @@ import { CrearVueloComponent } from './components/crear-vuelo/crear-vuelo.compon
 import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { AsientosComponent } from './components/asientos/asientos.component';
+import { PromocionesComponent } from './components/promociones/promociones.component';
 
 const routes: Routes = [
   {path:'inicio', component:HomeComponent},
   {path:'buscar-vuelo', component:EscogerRutaComponent},
   {path:'guardar-vuelo', component:CrearVueloComponent},
   {path:'login', component:LoginComponent},
-  {path:'promociones', component:AsientosComponent},
+  {path:'promociones', component:PromocionesComponent},
  {path:'**', component:HomeComponent},
   ];
 
