@@ -26,4 +26,3 @@ export class PasajeroService{
         return this._http.get(this.url+'obtener-pasajero'+id, {headers:headers});
     }
 }
-

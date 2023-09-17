@@ -384,13 +384,10 @@
             </div>
         </div>
     </div>
+    <!-- PAGO CON PAYPAL -->
     <div *ngIf="mostrarBotonesPago">
         <div class="seccion">
-            <input class="boton" type="submit" value="Realizar el pago" [disabled]="!mostrarBotonPago"
-                [ngClass]="{'disabled-button': !mostrarBotonPago}" (click)="mostrarPagoTotal()">
-        </div>
-        <div class="seccion">
-            <input class="boton" type="submit" value="Pagar a través de PAYPAL" [disabled]="!mostrarBotonPago"
+            <input (click)="paypalButton()" class="boton" type="submit" value="Pagar a través de PAYPAL" [disabled]="!mostrarBotonPago"
                 [ngClass]="{'disabled-button': !mostrarBotonPago}">
         </div>
     </div>
