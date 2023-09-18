@@ -82,6 +82,10 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
     this.usuario = new Usuario('', '', 0, '');
     this.pago = new Pago(this.usuario.nombreApellido, 0, '');
     this.valorTotal = 0;
+    //precio
+    this.entre25y65Value = 0;
+    this.entre2y25Value = 0;
+    this.mayores65Value = 0;
 
     //ASIENTOS
     for (let rowNumber = 1; rowNumber <= 9; rowNumber++) {
@@ -105,11 +109,11 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
   }
 
   async getUser() {
-    
-    if(this._idUsuario === ''){
+
+    if (this._idUsuario === '') {
       console.log("No hay usuario");
       return;
-    } 
+    }
     const user = await fetch(`http://localhost:3600/obtener-usuario/${this._idUsuario}`, {
       method: 'GET',
       headers: {
@@ -147,7 +151,7 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
         if (paypalWindow.closed) {
           clearInterval(checkWindowClosed);
           // Después de que se cierre la ventana de PayPal, llama al endpoint /send-email
-         this.sendEmail();
+          this.sendEmail();
         }
       }, 1000); // Verifica cada segundo si la ventana de PayPal se ha cerrado
     } else {
@@ -191,7 +195,7 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
       });
   }
 
-  sumaValorTotal(){
+  sumaValorTotal() {
     for (const vuelo of this.vuelosReservados) {
       this.valorTotal = this.valorTotal + vuelo.precio;
     }
@@ -231,30 +235,37 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
     });
   }
 
+  //calcularPrecio
+  public entre2y25Value;
+  public entre25y65Value;
+  public mayores65Value;
+  calcularPrecio() {
+    this.entre2y25Value = parseInt(
+      (document.getElementById('entre2y25') as HTMLInputElement).value,
+      10
+    );
+    this.entre25y65Value = parseInt(
+      (document.getElementById('entre25y65') as HTMLInputElement).value,
+      10
+    );
+    this.mayores65Value = parseInt(
+      (document.getElementById('mayores65') as HTMLInputElement).value,
+      10
+    );
+    for (let i = 0; i < this.vuelos.length; i++) {
+      this.vuelos[i].precio =
+        this.precios[i] * 0.8 * this.entre2y25Value +
+        this.entre25y65Value * this.precios[i] +
+        this.precios[i] * 0.5 * this.mayores65Value;
+    }
+  }
+
   decrease(inputId: string): void {
     const inputElement = this.el.nativeElement.querySelector(`#${inputId}`);
     const currentValue = parseInt(inputElement.value);
     if (currentValue > 0) {
       inputElement.value = (currentValue - 1).toString();
-      for (let i = 0; i < this.vuelos.length; i++) {
-        //no pagan = const menores2Value = parseInt((document.getElementById('menores2') as HTMLInputElement).value, 10);
-        const entre2y25Value = parseInt(
-          (document.getElementById('entre2y25') as HTMLInputElement).value,
-          10
-        );
-        const entre25y65Value = parseInt(
-          (document.getElementById('entre25y65') as HTMLInputElement).value,
-          10
-        );
-        const mayores65Value = parseInt(
-          (document.getElementById('mayores65') as HTMLInputElement).value,
-          10
-        );
-        this.vuelos[i].precio =
-          this.precios[i] * 0.8 * entre2y25Value +
-          entre25y65Value * this.precios[i] +
-          this.precios[i] * 0.5 * mayores65Value;
-      }
+      this.calcularPrecio();
       this.cantidadPasajeros--;
     }
   }
@@ -266,25 +277,7 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
 
     if (currentValue < maxValue) {
       inputElement.value = (currentValue + 1).toString();
-      for (let i = 0; i < this.vuelos.length; i++) {
-        //no pagan = const menores2Value = parseInt((document.getElementById('menores2') as HTMLInputElement).value, 10);
-        const entre2y25Value = parseInt(
-          (document.getElementById('entre2y25') as HTMLInputElement).value,
-          10
-        );
-        const entre25y65Value = parseInt(
-          (document.getElementById('entre25y65') as HTMLInputElement).value,
-          10
-        );
-        const mayores65Value = parseInt(
-          (document.getElementById('mayores65') as HTMLInputElement).value,
-          10
-        );
-        this.vuelos[i].precio =
-          this.precios[i] * 0.8 * entre2y25Value +
-          entre25y65Value * this.precios[i] +
-          this.precios[i] * 0.5 * mayores65Value;
-      }
+      this.calcularPrecio();
       this.cantidadPasajeros++;
     }
   }
@@ -351,6 +344,7 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
           (response) => {
             if (response.vuelos) {
               this.vuelos = response.vuelos;
+              this.calcularPrecio();
               if (this.vuelos.length === 0) {
                 this.noExistenVuelos = true;
                 setTimeout(() => {
@@ -387,7 +381,7 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
   public fechaRegreso: string = '';
   public clase: string = '';
 
-  buscarVuelosConFiltros() {}
+  buscarVuelosConFiltros() { }
 
   mostrarContenido: boolean = true;
   mostrarSeccionCarrito: boolean = false;
@@ -545,8 +539,8 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
           }
         }
       }
-    } 
-    
+    }
+
     if (this.isRandomActive) {
       // Aquí puedes llamar a la función para seleccionar aleatoriamente los checkboxes
       this.selectedCheckboxes = [];
@@ -597,12 +591,12 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
       if (rowId >= 0 && rowId <= this.rows.length) {
         const row = this.rows[rowId].seats;
         const selectedSeat = row.find((seat: any) => seat.id === checkbox.id);
-  
+
         if (selectedSeat) {
           selectedSeat.selected = checkbox.checked;
           this.extractSelectedCheckboxes();
         }
-  
+
         if (checkbox.checked) {
           if (this.selectedCheckboxes.length <= this.maxSelectedCheckboxes) {
             this.selected++;
@@ -634,29 +628,29 @@ export class EscogerRutaComponent implements AfterViewInit, OnInit {
     });
   }
 
-// Selecciona aleatoriamente 'count' checkboxes de la matriz de checkboxes disponibles
-selectRandomCheckboxes() {
-  const checkboxes = Array.from(document.querySelectorAll('input[type="checkbox"]:not(:disabled)')) as HTMLInputElement[];
-  const availableCheckboxes = checkboxes.filter((checkbox) => !this.selectedCheckboxes.includes(checkbox.id));
-  let count = this.maxSelectedCheckboxes - this.selectedCheckboxes.length;
+  // Selecciona aleatoriamente 'count' checkboxes de la matriz de checkboxes disponibles
+  selectRandomCheckboxes() {
+    const checkboxes = Array.from(document.querySelectorAll('input[type="checkbox"]:not(:disabled)')) as HTMLInputElement[];
+    const availableCheckboxes = checkboxes.filter((checkbox) => !this.selectedCheckboxes.includes(checkbox.id));
+    let count = this.maxSelectedCheckboxes - this.selectedCheckboxes.length;
 
-  while (count > 0 && availableCheckboxes.length > 0) {
-    const randomIndex = Math.floor(Math.random() * availableCheckboxes.length);
-    const randomCheckbox = availableCheckboxes.splice(randomIndex, 1)[0];
-    randomCheckbox.checked = true;
+    while (count > 0 && availableCheckboxes.length > 0) {
+      const randomIndex = Math.floor(Math.random() * availableCheckboxes.length);
+      const randomCheckbox = availableCheckboxes.splice(randomIndex, 1)[0];
+      randomCheckbox.checked = true;
 
-    // Simular un evento 'change' en el checkbox seleccionado aleatoriamente
-    const event = new Event('change', { bubbles: true });
-    Object.defineProperty(event, 'target', { value: randomCheckbox, enumerable: true });
+      // Simular un evento 'change' en el checkbox seleccionado aleatoriamente
+      const event = new Event('change', { bubbles: true });
+      Object.defineProperty(event, 'target', { value: randomCheckbox, enumerable: true });
 
-    this.handleCheckboxChange(event);
+      this.handleCheckboxChange(event);
 
-    count--;
+      count--;
+    }
   }
-}
 
   displayStyle = "none";
-  
+
   openPopup() {
     this.displayStyle = "block";
   }
